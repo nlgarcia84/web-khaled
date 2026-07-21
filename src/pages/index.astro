@@ -6,41 +6,34 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Inicio">
   <!-- SECCIÓN HERO (BIENVENIDA) -->
-  <section class="relative py-24 text-center overflow-hidden">
+  <section class="relative py-20 text-center overflow-hidden">
     <Image
       src={khaledEspaldas}
       alt=""
       class="absolute inset-0 w-full h-full object-cover"
       aria-hidden="true"
     />
-    <div class="absolute inset-0 bg-black/75 backdrop-blur-[2px]"></div>
+    <div class="absolute inset-0 bg-black/70"></div>
     <div class="relative z-10 max-w-200 mx-auto px-6">
       <!-- Frase destacada (Hadiz) -->
       <p
-        class="font-serif text-oro text-xl md:text-2xl italic font-semibold mb-6"
+        class="font-serif text-oro text-lg md:text-xl italic font-semibold mb-4"
       >
         “Los modales se aprenden antes que el conocimiento”
       </p>
 
       <!-- Titular Principal -->
       <h1
-        class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-8"
+        class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4"
       >
         Difundiendo el mensaje del Islam en lengua española con rigor, sabiduría
         y cercanía
       </h1>
 
-      <!-- Texto de Presentación Corto -->
-      <div
-        class="space-y-4 text-crema/90 font-medium text-base md:text-lg leading-relaxed"
-      >
-        <p>
-          Soy un siervo de Allah que se aconseja a sí mismo y a ustedes a seguir
-          el camino de los justos predecesores, para que adoremos a Allah de la
-          forma que ellos lo hicieron.
-        </p>
-        <p>El objetivo de esta web es recordarnos mutuamente lo correcto.</p>
-      </div>
+      <!-- Texto de Presentación -->
+      <p class="text-crema/80 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto">
+        Un siervo de Allah que recuerda el camino de los justos predecesores.
+      </p>
     </div>
   </section>
   <!-- SECCIÓN ENLACES PRIORITARIOS -->

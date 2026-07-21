@@ -41,30 +41,81 @@ const { title } = Astro.props;
             Sheij Khaled Huerta
           </a>
         </div>
-        <nav class="flex gap-8">
-          <a
-            href="/"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
-            >Inicio</a
-          >
-          <a
-            href="/biografia"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
-            >Biografía</a
-          >
-          <a
-            href="/blog"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
-            >Blog</a
-          >
-          <a
-            href="/contacto"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
-            >Contacto</a
-          >
+
+        <!-- Hamburguesa (móvil) -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 z-50" aria-label="Menú">
+          <span id="bar1" class="block w-5 h-0.5 bg-chocolate transition-all duration-300"></span>
+          <span id="bar2" class="block w-5 h-0.5 bg-chocolate transition-all duration-300"></span>
+          <span id="bar3" class="block w-5 h-0.5 bg-chocolate transition-all duration-300"></span>
+        </button>
+
+        <!-- Navegación escritorio -->
+        <nav class="hidden md:flex gap-8">
+          <a href="/"
+            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Inicio</a>
+          <a href="/biografia"
+            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Biografía</a>
+          <a href="/blog"
+            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Blog</a>
+          <a href="/contacto"
+            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Contacto</a>
+        </nav>
+      </div>
+
+      <!-- Menú móvil flotante -->
+      <div id="mobile-overlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden opacity-0 transition-opacity duration-300"></div>
+      <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-40 hidden md:hidden translate-x-full transition-transform duration-300 ease-in-out">
+        <nav class="flex flex-col gap-6 pt-24 px-8">
+          <a href="/"
+            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Inicio</a>
+          <a href="/biografia"
+            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Biografía</a>
+          <a href="/blog"
+            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Blog</a>
+          <a href="/contacto"
+            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Contacto</a>
         </nav>
       </div>
     </header>
+
+    <script>
+      const btn = document.getElementById("menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      const overlay = document.getElementById("mobile-overlay");
+      const bars = [document.getElementById("bar1"), document.getElementById("bar2"), document.getElementById("bar3")];
+      let open = false;
+
+      function toggle() {
+        open = !open;
+        menu.classList.toggle("hidden", false);
+        overlay.classList.toggle("hidden", false);
+        requestAnimationFrame(() => {
+          menu.classList.toggle("translate-x-full", !open);
+          menu.classList.toggle("translate-x-0", open);
+          overlay.classList.toggle("opacity-0", !open);
+          overlay.classList.toggle("opacity-100", open);
+          if (open) {
+            bars[0].style.transform = "rotate(45deg) translate(3px, 3px)";
+            bars[1].style.opacity = "0";
+            bars[2].style.transform = "rotate(-45deg) translate(3px, -3px)";
+          } else {
+            bars[0].style.transform = "";
+            bars[1].style.opacity = "";
+            bars[2].style.transform = "";
+          }
+        });
+        document.body.style.overflow = open ? "hidden" : "";
+      }
+
+      function close() {
+        if (open) toggle();
+      }
+
+      if (btn && menu && overlay) {
+        btn.addEventListener("click", toggle);
+        overlay.addEventListener("click", close);
+      }
+    </script>
 
     <!-- Contenido dinámico de las páginas -->
     <main>
