@@ -17,12 +17,16 @@ export async function getPosts() {
 }
 
 export async function getPost(slug: string) {
-  return await client.fetch(`*[_type == "post" && slug.current == $slug][0] {
+  return await client.fetch(
+    `*[_type == "post" && slug.current == $slug][0] {
     title,
     slug,
     author,
     excerpt,
+    image,
     body,
     publishedAt,
-  }`, { slug });
+  }`,
+    { slug },
+  );
 }

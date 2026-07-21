@@ -37,6 +37,17 @@ const post = await getPost(slug);
           day: "numeric",
         })}
       </time>
+
+      {post.image && (
+        <figure class="my-8 -mx-6 md:-mx-0">
+          <img
+            src={builder.image(post.image).width(1200).url()}
+            alt={post.title}
+            class="w-full h-64 md:h-96 object-cover rounded-none md:rounded-xl"
+          />
+        </figure>
+      )}
+
       <h1 class="font-serif text-4xl md:text-5xl font-bold text-chocolate mt-2 mb-4">
         {post.title}
       </h1>

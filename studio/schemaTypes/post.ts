@@ -12,8 +12,9 @@ export default defineType({
     {name: 'body', title: 'Contenido', type: 'blockContent'},
     {name: 'categories', title: 'Categorías', type: 'array', of: [{type: 'reference', to: {type: 'category'}}]},
     {name: 'publishedAt', title: 'Fecha de publicación', type: 'datetime', initialValue: () => new Date().toISOString()},
+    {name: 'image', title: 'Imagen de portada', type: 'image', options: {hotspot: true}},
   ],
   preview: {
-    select: {title: 'title', subtitle: 'publishedAt'},
+    select: {title: 'title', subtitle: 'publishedAt', media: 'image'},
   },
 })
