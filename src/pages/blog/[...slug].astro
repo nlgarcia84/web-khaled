@@ -1,19 +1,15 @@
 ---
 import { toHTML } from "@portabletext/to-html";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import Layout from "../../layouts/Layout.astro";
-import { getPost, getPosts } from "../../lib/sanity";
+import { getPost, getPosts, client } from "../../lib/sanity";
 
-function imageUrl(ref: string, width = 800) {
-  const parts = ref.replace("image-", "").split("-");
-  const id = parts.slice(0, -2).join("-");
-  const ext = parts.pop();
-  return `https://cdn.sanity.io/images/6flkjd1o/production/${id}-${width}x0.${ext}`;
-}
+const builder = createImageUrlBuilder(client);
 
 const components = {
   types: {
     image: ({ value }: any) => {
-      const url = imageUrl(value.asset._ref);
+      const url = builder.image(value).width(800).url();
       const alt = value.alt || "";
       return `<figure class="my-8"><img src="${url}" alt="${alt}" class="rounded-xl w-full object-cover" loading="lazy" /></figure>`;
     },
@@ -48,8 +44,7 @@ const post = await getPost(slug);
         <p class="text-marron text-sm mb-8">Por {post.author}</p>
       )}
 
-      <div class="prose prose-lg max-w-none text-marron leading-relaxed">
-        {post.body && toHTML(post.body, { components })}
+      <div class="prose prose-lg max-w-none text-marron leading-relaxed" set:html={post.body ? toHTML(post.body, { components }) : ""}>
       </div>
     </div>
   </article>
