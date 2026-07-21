@@ -1,0 +1,39 @@
+---
+import { toHTML } from "@portabletext/to-html";
+import Layout from "../../layouts/Layout.astro";
+import { getPost, getPosts } from "../../lib/sanity";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post: any) => ({
+    params: { slug: post.slug.current },
+  }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const post = await getPost(slug);
+---
+
+<Layout title={post.title}>
+  <article class="py-24">
+    <div class="max-w-200 mx-auto px-6">
+      <time class="text-sm text-oro font-medium">
+        {new Date(post.publishedAt).toLocaleDateString("es", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </time>
+      <h1 class="font-serif text-4xl md:text-5xl font-bold text-chocolate mt-2 mb-4">
+        {post.title}
+      </h1>
+      {post.author && (
+        <p class="text-marron text-sm mb-8">Por {post.author}</p>
+      )}
+
+      <div class="prose prose-lg max-w-none text-marron leading-relaxed">
+        {post.body && toHTML(post.body)}
+      </div>
+    </div>
+  </article>
+</Layout>

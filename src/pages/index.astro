@@ -1,11 +1,158 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { Image } from "astro:assets";
+import khaledEspaldas from "../assets/images/khaled_espaldas.jpg";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Inicio">
+  <!-- SECCIÓN HERO (BIENVENIDA) -->
+  <section class="relative py-24 text-center overflow-hidden">
+    <Image
+      src={khaledEspaldas}
+      alt=""
+      class="absolute inset-0 w-full h-full object-cover"
+      aria-hidden="true"
+    />
+    <div class="absolute inset-0 bg-black/75 backdrop-blur-[2px]"></div>
+    <div class="relative z-10 max-w-200 mx-auto px-6">
+      <!-- Frase destacada (Hadiz) -->
+      <p
+        class="font-serif text-oro text-xl md:text-2xl italic font-semibold mb-6"
+      >
+        “Los modales se aprenden antes que el conocimiento”
+      </p>
+
+      <!-- Titular Principal -->
+      <h1
+        class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-8"
+      >
+        Difundiendo el mensaje del Islam en lengua española con rigor, sabiduría
+        y cercanía
+      </h1>
+
+      <!-- Texto de Presentación Corto -->
+      <div
+        class="space-y-4 text-crema/90 font-medium text-base md:text-lg leading-relaxed"
+      >
+        <p>
+          Soy un siervo de Allah que se aconseja a sí mismo y a ustedes a seguir
+          el camino de los justos predecesores, para que adoremos a Allah de la
+          forma que ellos lo hicieron.
+        </p>
+        <p>El objetivo de esta web es recordarnos mutuamente lo correcto.</p>
+      </div>
+    </div>
+  </section>
+  <!-- SECCIÓN ENLACES PRIORITARIOS -->
+  <section class="py-20 bg-white">
+    <div class="max-w-285 mx-auto px-6">
+      <!-- Título de sección discreto y elegante -->
+      <div class="text-center mb-12">
+        <h2
+          class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-3"
+        >
+          Canales Oficiales y Redes
+        </h2>
+        <p class="text-sm text-marron font-medium tracking-wide uppercase">
+          Accede al contenido y mantente comunicado
+        </p>
+      </div>
+
+      <!-- Cuadrícula de Tarjetas (2 columnas en escritorio, 1 en móvil) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto">
+        <!-- Tarjeta: YouTube -->
+        <a
+          href="https://youtube.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group border border-gray-100 bg-white p-6 rounded-xl shadow-xs hover:border-oro/30 hover:shadow-md transition-all duration-300 flex items-center justify-between no-underline"
+        >
+          <div>
+            <h3
+              class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+            >
+              Canal de YouTube
+            </h3>
+            <p class="text-sm text-marron mt-1">
+              Conferencias, directos y clases virtuales.
+            </p>
+          </div>
+          <span
+            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
+            >&rarr;</span
+          >
+        </a>
+
+        <!-- Tarjeta: Telegram -->
+        <a
+          href="https://t.me"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group border border-gray-100 bg-white p-6 rounded-xl shadow-xs hover:border-oro/30 hover:shadow-md transition-all duration-300 flex items-center justify-between no-underline"
+        >
+          <div>
+            <h3
+              class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+            >
+              Canal de Telegram
+            </h3>
+            <p class="text-sm text-marron mt-1">
+              Recordatorios cotidianos y anuncios directos.
+            </p>
+          </div>
+          <span
+            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
+            >&rarr;</span
+          >
+        </a>
+
+        <!-- Tarjeta: Instagram -->
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group border border-gray-100 bg-white p-6 rounded-xl shadow-xs hover:border-oro/30 hover:shadow-md transition-all duration-300 flex items-center justify-between no-underline"
+        >
+          <div>
+            <h3
+              class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+            >
+              Perfil de Instagram
+            </h3>
+            <p class="text-sm text-marron mt-1">
+              Publicaciones didácticas y contenido diario.
+            </p>
+          </div>
+          <span
+            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
+            >&rarr;</span
+          >
+        </a>
+
+        <!-- Tarjeta: Facebook -->
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group border border-gray-100 bg-white p-6 rounded-xl shadow-xs hover:border-oro/30 hover:shadow-md transition-all duration-300 flex items-center justify-between no-underline"
+        >
+          <div>
+            <h3
+              class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+            >
+              Página de Facebook
+            </h3>
+            <p class="text-sm text-marron mt-1">
+              Comunidad virtual y transmisiones compartidas.
+            </p>
+          </div>
+          <span
+            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
+            >&rarr;</span
+          >
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>
+<!-- hmr test Tue Jul 21 21:24:14 CEST 2026 -->

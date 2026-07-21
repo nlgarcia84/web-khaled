@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-granate: #6f1d1b;
+  --color-oro: #bb9457;
+  --color-chocolate: #432818;
+  --color-marron: #99582a;
+  --color-crema: #ffe6a7;
+  --color-gris-claro: #f8f9fa;
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+

@@ -1,0 +1,31 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPosts } from "../../lib/sanity";
+
+const posts = await getPosts();
+---
+
+<Layout title="Blog">
+  <section class="py-24">
+    <div class="max-w-200 mx-auto px-6">
+      <h1 class="font-serif text-4xl md:text-5xl font-bold text-chocolate mb-4">Blog</h1>
+      <p class="text-marron mb-12">Artículos y reflexiones</p>
+
+      <div class="space-y-8">
+        {posts.map((post: any) => (
+          <a href={`/blog/${post.slug.current}`} class="block group no-underline">
+            <article class="border-b border-gray-100 pb-6">
+              <h2 class="font-serif text-xl font-bold text-chocolate group-hover:text-granate transition-colors">
+                {post.title}
+              </h2>
+              {post.excerpt && <p class="text-marron mt-2">{post.excerpt}</p>}
+              <time class="text-sm text-oro mt-2 block">
+                {new Date(post.publishedAt).toLocaleDateString("es", { year: "numeric", month: "long", day: "numeric" })}
+              </time>
+            </article>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
