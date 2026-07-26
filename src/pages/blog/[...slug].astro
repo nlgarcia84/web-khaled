@@ -2,7 +2,7 @@
 import { toHTML } from "@portabletext/to-html";
 import { createImageUrlBuilder } from "@sanity/image-url";
 import Layout from "../../layouts/Layout.astro";
-import { getPost, getPosts, client } from "../../lib/sanity";
+import { client, getPost, getPosts } from "../../lib/sanity";
 
 const builder = createImageUrlBuilder(client);
 
@@ -31,32 +31,38 @@ const post = await getPost(slug);
   <article class="py-24">
     <div class="max-w-200 mx-auto px-6">
       <time class="text-sm text-oro font-medium">
-        {new Date(post.publishedAt).toLocaleDateString("es", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
+        {
+          new Date(post.publishedAt).toLocaleDateString("es", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
       </time>
 
-      {post.image && (
-        <figure class="my-8 -mx-6 md:-mx-0">
-          <img
-            src={builder.image(post.image).width(1200).url()}
-            alt={post.title}
-            class="w-full h-64 md:h-96 object-cover rounded-none md:rounded-xl"
-          />
-        </figure>
-      )}
+      {
+        post.image && (
+          <figure class="my-8 -mx-6 md:-mx-0">
+            <img
+              src={builder.image(post.image).width(1200).url()}
+              alt={post.title}
+              class="w-full h-64 md:h-96 object-cover rounded-none md:rounded-xl"
+            />
+          </figure>
+        )
+      }
 
-      <h1 class="font-serif text-4xl md:text-5xl font-bold text-chocolate mt-2 mb-4">
+      <h1
+        class="font-serif text-4xl md:text-5xl font-bold text-chocolate mt-2 mb-4"
+      >
         {post.title}
       </h1>
-      {post.author && (
-        <p class="text-marron text-sm mb-8">Por {post.author}</p>
-      )}
+      {post.author && <p class="text-marron text-sm mb-8">Por {post.author}</p>}
 
-      <div class="prose prose-lg max-w-none text-marron leading-relaxed" set:html={post.body ? toHTML(post.body, { components }) : ""}>
-      </div>
+      <div
+        class="prose prose-lg max-w-none text-marron leading-relaxed"
+        set:html={post.body ? toHTML(post.body, { components }) : ""}
+      />
     </div>
   </article>
 </Layout>

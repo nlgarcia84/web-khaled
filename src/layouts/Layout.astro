@@ -1,5 +1,6 @@
 ---
-// src/layouts/Layout.astro
+import { ClientRouter } from "astro:transitions";
+import MobileMenu from "../components/MobileMenu.tsx";
 import "../styles/global.css";
 interface Props {
   title: string;
@@ -15,122 +16,120 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | Sheij Khaled Huerta</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.ico" />
 
-    <!-- Conexión a Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <ClientRouter />
   </head>
   <body class="bg-white text-chocolate font-sans antialiased m-0 p-0">
-    <!-- Menú de Navegación Estilo Madinah College -->
-    <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <header class="bg-chocolate sticky top-0 z-50">
       <div
         class="max-w-[1140px] mx-auto px-6 h-20 flex justify-between items-center"
       >
         <div class="logo">
           <a
             href="/"
-            class="font-serif text-xl font-bold text-chocolate no-underline tracking-tight"
+            class="font-serif text-xl font-bold text-white no-underline tracking-tight"
           >
             Sheij Khaled Huerta
           </a>
         </div>
 
-        <!-- Hamburguesa (móvil) -->
-        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 z-50" aria-label="Menú">
-          <span id="bar1" class="block w-5 h-0.5 bg-chocolate transition-all duration-300"></span>
-          <span id="bar2" class="block w-5 h-0.5 bg-chocolate transition-all duration-300"></span>
-          <span id="bar3" class="block w-5 h-0.5 bg-chocolate transition-all duration-300"></span>
-        </button>
+        <MobileMenu client:load />
 
-        <!-- Navegación escritorio -->
         <nav class="hidden md:flex gap-8">
-          <a href="/"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Inicio</a>
-          <a href="/biografia"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Biografía</a>
-          <a href="/blog"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Blog</a>
-          <a href="/contacto"
-            class="text-chocolate hover:text-oro transition-colors duration-200 no-underline font-medium text-sm">Contacto</a>
-        </nav>
-      </div>
-
-      <!-- Menú móvil flotante -->
-      <div id="mobile-overlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden opacity-0 transition-opacity duration-300"></div>
-      <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-40 hidden md:hidden translate-x-full transition-transform duration-300 ease-in-out">
-        <nav class="flex flex-col gap-6 pt-24 px-8">
-          <a href="/"
-            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Inicio</a>
-          <a href="/biografia"
-            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Biografía</a>
-          <a href="/blog"
-            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Blog</a>
-          <a href="/contacto"
-            class="text-chocolate hover:text-oro transition-colors font-medium text-base">Contacto</a>
+          <a
+            href="/"
+            class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
+            >Inicio</a
+          >
+          <a
+            href="/biografia"
+            class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
+            >Biografía</a
+          >
+          <a
+            href="/blog"
+            class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
+            >Blog</a
+          >
+          <a
+            href="/contact"
+            class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
+            >Contacto</a
+          >
         </nav>
       </div>
     </header>
 
-    <script>
-      const btn = document.getElementById("menu-btn");
-      const menu = document.getElementById("mobile-menu");
-      const overlay = document.getElementById("mobile-overlay");
-      const bars = [document.getElementById("bar1"), document.getElementById("bar2"), document.getElementById("bar3")];
-      let open = false;
-
-      function toggle() {
-        open = !open;
-        menu.classList.toggle("hidden", false);
-        overlay.classList.toggle("hidden", false);
-        requestAnimationFrame(() => {
-          menu.classList.toggle("translate-x-full", !open);
-          menu.classList.toggle("translate-x-0", open);
-          overlay.classList.toggle("opacity-0", !open);
-          overlay.classList.toggle("opacity-100", open);
-          if (open) {
-            bars[0].style.transform = "rotate(45deg) translate(3px, 3px)";
-            bars[1].style.opacity = "0";
-            bars[2].style.transform = "rotate(-45deg) translate(3px, -3px)";
-          } else {
-            bars[0].style.transform = "";
-            bars[1].style.opacity = "";
-            bars[2].style.transform = "";
-          }
-        });
-        document.body.style.overflow = open ? "hidden" : "";
-      }
-
-      function close() {
-        if (open) toggle();
-      }
-
-      if (btn && menu && overlay) {
-        btn.addEventListener("click", toggle);
-        overlay.addEventListener("click", close);
-      }
-    </script>
-
-    <!-- Contenido dinámico de las páginas -->
     <main>
       <slot />
     </main>
 
-    <!-- Footer común -->
-    <footer
-      class="bg-gris-claro border-t border-gray-100 py-10 text-center text-sm text-marron mt-20"
-    >
-      <div class="max-w-[1140px] mx-auto px-6">
-        <p>
-          &copy; {new Date().getFullYear()} Sheij Khaled Huerta. Todos los derechos
-          reservados.
-        </p>
+    <footer class="bg-chocolate text-white/70">
+      <div class="max-w-[1140px] mx-auto px-6 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div>
+            <h3 class="font-serif text-lg font-bold text-white mb-4">
+              Sheij Khaled Huerta
+            </h3>
+            <p class="text-sm leading-relaxed text-white/60">
+              Difundiendo el mensaje del Islam en lengua española con rigor,
+              sabiduría y cercanía.
+            </p>
+          </div>
+          <div>
+            <h4
+              class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase mb-4"
+            >
+              Navegación
+            </h4>
+            <nav class="flex flex-col gap-3">
+              <a
+                href="/"
+                class="text-white/60 hover:text-oro transition-colors text-sm no-underline"
+                >Inicio</a
+              >
+              <a
+                href="/biografia"
+                class="text-white/60 hover:text-oro transition-colors text-sm no-underline"
+                >Biografía</a
+              >
+              <a
+                href="/blog"
+                class="text-white/60 hover:text-oro transition-colors text-sm no-underline"
+                >Blog</a
+              >
+              <a
+                href="/contact"
+                class="text-white/60 hover:text-oro transition-colors text-sm no-underline"
+                >Contacto</a
+              >
+            </nav>
+          </div>
+          <div>
+            <h4
+              class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase mb-4"
+            >
+              Contacto
+            </h4>
+            <p class="text-sm text-white/60 leading-relaxed">
+              info@sheijkhaled.com
+            </p>
+          </div>
+        </div>
+        <div class="border-t border-white/10 mt-12 pt-8 text-center">
+          <p class="text-sm text-white/40">
+            &copy; {new Date().getFullYear()} Sheij Khaled Huerta. Todos los derechos
+            reservados.
+          </p>
+        </div>
       </div>
     </footer>
   </body>

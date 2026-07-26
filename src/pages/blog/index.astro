@@ -1,31 +1,34 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getPosts } from "../../lib/sanity";
-// Traemos los posts de la api de sanity
 const posts = await getPosts();
 ---
 
 <Layout title="Blog">
-  <section class="py-24">
-    <div class="max-w-200 mx-auto px-6">
-      <h1 class="font-serif text-4xl md:text-5xl font-bold text-chocolate mb-4">
-        Blog
-      </h1>
-      <p class="text-marron mb-12">Artículos y reflexiones</p>
+  <section class="py-24 bg-gris-claro">
+    <div class="max-w-[1140px] mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
+          Blog
+        </span>
+        <h1 class="font-serif text-3xl md:text-4xl font-bold text-chocolate">
+          Artículos y reflexiones
+        </h1>
+      </div>
 
-      <div class="space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto">
         {
           posts.map((post: any) => (
             <a
               href={`/blog/${post.slug.current}`}
-              class="block group no-underline"
+              class="group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 no-underline block"
             >
-              <article class="border-b border-gray-100 pb-6">
-                <h2 class="font-serif text-xl font-bold text-chocolate group-hover:text-granate transition-colors">
+              <article>
+                <h2 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
                   {post.title}
                 </h2>
-                {post.excerpt && <p class="text-marron mt-2">{post.excerpt}</p>}
-                <time class="text-sm text-oro mt-2 block">
+                {post.excerpt && <p class="text-marron text-sm mt-2 leading-relaxed">{post.excerpt}</p>}
+                <time class="text-xs text-oro mt-3 block font-medium">
                   {new Date(post.publishedAt).toLocaleDateString("es", {
                     year: "numeric",
                     month: "long",
