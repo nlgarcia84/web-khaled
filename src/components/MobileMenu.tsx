@@ -63,7 +63,7 @@ export default function MobileMenu() {
       >
         <nav className="flex flex-col p-8 gap-6">
           <a href="/">Inicio</a>
-          <a href="/about">Sobre mí</a>
+          <a href="/biografia">Sobre mí</a>
           <a href="/blog">Blog</a>
           <a href="/contact">Contacto</a>
         </nav>

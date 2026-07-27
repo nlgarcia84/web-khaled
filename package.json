@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^6.0.1",
+    "@astrojs/vercel": "^11.0.3",
     "@portabletext/to-html": "^5.0.2",
     "@sanity/client": "^7.24.0",
     "@sanity/image-url": "^2.1.1",
@@ -24,6 +25,7 @@
     "lucide-static": "^1.25.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "resend": "^6.18.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
   }
