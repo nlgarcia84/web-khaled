@@ -1,0 +1,163 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Donar">
+  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center">
+    <div class="absolute inset-0 bg-chocolate/85"></div>
+    <div class="relative z-10 max-w-[800px] mx-auto px-6">
+      <p
+        class="font-serif text-oro text-lg md:text-xl italic font-semibold mb-6"
+      >
+        "La caridad no disminuye la riqueza" (Muslim)
+      </p>
+      <h1
+        class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4"
+      >
+        Apoya la Mezquita
+      </h1>
+      <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto">
+        Tu donación ayuda a mantener y expandir los servicios de la mezquita
+        para toda la comunidad. Cada contribución, por pequeña que sea, marca
+        la diferencia.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-gris-claro">
+    <div class="max-w-[1140px] mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2
+          class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-3"
+        >
+          Elige tu método de donación
+        </h2>
+        <p class="text-sm text-marron font-medium tracking-wide uppercase">
+          Todos los métodos son seguros y recibes comprobante
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto">
+        <a
+          href="https://www.paypal.com/paypalme/huertakhaled"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-3xl shrink-0">PayPal</span>
+            <div>
+              <h3
+                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+              >
+                PayPal
+              </h3>
+              <p class="text-sm text-marron mt-1">
+                Donación con tarjeta o cuenta PayPal
+              </p>
+            </div>
+          </div>
+          <span
+            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
+            >&rarr;</span
+          >
+        </a>
+
+        <div
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-xl shrink-0 font-bold text-chocolate">BBVA</span>
+            <div>
+              <h3
+                class="font-serif text-lg font-bold text-chocolate"
+              >
+                Transferencia Bancaria
+              </h3>
+              <p class="text-sm text-marron mt-1">
+                México — BBVA Bancomer
+              </p>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm border-t border-gray-100 pt-4">
+            <div class="flex justify-between items-center">
+              <span class="text-marron">CLABE</span>
+              <span class="text-chocolate font-mono font-medium">00743521001566551081</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-marron">Titular</span>
+              <span class="text-chocolate font-medium">Sheij Khaled Huerta</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-marron">Referencia</span>
+              <span class="text-chocolate font-medium">DONACION</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 opacity-70"
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-xl shrink-0 font-bold text-oro">BTC</span>
+            <div>
+              <h3
+                class="font-serif text-lg font-bold text-chocolate"
+              >
+                Bitcoin
+              </h3>
+              <p class="text-sm text-marron mt-1">
+                Próximamente — dirección de Bitso
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+      <div class="bg-oro/5 border border-oro/20 rounded-xl p-8 md:p-12">
+        <p class="font-serif text-xl md:text-2xl text-chocolate italic leading-relaxed mb-6">
+          "Cuando el ser humano muere, sus obras se interrumpen excepto tres:
+          la caridad continua, el conocimiento que beneficia, o un hijo recto
+          que ruega por él." (Muslim)
+        </p>
+        <p class="text-sm text-marron leading-relaxed">
+          Tu donación es una inversión para tu ākhirah. Cada vez que alguien
+          rece en esta mezquita, estudie en ella o encuentre guía, la recompensa
+          llegará a ti, por voluntad de Allāh.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gris-claro">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+      <h3 class="font-serif text-xl font-bold text-chocolate mb-4">
+        Comparte esta causa
+      </h3>
+      <div class="flex justify-center gap-4">
+        <a
+          href="https://wa.me/?text=Apoya%20la%20mezquita%20-%20https://web-khaled.vercel.app/donar"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-chocolate text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-granate transition-colors no-underline font-bold text-lg"
+        >W</a>
+        <a
+          href="https://www.facebook.com/sharer/sharer.php?u=https://web-khaled.vercel.app/donar"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-chocolate text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-granate transition-colors no-underline font-bold text-lg"
+        >F</a>
+        <a
+          href="https://x.com/intent/tweet?url=https://web-khaled.vercel.app/donar&text=Apoya%20la%20mezquita"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-chocolate text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-granate transition-colors no-underline font-bold text-lg"
+        >X</a>
+      </div>
+    </div>
+  </section>
+</Layout>
