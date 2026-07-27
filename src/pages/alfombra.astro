@@ -1,0 +1,197 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const goal = 1000;
+const raised = 0;
+const remaining = goal - raised;
+const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
+---
+
+<Layout title="Alfombra para la Musala">
+  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center">
+    <div class="absolute inset-0 bg-chocolate/85"></div>
+    <div class="relative z-10 max-w-[800px] mx-auto px-6">
+      <h1 class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4">
+        Alfombra para la Musala
+      </h1>
+      <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto">
+            "Los lugares más amados por Allāh son las mezquitas"
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gris-claro">
+    <div class="max-w-[600px] mx-auto px-6">
+      <div class="text-center mb-10">
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-3">
+          Ayúdanos a conseguir la alfombra
+        </h2>
+        <p class="text-sm text-marron font-medium tracking-wide uppercase">
+          Necesitamos 1.000 € para la alfombra de la musala
+        </p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <div class="grid grid-cols-3 gap-4 mb-6 text-center">
+          <div>
+            <p class="text-xs text-marron uppercase tracking-wide mb-1">Recaudado</p>
+            <p class="font-serif text-2xl font-bold text-chocolate">{raised} €</p>
+          </div>
+          <div>
+            <p class="text-xs text-marron uppercase tracking-wide mb-1">Meta</p>
+            <p class="font-serif text-2xl font-bold text-chocolate">{goal} €</p>
+          </div>
+          <div>
+            <p class="text-xs text-marron uppercase tracking-wide mb-1">Faltan</p>
+            <p class="font-serif text-2xl font-bold text-oro">{remaining} €</p>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
+          <div
+            class="bg-oro h-full rounded-full transition-all duration-500"
+            style="width: {percentage}%"
+          ></div>
+        </div>
+        <p class="text-right text-xs text-marron mb-8">{percentage}% completado</p>
+
+        <p class="font-serif text-lg font-bold text-chocolate mb-4 text-center">
+          Elige tu contribución
+        </p>
+
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          <button
+            class="amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate"
+            data-amount="10"
+          >10 €</button>
+          <button
+            class="amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate"
+            data-amount="20"
+          >20 €</button>
+          <button
+            class="amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate"
+            data-amount="50"
+          >50 €</button>
+          <button
+            class="amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate"
+            data-amount="100"
+          >100 €</button>
+          <button
+            class="amount-btn border-2 border-oro bg-oro/5 rounded-lg py-3 px-4 text-center transition-colors cursor-pointer font-bold text-chocolate"
+            data-amount="200"
+          >200 €</button>
+          <button
+            class="amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate"
+            data-amount="500"
+          >500 €</button>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm text-marron mb-2">Otra cantidad</label>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-chocolate font-medium">€</span>
+            <input
+              type="number"
+              id="custom-amount"
+              min="1"
+              step="1"
+              placeholder="0"
+              class="w-full border border-gray-200 rounded-lg py-3 pl-10 pr-4 text-chocolate font-medium focus:outline-none focus:border-oro focus:ring-1 focus:ring-oro"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-3 mb-6">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="cover-fees" class="mt-1" checked />
+            <span class="text-sm text-marron">Cubrir la comisión para que el 100% llegue a la alfombra</span>
+          </label>
+        </div>
+
+        <div class="space-y-3">
+          <a
+            href="https://www.paypal.com/paypalme/huertakhaled"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block w-full bg-chocolate text-white text-center py-3 px-6 rounded-lg font-medium hover:bg-chocolate/90 transition-colors no-underline"
+          >
+            Donar con PayPal
+          </a>
+          <div class="text-center text-sm text-marron">o</div>
+          <details class="group">
+            <summary class="list-none w-full text-center py-3 px-6 rounded-lg font-medium border border-oro text-oro hover:bg-oro/5 transition-colors cursor-pointer">
+              Transferencia bancaria
+            </summary>
+            <div class="mt-4 p-4 bg-gris-claro rounded-lg space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-marron">Banco</span>
+                <span class="text-chocolate font-medium">BBVA Bancomer</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-marron">CLABE</span>
+                <span class="text-chocolate font-mono font-medium">00743521001566551081</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-marron">Titular</span>
+                <span class="text-chocolate font-medium">Sheij Khaled Huerta</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-marron">Referencia</span>
+                <span class="text-chocolate font-medium">ALFOMBRA</span>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="mt-10 text-center">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="font-serif text-lg font-bold text-chocolate mb-4">Donaciones recientes</h3>
+          <p class="text-sm text-marron">Sé el primero en donar. Cada contribución cuenta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+      <div class="bg-oro/5 border border-oro/20 rounded-xl p-8 md:p-12">
+        <p class="font-serif text-xl md:text-2xl text-chocolate italic leading-relaxed mb-6">
+          "Quien construye una mezquita para Allāh, Allāh le construirá una casa
+          en el Paraíso." (Al-Bujari)
+        </p>
+        <p class="text-sm text-marron leading-relaxed">
+          Cada alfombra colocada en la musala es parte de la casa de Allāh.
+          Tu donación se convierte en sadaqah jariyah — caridad continua —
+          cada vez que alguien rece sobre ella.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .amount-btn.selected {
+    border-color: var(--color-oro, #bb9457);
+    background-color: rgba(187, 148, 87, 0.05);
+    font-weight: 700;
+    color: var(--color-chocolate, #432818);
+  }
+</style>
+
+<script>
+  const amountBtns = document.querySelectorAll(".amount-btn");
+  const customAmount = document.getElementById("custom-amount");
+
+  amountBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      amountBtns.forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      customAmount.value = btn.dataset.amount;
+    });
+  });
+
+  customAmount.addEventListener("input", () => {
+    amountBtns.forEach((b) => b.classList.remove("selected"));
+  });
+</script>
