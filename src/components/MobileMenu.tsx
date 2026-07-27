@@ -67,7 +67,6 @@ export default function MobileMenu() {
           <a href="/blog">Blog</a>
           <a href="/contact">Contacto</a>
           <a href="/donar" class="text-oro font-semibold">Donar</a>
-          <a href="/alfombra" class="text-oro">Alfombra</a>
         </nav>
       </aside>
     </>
