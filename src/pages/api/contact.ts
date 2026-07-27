@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const { error } = await resend.emails.send({
       from: "Formulario de Contacto <onboarding@resend.dev>",
-      to: "norman@revly.es",
+      to: "kane.wwe@gmail.com",
       subject: `Mensaje de ${nombre}`,
       html: `
         <h2>Nuevo mensaje de contacto</h2>

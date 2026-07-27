@@ -167,8 +167,10 @@ import Layout from "../layouts/Layout.astro";
       </p>
       {
         events.map((event) => (
-          <div>
-            {event.title} - {event.description}
+          <div class="flex flex-col text-sm text-marron font-medium tracking-wide uppercase">
+            {event.date}
+            {event.title}
+            {event.Lugar}
           </div>
         ))
       }
