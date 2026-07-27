@@ -1,22 +1,29 @@
 ---
+import { Image } from "astro:assets";
+import khaledEscritorio from "../assets/images/khaled_escritorio.JPG";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Biografía">
-  <section class="bg-gris-claro pt-24 pb-16">
-    <div class="max-w-[1140px] mx-auto px-6">
-      <div class="max-w-[800px]">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
-          Sobre el Autor
-        </span>
-        <h1 class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-chocolate mb-8 leading-tight">
-          Sheij Khaled Huerta
-        </h1>
-        <p class="font-sans text-lg md:text-xl text-marron font-light leading-relaxed">
-          Un camino riguroso dedicado a la preservación, traducción y difusión
-          de las ciencias tradicionales del Islam en lengua española.
-        </p>
-      </div>
+  <section class="relative py-28 text-center overflow-hidden">
+    <Image
+      src={khaledEscritorio}
+      alt=""
+      class="absolute inset-0 w-full h-full object-cover"
+      aria-hidden="true"
+    />
+    <div class="absolute inset-0 bg-black/80"></div>
+    <div class="relative z-10 max-w-[800px] mx-auto px-6">
+      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
+        Sobre el Autor
+      </span>
+      <h1 class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-8 leading-tight">
+        Sheij Khaled Huerta
+      </h1>
+      <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed">
+        Un camino riguroso dedicado a la preservación, traducción y difusión
+        de las ciencias tradicionales del Islam en lengua española.
+      </p>
     </div>
   </section>
 
