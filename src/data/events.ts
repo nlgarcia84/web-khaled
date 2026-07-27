@@ -1,8 +1,12 @@
 export interface Event {
-  title: string;
-  date: string;
+    title: string;
+    date: string;
   description: string;
 }
 export const events: Event[] = [
-  { title: "...", date: "2026-08-01", description: "..." },
+  { 
+    date: "2026-07-24", 
+    title: "Serie de los derechos del Islam", 
+    Lugar: "" 
+  },
 ];
