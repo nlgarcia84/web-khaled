@@ -1,13 +1,12 @@
 ---
-import { Image } from "astro:assets";
 import khaledEscritorio from "../assets/images/khaled_escritorio.JPG";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Biografía">
-  <section class="relative py-28 text-center overflow-hidden">
-    <Image
-      src={khaledEscritorio}
+  <section class="relative min-h-[60vh] py-28 text-center overflow-hidden">
+    <img
+      src={khaledEscritorio.src}
       alt=""
       class="absolute inset-0 w-full h-full object-cover"
       aria-hidden="true"
