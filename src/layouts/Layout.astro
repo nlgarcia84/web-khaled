@@ -27,7 +27,7 @@ const { title } = Astro.props;
     />
     <ClientRouter />
   </head>
-  <body class="bg-white text-chocolate font-sans antialiased m-0 p-0">
+  <body class="bg-white text-chocolate font-sans antialiased m-0 p-0 min-h-screen flex flex-col">
     <header class="bg-chocolate sticky top-0 z-50">
       <div
         class="max-w-[1140px] mx-auto px-6 h-20 flex justify-between items-center"
@@ -73,7 +73,7 @@ const { title } = Astro.props;
       </div>
     </header>
 
-    <main>
+    <main class="flex-1">
       <slot />
     </main>
 
