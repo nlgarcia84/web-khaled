@@ -42,11 +42,11 @@ const post = await getPost(slug);
 
       {
         post.image && (
-          <figure class="my-8 -mx-6 md:-mx-0">
+          <figure class="my-8">
             <img
               src={builder.image(post.image).width(1200).url()}
               alt={post.title}
-              class="w-full h-64 md:h-96 object-cover rounded-none md:rounded-xl"
+              class="w-full h-64 md:h-96 object-cover rounded-xl"
             />
           </figure>
         )
