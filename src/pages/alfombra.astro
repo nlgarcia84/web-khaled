@@ -1,10 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCampaign, getRecentDonations } from "../lib/sanity";
 
-const goal = 1000;
-const raised = 0;
+const campaign = await getCampaign("alfombra");
+const goal = campaign?.goal ?? 1000;
+const raised = campaign?.raised ?? 0;
 const remaining = goal - raised;
 const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
+
+const donations = await getRecentDonations("alfombra", 10);
+const hasDonations = donations.length > 0;
 ---
 
 <Layout title="Alfombra para la Musala">
@@ -27,7 +32,7 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
           Ayúdanos a conseguir la alfombra
         </h2>
         <p class="text-sm text-marron font-medium tracking-wide uppercase">
-          Necesitamos 1.000 € para la alfombra de la musala
+          Necesitamos {goal.toLocaleString()} € para la alfombra de la musala
         </p>
       </div>
 
@@ -35,15 +40,15 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         <div class="grid grid-cols-3 gap-4 mb-6 text-center">
           <div>
             <p class="text-xs text-marron uppercase tracking-wide mb-1">Recaudado</p>
-            <p class="font-serif text-2xl font-bold text-chocolate">{raised} €</p>
+            <p class="font-serif text-2xl font-bold text-chocolate">{raised.toLocaleString()} €</p>
           </div>
           <div>
             <p class="text-xs text-marron uppercase tracking-wide mb-1">Meta</p>
-            <p class="font-serif text-2xl font-bold text-chocolate">{goal} €</p>
+            <p class="font-serif text-2xl font-bold text-chocolate">{goal.toLocaleString()} €</p>
           </div>
           <div>
             <p class="text-xs text-marron uppercase tracking-wide mb-1">Faltan</p>
-            <p class="font-serif text-2xl font-bold text-oro">{remaining} €</p>
+            <p class="font-serif text-2xl font-bold text-oro">{remaining.toLocaleString()} €</p>
           </div>
         </div>
 
@@ -109,15 +114,26 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         </div>
 
         <div class="space-y-3">
+          <button
+            id="stripe-btn"
+            class="w-full bg-chocolate text-white text-center py-3 px-6 rounded-lg font-medium hover:bg-chocolate/90 transition-colors cursor-pointer border-none text-base"
+          >
+            Donar con tarjeta
+          </button>
+
+          <div class="text-center text-sm text-marron">o</div>
+
           <a
             href="https://www.paypal.com/paypalme/huertakhaled"
             target="_blank"
             rel="noopener noreferrer"
-            class="block w-full bg-chocolate text-white text-center py-3 px-6 rounded-lg font-medium hover:bg-chocolate/90 transition-colors no-underline"
+            class="block w-full text-center py-3 px-6 rounded-lg font-medium border border-gray-300 text-chocolate hover:border-oro hover:text-oro transition-colors no-underline"
           >
             Donar con PayPal
           </a>
+
           <div class="text-center text-sm text-marron">o</div>
+
           <details class="group">
             <summary class="list-none w-full text-center py-3 px-6 rounded-lg font-medium border border-oro text-oro hover:bg-oro/5 transition-colors cursor-pointer">
               Transferencia bancaria
@@ -147,7 +163,22 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
       <div class="mt-10 text-center">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <h3 class="font-serif text-lg font-bold text-chocolate mb-4">Donaciones recientes</h3>
-          <p class="text-sm text-marron">Sé el primero en donar. Cada contribución cuenta.</p>
+          {
+            hasDonations ? (
+              <div class="space-y-3 text-left">
+                {donations.map((d) => (
+                  <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+                    <span class="text-chocolate font-medium">
+                      {d.initials || 'Anónimo'}
+                    </span>
+                    <span class="text-oro font-bold">{d.amount} €</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p class="text-sm text-marron">Sé el primero en donar. Cada contribución cuenta.</p>
+            )
+          }
         </div>
       </div>
     </div>
@@ -182,6 +213,8 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 <script>
   const amountBtns = document.querySelectorAll(".amount-btn");
   const customAmount = document.getElementById("custom-amount");
+  const coverFees = document.getElementById("cover-fees");
+  const stripeBtn = document.getElementById("stripe-btn");
 
   amountBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -193,5 +226,37 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 
   customAmount.addEventListener("input", () => {
     amountBtns.forEach((b) => b.classList.remove("selected"));
+  });
+
+  stripeBtn.addEventListener("click", async () => {
+    const amount = parseInt(customAmount.value);
+    if (!amount || amount < 1) {
+      alert("Selecciona una cantidad");
+      return;
+    }
+
+    stripeBtn.disabled = true;
+    stripeBtn.textContent = "Procesando...";
+
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, campaignSlug: "alfombra" }),
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Error al procesar el pago. Intenta de nuevo.");
+      }
+    } catch {
+      alert("Error de conexión. Intenta de nuevo.");
+    } finally {
+      stripeBtn.disabled = false;
+      stripeBtn.textContent = "Donar con tarjeta";
+    }
   });
 </script>

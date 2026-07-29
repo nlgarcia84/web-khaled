@@ -1,10 +1,21 @@
 import { createClient } from "@sanity/client";
 
+const projectId = "6flkjd1o";
+const dataset = "production";
+
 export const client = createClient({
-  projectId: "6flkjd1o",
-  dataset: "production",
+  projectId,
+  dataset,
   useCdn: true,
   apiVersion: "2024-01-01",
+});
+
+export const writeClient = createClient({
+  projectId,
+  dataset,
+  useCdn: false,
+  apiVersion: "2024-01-01",
+  token: typeof process !== "undefined" ? process.env.SANITY_TOKEN : undefined,
 });
 
 export async function getPosts() {
@@ -28,5 +39,37 @@ export async function getPost(slug: string) {
     publishedAt,
   }`,
     { slug },
+  );
+}
+
+export async function getCampaign(slug: string) {
+  return await client.fetch(
+    `*[_type == "campaign" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    goal,
+    raised,
+    description,
+    active,
+  }`,
+    { slug },
+  );
+}
+
+export async function getRecentDonations(campaignSlug: string, limit = 10) {
+  const campaign = await client.fetch(
+    `*[_type == "campaign" && slug.current == $campaignSlug][0]._id`,
+    { campaignSlug },
+  );
+  if (!campaign) return [];
+  return await client.fetch(
+    `*[_type == "donation" && campaign._ref == $campaignId] | order(createdAt desc) [0...$limit] {
+    amount,
+    initials,
+    method,
+    createdAt,
+  }`,
+    { campaignId: campaign, limit },
   );
 }

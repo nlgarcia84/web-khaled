@@ -1,5 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCampaign } from "../lib/sanity";
+
+const campaign = await getCampaign("alfombra");
+const goal = campaign?.goal ?? 1000;
+const raised = campaign?.raised ?? 0;
+const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 ---
 
 <Layout title="Donar">
@@ -48,10 +54,10 @@ import Layout from "../layouts/Layout.astro";
               Campaña activa: Alfombra para la Musala
             </h3>
             <p class="text-sm text-marron mt-1">
-              Meta: 1.000 € — Cada donación acerca la alfombra
+              Meta: {goal.toLocaleString()} € — Cada donación acerca la alfombra
             </p>
             <div class="w-full bg-gray-200 rounded-full h-2 mt-2 max-w-60">
-              <div class="bg-oro h-full rounded-full" style="width: 0%"></div>
+              <div class="bg-oro h-full rounded-full" style="width: {percentage}%"></div>
             </div>
           </div>
         </div>
@@ -59,6 +65,29 @@ import Layout from "../layouts/Layout.astro";
       </a>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto">
+        <a
+          href="/alfombra"
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-3xl shrink-0 font-bold text-chocolate">💳</span>
+            <div>
+              <h3
+                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+              >
+                Tarjeta de crédito/débito
+              </h3>
+              <p class="text-sm text-marron mt-1">
+                Pago seguro con Stripe — Visa, Mastercard, AMEX
+              </p>
+            </div>
+          </div>
+          <span
+            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
+            >&rarr;</span
+          >
+        </a>
+
         <a
           href="https://www.paypal.com/paypalme/huertakhaled"
           target="_blank"
