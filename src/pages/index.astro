@@ -286,9 +286,26 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
 
 <script>
   import gsap from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  gsap.registerPlugin(ScrollTrigger);
+  function revealOnScroll(selector, stagger = 0.15) {
+    const els = document.querySelectorAll(selector);
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (!visible.length) return;
+        const targets = visible.map((e) => e.target);
+        gsap.fromTo(
+          targets,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, stagger, ease: "power3.out" },
+        );
+        targets.forEach((t) => observer.unobserve(t));
+      },
+      { threshold: 0.1 },
+    );
+    els.forEach((el) => observer.observe(el));
+  }
 
   gsap.from(".hero-content > *", {
     y: 60,
@@ -298,39 +315,8 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
     ease: "power3.out",
   });
 
-  gsap.from(".blog-card", {
-    scrollTrigger: { trigger: ".blog-grid", start: "top 80%" },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power3.out",
-  });
-
-  gsap.from(".social-card", {
-    scrollTrigger: { trigger: ".social-grid", start: "top 80%" },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.1,
-    ease: "power3.out",
-  });
-
-  gsap.from(".event-card", {
-    scrollTrigger: { trigger: ".events-list", start: "top 80%" },
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power3.out",
-  });
-
-  gsap.from(".donation-cta > *", {
-    scrollTrigger: { trigger: ".donation-cta", start: "top 80%" },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power3.out",
-  });
+  revealOnScroll(".blog-card", 0.15);
+  revealOnScroll(".social-card", 0.1);
+  revealOnScroll(".event-card", 0.15);
+  revealOnScroll(".donation-cta > *", 0.15);
 </script>
