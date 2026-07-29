@@ -14,7 +14,7 @@ import Layout from "../layouts/Layout.astro";
     />
     <div class="absolute inset-0 bg-chocolate/85"></div>
 
-    <div class="relative z-10 max-w-[800px] mx-auto px-6">
+    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
       <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
         Sobre el Autor
       </span>
@@ -31,7 +31,7 @@ import Layout from "../layouts/Layout.astro";
   <section class="py-16 bg-white">
     <div class="max-w-[1140px] mx-auto px-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        <div class="lg:col-span-4 lg:sticky lg:top-28 h-fit space-y-4">
+        <div class="lg:col-span-4 lg:sticky lg:top-28 h-fit space-y-4 trayectoria-sidebar">
           <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate">
             Metodología y Enfoque
           </h2>
@@ -46,7 +46,7 @@ import Layout from "../layouts/Layout.astro";
         <div
           class="lg:col-span-8 space-y-16 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-[1px] before:bg-gray-100"
         >
-          <div class="relative pl-12 group">
+          <div class="relative pl-12 group trayectoria-item">
             <div class="absolute left-[13px] top-2 w-2 h-2 rounded-full bg-oro/40 group-hover:bg-oro transition-colors duration-300">
             </div>
 
@@ -61,7 +61,7 @@ import Layout from "../layouts/Layout.astro";
             </p>
           </div>
 
-          <div class="relative pl-12 group">
+          <div class="relative pl-12 group trayectoria-item">
             <div class="absolute left-[13px] top-2 w-2 h-2 rounded-full bg-oro/40 group-hover:bg-oro transition-colors duration-300">
             </div>
 
@@ -75,7 +75,7 @@ import Layout from "../layouts/Layout.astro";
             </p>
           </div>
 
-          <div class="relative pl-12 group">
+          <div class="relative pl-12 group trayectoria-item">
             <div class="absolute left-[13px] top-2 w-2 h-2 rounded-full bg-oro/40 group-hover:bg-oro transition-colors duration-300">
             </div>
 
@@ -93,3 +93,42 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </section>
 </Layout>
+
+<script>
+  import gsap from "gsap";
+
+  function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 60 } = {}) {
+    const els = document.querySelectorAll(selector);
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (!visible.length) return;
+        const targets = visible.map((e) => e.target);
+        if (from === "bottom") {
+          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+        } else if (from === "side") {
+          targets.forEach((t, i) => {
+            const dir = i % 2 === 0 ? -1 : 1;
+            gsap.fromTo(t, { x: dir * 80, opacity: 0, filter: "blur(6px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out", delay: i * stagger });
+          });
+        }
+        targets.forEach((t) => observer.unobserve(t));
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => observer.observe(el));
+  }
+
+  gsap.from(".hero-content > *", {
+    y: 80,
+    opacity: 0,
+    filter: "blur(10px)",
+    duration: 1.2,
+    stagger: 0.15,
+    ease: "power4.out",
+  });
+
+  revealOnScroll(".trayectoria-sidebar", { from: "bottom", stagger: 0.1, distance: 50 });
+  revealOnScroll(".trayectoria-item", { from: "side", stagger: 0.1 });
+</script>
