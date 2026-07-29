@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCampaign } from "../lib/sanity";
+import khalesMusala from "../assets/images/khales_musala.jpeg";
 
 const campaign = await getCampaign("alfombra");
 const goal = campaign?.goal ?? 1000;
@@ -10,6 +11,12 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 
 <Layout title="Donar">
   <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center">
+    <img
+      src={khalesMusala.src}
+      alt=""
+      class="absolute inset-0 w-full h-full object-cover"
+      aria-hidden="true"
+    />
     <div class="absolute inset-0 bg-chocolate/85"></div>
     <div class="relative z-10 max-w-[800px] mx-auto px-6">
       <p
