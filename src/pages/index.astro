@@ -31,7 +31,7 @@ try {
 } catch {}
 
 const instagramPost = await getLatestInstagramPost("khaled.huerta");
-const telegramPost = await getLatestTelegramPost("khaledhuerta");
+const telegramPost = await getLatestTelegramPost("khaled_huerta");
 ---
 
 <Layout title="Inicio">
@@ -232,7 +232,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
         </a>
 
         <a
-          href={telegramPost?.url || "https://t.me/khaledhuerta"}
+          href={telegramPost?.url || "https://t.me/khaled_huerta"}
           target="_blank"
           rel="noopener noreferrer"
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
@@ -246,7 +246,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
             <span class="text-[11px] font-semibold tracking-wide text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full self-start">Telegram</span>
             <p class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase">Mensajes</p>
             <h3 class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors">
-              {telegramPost?.text || "@khaledhuerta"}
+              {telegramPost?.text || "@khaled_huerta"}
             </h3>
             <span class="inline-flex items-center gap-1 text-xs font-medium text-sky-600 mt-3 group-hover:gap-2 transition-all">
               {telegramPost ? "Abrir en Telegram" : "Enviar mensaje"} <span set:html={ArrowRight} class="w-3 h-3" />
