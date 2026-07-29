@@ -276,6 +276,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
             const date = new Date(event.date);
             const day = date.getDate();
             const month = date.toLocaleDateString("es", { month: "short" });
+            const flag = event.Lugar.includes("México") ? "🇲🇽" : event.Lugar.includes("Argentina") ? "🇦🇷" : event.Lugar.includes("Chile") ? "🇨🇱" : "";
             return (
               <div class="event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5">
                 <div class="w-14 h-14 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
@@ -285,7 +286,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
                 <div class="flex-1 min-w-0">
                   <h3 class="font-serif text-base font-bold text-chocolate leading-snug">{event.title}</h3>
                   <div class="flex items-center gap-1.5 mt-1">
-                    <span set:html={MapPin} class="w-3.5 h-3.5 text-marron/50 shrink-0" />
+                    <span class="text-sm shrink-0">{flag}</span>
                     <p class="text-sm text-marron/70 truncate">{event.Lugar}</p>
                   </div>
                 </div>
