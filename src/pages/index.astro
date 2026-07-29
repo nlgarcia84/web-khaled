@@ -11,6 +11,7 @@ import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
 import { events } from "../data/events";
 import { getPosts } from "../lib/sanity";
 import { getCampaign } from "../lib/sanity";
+import { getLatestInstagramPost, getLatestTelegramPost } from "../lib/feeds";
 import Layout from "../layouts/Layout.astro";
 
 const posts = (await getPosts()).slice(0, 3);
@@ -28,7 +29,10 @@ try {
     const videoId = entry[0].match(/<yt:videoId>(.*?)<\/yt:videoId>/)?.[1] || "";
     latestVideo = { title, id: videoId };
   }
-} catch {};
+} catch {}
+
+const instagramPost = await getLatestInstagramPost("khaled.huerta");
+const telegramPost = await getLatestTelegramPost("khaledhuerta");
 ---
 
 <Layout title="Inicio">
@@ -162,22 +166,35 @@ try {
         </a>
 
         <a
-          href="https://www.instagram.com/khaled.huerta/"
+          href={instagramPost?.url || "https://www.instagram.com/khaled.huerta/"}
           target="_blank"
           rel="noopener noreferrer"
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-pink-400/30 transition-all duration-300 no-underline flex flex-col"
         >
-          <div class="aspect-video bg-gradient-to-br from-pink-400 via-purple-400 to-yellow-300 flex items-center justify-center">
-            <span class="text-5xl text-white/90 font-bold" style="font-family: serif;">IG</span>
+          <div class="aspect-video bg-chocolate/5 overflow-hidden">
+            {
+              instagramPost?.thumbnail ? (
+                <img
+                  src={instagramPost.thumbnail}
+                  alt=""
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="w-full h-full bg-gradient-to-br from-pink-400 via-purple-400 to-yellow-300 flex items-center justify-center">
+                  <span class="text-5xl text-white/90 font-bold" style="font-family: serif;">IG</span>
+                </div>
+              )
+            }
           </div>
           <div class="p-5 flex-1 flex flex-col">
             <span class="text-[11px] font-semibold tracking-wide text-pink-600 bg-pink-50 px-2.5 py-0.5 rounded-full self-start">Instagram</span>
-            <h3 class="font-serif text-base font-bold text-chocolate mt-2 group-hover:text-granate transition-colors">
-              @khaled.huerta
+            <h3 class="font-serif text-base font-bold text-chocolate mt-2 leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+              {instagramPost?.caption || "@khaled.huerta"}
             </h3>
-            <p class="text-sm text-marron mt-1 flex-1">Contenido diario y publicaciones didácticas</p>
+            <p class="text-sm text-marron mt-1 flex-1">{instagramPost ? "Última publicación" : "Contenido diario y publicaciones didácticas"}</p>
             <span class="inline-flex items-center gap-1 text-sm font-medium text-pink-600 mt-3 group-hover:gap-2 transition-all">
-              Ver perfil <span set:html={ArrowRight} class="w-3.5 h-3.5" />
+              Ver en Instagram <span set:html={ArrowRight} class="w-3.5 h-3.5" />
             </span>
           </div>
         </a>
@@ -204,22 +221,22 @@ try {
         </a>
 
         <a
-          href="https://t.me/khaledhuerta"
+          href={telegramPost?.url || "https://t.me/khaledhuerta"}
           target="_blank"
           rel="noopener noreferrer"
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-400/30 transition-all duration-300 no-underline flex flex-col"
         >
           <div class="aspect-video bg-sky-500 flex items-center justify-center">
-            <span class="text-3xl text-white/90 font-bold">Telegram</span>
+            <span class="text-4xl text-white/90 font-bold" style="font-family: serif;">TG</span>
           </div>
           <div class="p-5 flex-1 flex flex-col">
             <span class="text-[11px] font-semibold tracking-wide text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full self-start">Telegram</span>
-            <h3 class="font-serif text-base font-bold text-chocolate mt-2 group-hover:text-granate transition-colors">
-              @khaledhuerta
+            <h3 class="font-serif text-base font-bold text-chocolate mt-2 leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+              {telegramPost?.text || "@khaledhuerta"}
             </h3>
-            <p class="text-sm text-marron mt-1 flex-1">Recordatorios cotidianos y anuncios directos</p>
+            <p class="text-sm text-marron mt-1 flex-1">{telegramPost ? "Último mensaje" : "Recordatorios cotidianos y anuncios directos"}</p>
             <span class="inline-flex items-center gap-1 text-sm font-medium text-sky-600 mt-3 group-hover:gap-2 transition-all">
-              Enviar mensaje <span set:html={ArrowRight} class="w-3.5 h-3.5" />
+              {telegramPost ? "Abrir en Telegram" : "Enviar mensaje"} <span set:html={ArrowRight} class="w-3.5 h-3.5" />
             </span>
           </div>
         </a>
