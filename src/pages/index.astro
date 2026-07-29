@@ -338,8 +338,11 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
 
 <script>
   import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
 
-  function revealOnScroll(selector, stagger = 0.12, fromCenter = false) {
+  function revealOnScroll(selector, opts = {}) {
+    const { stagger = 0.1, from = "bottom", distance = 60 } = opts;
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
     const observer = new IntersectionObserver(
@@ -347,19 +350,17 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        if (fromCenter) {
-          gsap.set(targets, { transformOrigin: "center center" });
-          gsap.fromTo(
-            targets,
-            { opacity: 0, scale: 0.3, y: 30 },
-            { opacity: 1, scale: 1, y: 0, duration: 1, stagger, ease: "back.out(1.7)" },
-          );
-        } else {
-          gsap.fromTo(
-            targets,
-            { y: 50, opacity: 0, scale: 0.97 },
-            { y: 0, opacity: 1, scale: 1, duration: 1, stagger, ease: "power2.inOut" },
-          );
+        const vars = { opacity: 0, duration: 1.2, stagger, ease: "power4.out", filter: "blur(6px)" };
+        if (from === "bottom") {
+          gsap.fromTo(targets, { y: distance, ...vars }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+        } else if (from === "center") {
+          gsap.set(targets, { transformOrigin: "center center", filter: "blur(6px)" });
+          gsap.fromTo(targets, { opacity: 0, scale: 0.4, y: 40, rotation: -3 }, { opacity: 1, scale: 1, y: 0, rotation: 0, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+        } else if (from === "side") {
+          targets.forEach((t, i) => {
+            const dir = i % 2 === 0 ? -1 : 1;
+            gsap.fromTo(t, { x: dir * 80, opacity: 0, filter: "blur(6px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out", delay: i * stagger });
+          });
         }
         targets.forEach((t) => observer.unobserve(t));
       },
@@ -369,15 +370,22 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
   }
 
   gsap.from(".hero-content > *", {
-    y: 60,
+    y: 80,
     opacity: 0,
+    filter: "blur(10px)",
     duration: 1.2,
-    stagger: 0.2,
-    ease: "power2.inOut",
+    stagger: 0.15,
+    ease: "power4.out",
   });
 
-  revealOnScroll(".blog-card", 0.12, true);
-  revealOnScroll(".social-card", 0.08);
-  revealOnScroll(".event-card", 0.1);
-  revealOnScroll(".donation-cta > *", 0.12);
+  gsap.to(".hero-parallax", {
+    yPercent: 20,
+    ease: "none",
+    scrollTrigger: { trigger: ".hero-parallax", start: "top top", end: "bottom top", scrub: 1 },
+  });
+
+  revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
+  revealOnScroll(".social-card", { from: "bottom", stagger: 0.06, distance: 50 });
+  revealOnScroll(".event-card", { from: "side", stagger: 0.08 });
+  revealOnScroll(".donation-cta > *", { from: "bottom", stagger: 0.1, distance: 40 });
 </script>
