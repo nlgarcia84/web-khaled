@@ -71,6 +71,27 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
       </a>
 
       <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6 mt-14">
+        Donaciones generales
+      </h2>
+
+      <div class="bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm max-w-200 mx-auto mb-14">
+        <div class="flex items-center gap-4">
+          <span class="text-2xl shrink-0">🤲</span>
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <h3 class="font-serif text-lg font-bold text-chocolate">
+                Donación sin campaña específica
+              </h3>
+            </div>
+            <p class="text-sm text-marron mt-1">
+              Puedes donar directamente con tarjeta, PayPal o transferencia bancaria.
+              Tu contribución se destinará a los gastos generales de la mezquita.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6">
         Métodos de pago
       </h2>
 
@@ -93,17 +114,14 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
           </div>
         </div>
 
-        <a
-          href="https://www.paypal.com/paypalme/huertakhaled"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+        <div
+          class="bg-white border border-gray-100 p-6 rounded-xl shadow-sm"
         >
           <div class="flex items-center gap-4">
             <span class="text-3xl shrink-0">PayPal</span>
             <div>
               <h3
-                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
+                class="font-serif text-lg font-bold text-chocolate"
               >
                 PayPal
               </h3>
@@ -112,11 +130,7 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
               </p>
             </div>
           </div>
-          <span
-            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
-            >&rarr;</span
-          >
-        </a>
+        </div>
 
         <div
           class="bg-white border border-gray-100 p-6 rounded-xl shadow-sm"
@@ -167,17 +181,6 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
             </div>
           </div>
         </div>
-      </div>
-
-      <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6 mt-14">
-        Donaciones generales
-      </h2>
-      <div class="max-w-lg mx-auto text-center">
-        <p class="text-marron leading-relaxed">
-          Si prefieres donar sin destinar a una campaña específica, puedes
-          realizar una transferencia bancaria usando la referencia
-          <strong>DONACION</strong> o contactarnos directamente.
-        </p>
       </div>
     </div>
   </section>
