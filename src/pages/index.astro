@@ -287,7 +287,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
 <script>
   import gsap from "gsap";
 
-  function revealOnScroll(selector, stagger = 0.15) {
+  function revealOnScroll(selector, stagger = 0.12) {
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
     const observer = new IntersectionObserver(
@@ -297,12 +297,12 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
         const targets = visible.map((e) => e.target);
         gsap.fromTo(
           targets,
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, stagger, ease: "power3.out" },
+          { y: 50, opacity: 0, scale: 0.97 },
+          { y: 0, opacity: 1, scale: 1, duration: 1, stagger, ease: "power2.inOut" },
         );
         targets.forEach((t) => observer.unobserve(t));
       },
-      { threshold: 0.1 },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
     );
     els.forEach((el) => observer.observe(el));
   }
@@ -310,13 +310,13 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
   gsap.from(".hero-content > *", {
     y: 60,
     opacity: 0,
-    duration: 1,
+    duration: 1.2,
     stagger: 0.2,
-    ease: "power3.out",
+    ease: "power2.inOut",
   });
 
-  revealOnScroll(".blog-card", 0.15);
-  revealOnScroll(".social-card", 0.1);
-  revealOnScroll(".event-card", 0.15);
-  revealOnScroll(".donation-cta > *", 0.15);
+  revealOnScroll(".blog-card", 0.12);
+  revealOnScroll(".social-card", 0.08);
+  revealOnScroll(".event-card", 0.1);
+  revealOnScroll(".donation-cta > *", 0.12);
 </script>
