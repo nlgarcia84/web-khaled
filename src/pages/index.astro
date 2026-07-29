@@ -27,7 +27,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
       aria-hidden="true"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/70 to-chocolate/90"></div>
-    <div class="relative z-10 max-w-200 mx-auto px-6">
+    <div class="relative z-10 max-w-200 mx-auto px-6 hero-content">
       <p class="font-serif text-oro text-lg md:text-2xl italic font-semibold mb-6 leading-relaxed">
         "Los modales se aprenden antes que el conocimiento"
       </p>
@@ -66,12 +66,12 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
           Últimos artículos
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-200 mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-200 mx-auto blog-grid">
         {
           posts.map((post: any) => (
             <a
               href={`/blog/${post.slug.current}`}
-              class="group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 no-underline block"
+              class="blog-card group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 no-underline block"
             >
               <time class="text-xs text-oro font-medium">
                 {new Date(post.publishedAt).toLocaleDateString("es", {
@@ -120,12 +120,12 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto social-grid">
         <a
           href="https://www.youtube.com/channel/UCKSkh4JFzzyhqkAiocfq5-Q"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-red-400/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="social-card group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-red-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
@@ -145,7 +145,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
           href="https://t.me"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-sky-400/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="social-card group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-sky-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-sky-100 transition-colors">
@@ -165,7 +165,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-pink-400/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="social-card group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-pink-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-pink-100 transition-colors">
@@ -185,7 +185,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
           href="https://facebook.com"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="social-card group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
@@ -218,7 +218,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
         </p>
       </div>
 
-      <div class="max-w-2xl mx-auto space-y-4">
+      <div class="max-w-2xl mx-auto space-y-4 events-list">
         {
           events.map((event) => {
             const date = new Date(event.date);
@@ -226,7 +226,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
             const month = date.toLocaleDateString("es", { month: "short" });
             const year = date.getFullYear();
             return (
-              <div class="group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 flex items-center gap-5">
+              <div class="event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 flex items-center gap-5">
                 <div class="w-16 h-16 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
                   <span class="text-lg font-bold text-oro leading-none">{day}</span>
                   <span class="text-[10px] font-semibold text-oro uppercase tracking-wide">{month}</span>
@@ -247,7 +247,7 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
     </div>
   </section>
 
-  <section class="py-24 bg-chocolate">
+  <section class="py-24 bg-chocolate donation-cta">
     <div class="max-w-[1140px] mx-auto px-6 text-center">
       <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
         Donaciones
@@ -283,3 +283,54 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
     </div>
   </section>
 </Layout>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from(".hero-content > *", {
+    y: 60,
+    opacity: 0,
+    duration: 1,
+    stagger: 0.2,
+    ease: "power3.out",
+  });
+
+  gsap.from(".blog-card", {
+    scrollTrigger: { trigger: ".blog-grid", start: "top 80%" },
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power3.out",
+  });
+
+  gsap.from(".social-card", {
+    scrollTrigger: { trigger: ".social-grid", start: "top 80%" },
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.1,
+    ease: "power3.out",
+  });
+
+  gsap.from(".event-card", {
+    scrollTrigger: { trigger: ".events-list", start: "top 80%" },
+    y: 40,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power3.out",
+  });
+
+  gsap.from(".donation-cta > *", {
+    scrollTrigger: { trigger: ".donation-cta", start: "top 80%" },
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power3.out",
+  });
+</script>
