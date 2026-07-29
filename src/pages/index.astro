@@ -339,7 +339,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
 <script>
   import gsap from "gsap";
 
-  function revealOnScroll(selector, stagger = 0.12) {
+  function revealOnScroll(selector, stagger = 0.12, fromCenter = false) {
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
     const observer = new IntersectionObserver(
@@ -347,11 +347,20 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        gsap.fromTo(
-          targets,
-          { y: 50, opacity: 0, scale: 0.97 },
-          { y: 0, opacity: 1, scale: 1, duration: 1, stagger, ease: "power2.inOut" },
-        );
+        if (fromCenter) {
+          gsap.set(targets, { transformOrigin: "center center" });
+          gsap.fromTo(
+            targets,
+            { opacity: 0, scale: 0.3, y: 30 },
+            { opacity: 1, scale: 1, y: 0, duration: 1, stagger, ease: "back.out(1.7)" },
+          );
+        } else {
+          gsap.fromTo(
+            targets,
+            { y: 50, opacity: 0, scale: 0.97 },
+            { y: 0, opacity: 1, scale: 1, duration: 1, stagger, ease: "power2.inOut" },
+          );
+        }
         targets.forEach((t) => observer.unobserve(t));
       },
       { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
@@ -367,7 +376,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
     ease: "power2.inOut",
   });
 
-  revealOnScroll(".blog-card", 0.12);
+  revealOnScroll(".blog-card", 0.12, true);
   revealOnScroll(".social-card", 0.08);
   revealOnScroll(".event-card", 0.1);
   revealOnScroll(".donation-cta > *", 0.12);
