@@ -1,15 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCampaign, getRecentDonations } from "../lib/sanity";
+import { getCampaign } from "../lib/sanity";
 
 const campaign = await getCampaign("alfombra");
 const goal = campaign?.goal ?? 1000;
 const raised = campaign?.raised ?? 0;
 const remaining = goal - raised;
 const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
-
-const donations = await getRecentDonations("alfombra", 10);
-const hasDonations = donations.length > 0;
 ---
 
 <Layout title="Alfombra para la Musala">
@@ -160,26 +157,6 @@ const hasDonations = donations.length > 0;
         </div>
       </div>
 
-      <div class="mt-10 text-center">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 class="font-serif text-lg font-bold text-chocolate mb-4">Donaciones recientes</h3>
-          {
-            hasDonations ? (
-              <div class="space-y-3 text-left">
-                {donations.map((d) => (
-                  <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
-                    <span class="text-chocolate font-medium">
-                      {d.initials || 'Anónimo'}
-                    </span>
-                    <span class="text-oro font-bold">{d.amount} €</span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p class="text-sm text-marron">Sé el primero en donar. Cada contribución cuenta.</p>
-            )
-          }
-        </div>
       </div>
     </div>
   </section>

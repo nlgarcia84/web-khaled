@@ -38,14 +38,6 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       const transaction = writeClient.transaction();
-      transaction.create({
-        _type: "donation",
-        amount,
-        initials: "",
-        campaign: { _type: "reference", _ref: campaign },
-        method: "stripe",
-        createdAt: new Date().toISOString(),
-      });
       transaction.patch(campaign, (p) => p.inc({ raised: amount }));
       await transaction.commit();
     } catch (err) {

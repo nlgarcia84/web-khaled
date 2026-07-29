@@ -59,20 +59,3 @@ export async function getCampaign(slug: string) {
     { slug },
   );
 }
-
-export async function getRecentDonations(campaignSlug: string, limit = 10) {
-  const campaign = await client.fetch(
-    `*[_type == "campaign" && slug.current == $campaignSlug][0]._id`,
-    { campaignSlug },
-  );
-  if (!campaign) return [];
-  return await client.fetch(
-    `*[_type == "donation" && campaign._ref == $campaignId] | order(createdAt desc) [0...$limit] {
-    amount,
-    initials,
-    method,
-    createdAt,
-  }`,
-    { campaignId: campaign, limit },
-  );
-}
