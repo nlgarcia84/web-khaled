@@ -30,6 +30,13 @@ const post = await getPost(slug);
 <Layout title={post.title}>
   <article class="py-24">
     <div class="max-w-200 mx-auto px-6">
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-sm text-marron/60 hover:text-oro transition-colors no-underline mb-6"
+      >
+        <span class="w-4 h-4">&larr;</span>
+        Volver al blog
+      </a>
       <time class="text-sm text-oro font-medium">
         {
           new Date(post.publishedAt).toLocaleDateString("es", {
