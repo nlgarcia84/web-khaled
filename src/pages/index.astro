@@ -3,51 +3,119 @@ import Camera from "lucide-static/dist/esm/icons/camera.mjs";
 import MessageCircle from "lucide-static/dist/esm/icons/message-circle.mjs";
 import Play from "lucide-static/dist/esm/icons/play.mjs";
 import Send from "lucide-static/dist/esm/icons/send.mjs";
+import MapPin from "lucide-static/dist/esm/icons/map-pin.mjs";
+import Calendar from "lucide-static/dist/esm/icons/calendar.mjs";
+import Heart from "lucide-static/dist/esm/icons/heart.mjs";
+import ArrowRight from "lucide-static/dist/esm/icons/arrow-right.mjs";
 import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
 import { events } from "../data/events";
+import { getPosts } from "../lib/sanity";
+import { getCampaign } from "../lib/sanity";
 import Layout from "../layouts/Layout.astro";
+
+const posts = (await getPosts()).slice(0, 3);
+const campaign = await getCampaign("alfombra");
+const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / campaign.goal) * 100) : 0;
 ---
 
 <Layout title="Inicio">
-  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center">
+  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[70vh]">
     <img
       src={khaledAlfombra.src}
       alt=""
       class="absolute inset-0 w-full h-full object-cover"
       aria-hidden="true"
     />
-    <div class="absolute inset-0 bg-chocolate/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/70 to-chocolate/90"></div>
     <div class="relative z-10 max-w-200 mx-auto px-6">
-      <p
-        class="font-serif text-oro text-lg md:text-xl italic font-semibold mb-4"
-      >
+      <p class="font-serif text-oro text-lg md:text-2xl italic font-semibold mb-6 leading-relaxed">
         "Los modales se aprenden antes que el conocimiento"
       </p>
-
-      <h1
-        class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4"
-      >
-        Difundiendo el mensaje del Islam en Español con rigor, sabiduría y
-        cercanía
+      <h1 class="font-serif text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-6">
+        Difundiendo el mensaje del Islam en Español con rigor, sabiduría y cercanía
       </h1>
-
-      <p
-        class="text-crema/80 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto"
-      >
+      <p class="text-crema/80 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto mb-8">
         Un siervo de Allah que recuerda el camino de los justos predecesores.
       </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/donar"
+          class="inline-flex items-center gap-2 bg-oro text-chocolate font-semibold px-8 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline"
+        >
+          <span set:html={Heart} class="w-5 h-5" />
+          Apoyar la causa
+        </a>
+        <a
+          href="/biografia"
+          class="inline-flex items-center gap-2 border border-white/30 text-white font-medium px-8 py-3 rounded-lg hover:bg-white/10 transition-colors no-underline"
+        >
+          Conocer más
+          <span set:html={ArrowRight} class="w-4 h-4" />
+        </a>
+      </div>
     </div>
   </section>
 
-  <section class="py-20 bg-gris-claro">
-    <div class="max-w-[1140px] mx-auto px-6 mb-12">
-      <div class="text-center mb-12">
-        <h2
-          class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-3"
-        >
-          Canales Oficiales y Redes
+  <section class="py-24 bg-white">
+    <div class="max-w-[1140px] mx-auto px-6">
+      <div class="text-center mb-14">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+          Contenido
+        </span>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate">
+          Últimos artículos
         </h2>
-        <p class="text-sm text-marron font-medium tracking-wide uppercase">
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-200 mx-auto">
+        {
+          posts.map((post: any) => (
+            <a
+              href={`/blog/${post.slug.current}`}
+              class="group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 no-underline block"
+            >
+              <time class="text-xs text-oro font-medium">
+                {new Date(post.publishedAt).toLocaleDateString("es", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors mt-2 leading-snug">
+                {post.title}
+              </h3>
+              {post.excerpt && (
+                <p class="text-sm text-marron mt-2 leading-relaxed line-clamp-3">
+                  {post.excerpt}
+                </p>
+              )}
+              <span class="inline-flex items-center gap-1 text-sm font-medium text-oro mt-4 group-hover:gap-2 transition-all">
+                Leer artículo <span set:html={ArrowRight} class="w-3.5 h-3.5" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="text-center mt-10">
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 text-chocolate font-medium border border-gray-300 px-6 py-2.5 rounded-lg hover:border-oro hover:text-oro transition-colors no-underline text-sm"
+        >
+          Ver todos los artículos <span set:html={ArrowRight} class="w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-gris-claro">
+    <div class="max-w-[1140px] mx-auto px-6">
+      <div class="text-center mb-14">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+          Redes
+        </span>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3">
+          Canales Oficiales
+        </h2>
+        <p class="text-sm text-marron font-medium">
           Accede al contenido y mantente comunicado
         </p>
       </div>
@@ -57,124 +125,161 @@ import Layout from "../layouts/Layout.astro";
           href="https://www.youtube.com/channel/UCKSkh4JFzzyhqkAiocfq5-Q"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-red-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
-            <span class="h-8 w-8 text-chocolate shrink-0" set:html={Play} />
+            <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
+              <span class="h-6 w-6 text-red-600" set:html={Play} />
+            </div>
             <div>
-              <h3
-                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
-              >
-                Canal de YouTube
+              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
+                YouTube
               </h3>
-              <p class="text-sm text-marron mt-1">
-                Conferencias, directos y clases virtuales.
-              </p>
+              <p class="text-sm text-marron mt-0.5">Conferencias, directos y clases virtuales</p>
             </div>
           </div>
-          <span
-            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
-            >&rarr;</span
-          >
+          <span class="text-marron/40 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-lg">&rarr;</span>
         </a>
 
         <a
           href="https://t.me"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-sky-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
-            <span class="h-8 w-8 text-chocolate shrink-0" set:html={Send} />
+            <div class="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-sky-100 transition-colors">
+              <span class="h-6 w-6 text-sky-600" set:html={Send} />
+            </div>
             <div>
-              <h3
-                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
-              >
-                Canal de Telegram
+              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
+                Telegram
               </h3>
-              <p class="text-sm text-marron mt-1">
-                Recordatorios cotidianos y anuncios directos.
-              </p>
+              <p class="text-sm text-marron mt-0.5">Recordatorios cotidianos y anuncios directos</p>
             </div>
           </div>
-          <span
-            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
-            >&rarr;</span
-          >
+          <span class="text-marron/40 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-lg">&rarr;</span>
         </a>
 
         <a
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-pink-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
-            <span class="h-8 w-8 text-chocolate shrink-0" set:html={Camera} />
+            <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-pink-100 transition-colors">
+              <span class="h-6 w-6 text-pink-600" set:html={Camera} />
+            </div>
             <div>
-              <h3
-                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
-              >
-                Perfil de Instagram
+              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
+                Instagram
               </h3>
-              <p class="text-sm text-marron mt-1">
-                Publicaciones didácticas y contenido diario.
-              </p>
+              <p class="text-sm text-marron mt-0.5">Publicaciones didácticas y contenido diario</p>
             </div>
           </div>
-          <span
-            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
-            >&rarr;</span
-          >
+          <span class="text-marron/40 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-lg">&rarr;</span>
         </a>
 
         <a
           href="https://facebook.com"
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 flex items-center justify-between no-underline"
+          class="group bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400/30 transition-all duration-300 flex items-center justify-between no-underline"
         >
           <div class="flex items-center gap-4">
-            <span
-              class="h-8 w-8 text-chocolate shrink-0"
-              set:html={MessageCircle}
-            />
+            <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
+              <span class="h-6 w-6 text-blue-600" set:html={MessageCircle} />
+            </div>
             <div>
-              <h3
-                class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors"
-              >
-                Página de Facebook
+              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
+                Facebook
               </h3>
-              <p class="text-sm text-marron mt-1">
-                Comunidad virtual y transmisiones compartidas.
-              </p>
+              <p class="text-sm text-marron mt-0.5">Comunidad virtual y transmisiones compartidas</p>
             </div>
           </div>
-          <span
-            class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg"
-            >&rarr;</span
-          >
+          <span class="text-marron/40 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-lg">&rarr;</span>
         </a>
       </div>
     </div>
-    <div class="text-center mb-12">
-      <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-3">
-        Próximos eventos
-      </h2>
-      <p class="text-sm text-marron font-medium tracking-wide uppercase">
-        Estos son los siguientes eventos
-      </p>
-      <div class="flex flex-col gap-4 items-center mt-8">
+  </section>
+
+  <section class="py-24 bg-white">
+    <div class="max-w-[1140px] mx-auto px-6">
+      <div class="text-center mb-14">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+          Agenda
+        </span>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3">
+          Próximos eventos
+        </h2>
+        <p class="text-sm text-marron font-medium">
+          Estos son los siguientes eventos programados
+        </p>
+      </div>
+
+      <div class="max-w-2xl mx-auto space-y-4">
         {
-          events.map((event) => (
-            <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm w-full max-w-md text-center">
-              <p class="text-sm text-oro font-semibold tracking-wide uppercase">{event.date}</p>
-              <h3 class="font-serif text-lg font-bold text-chocolate mt-1">{event.title}</h3>
-              <p class="text-sm text-marron mt-1">{event.Lugar}</p>
-            </div>
-          ))
+          events.map((event) => {
+            const date = new Date(event.date);
+            const day = date.getDate();
+            const month = date.toLocaleDateString("es", { month: "short" });
+            const year = date.getFullYear();
+            return (
+              <div class="group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 flex items-center gap-5">
+                <div class="w-16 h-16 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
+                  <span class="text-lg font-bold text-oro leading-none">{day}</span>
+                  <span class="text-[10px] font-semibold text-oro uppercase tracking-wide">{month}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-serif text-lg font-bold text-chocolate leading-snug">{event.title}</h3>
+                  <div class="flex items-center gap-1.5 mt-1.5">
+                    <span set:html={MapPin} class="w-3.5 h-3.5 text-marron/60 shrink-0" />
+                    <p class="text-sm text-marron truncate">{event.Lugar}</p>
+                  </div>
+                </div>
+                <span class="text-marron/40 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-lg shrink-0">&rarr;</span>
+              </div>
+            )
+          })
         }
       </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-chocolate">
+    <div class="max-w-[1140px] mx-auto px-6 text-center">
+      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+        Donaciones
+      </span>
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-4">
+        Apoya la mezquita
+      </h2>
+      <p class="text-crema/70 text-lg font-light max-w-2xl mx-auto mb-8">
+        Cada donación, por pequeña que sea, se convierte en sadaqah jariyah — caridad continua —
+        cada vez que alguien rece sobre ella.
+      </p>
+      {
+        campaign && (
+          <div class="max-w-md mx-auto mb-8">
+            <div class="flex justify-between text-sm text-crema/80 mb-2">
+              <span>{campaign.raised} € recaudados</span>
+              <span>Meta: {campaign.goal} €</span>
+            </div>
+            <div class="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+              <div class="bg-oro h-full rounded-full transition-all duration-500" style="width: {campaignPct}%"></div>
+            </div>
+            <p class="text-right text-xs text-crema/60 mt-1">{campaignPct}% completado</p>
+          </div>
+        )
+      }
+      <a
+        href="/donar"
+        class="inline-flex items-center gap-2 bg-oro text-chocolate font-semibold px-8 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline"
+      >
+        <span set:html={Heart} class="w-5 h-5" />
+        Donar ahora
+      </a>
     </div>
   </section>
 </Layout>
