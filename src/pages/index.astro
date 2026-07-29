@@ -134,7 +134,7 @@ try {
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-200 mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-200 mx-auto">
         <a
           href={latestVideo.id ? `https://youtu.be/${latestVideo.id}` : "https://www.youtube.com/@khaledhuerta"}
           target="_blank"
@@ -199,6 +199,27 @@ try {
             <p class="text-sm text-marron mt-1 flex-1">Comunidad virtual y transmisiones compartidas</p>
             <span class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-3 group-hover:gap-2 transition-all">
               Ver página <span set:html={ArrowRight} class="w-3.5 h-3.5" />
+            </span>
+          </div>
+        </a>
+
+        <a
+          href="https://t.me/khaledhuerta"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-400/30 transition-all duration-300 no-underline flex flex-col"
+        >
+          <div class="aspect-video bg-sky-500 flex items-center justify-center">
+            <span class="text-3xl text-white/90 font-bold">Telegram</span>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <span class="text-[11px] font-semibold tracking-wide text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full self-start">Telegram</span>
+            <h3 class="font-serif text-base font-bold text-chocolate mt-2 group-hover:text-granate transition-colors">
+              @khaledhuerta
+            </h3>
+            <p class="text-sm text-marron mt-1 flex-1">Recordatorios cotidianos y anuncios directos</p>
+            <span class="inline-flex items-center gap-1 text-sm font-medium text-sky-600 mt-3 group-hover:gap-2 transition-all">
+              Enviar mensaje <span set:html={ArrowRight} class="w-3.5 h-3.5" />
             </span>
           </div>
         </a>
