@@ -1,8 +1,13 @@
 ---
+import { createImageUrlBuilder } from "@sanity/image-url";
 import Layout from "../../layouts/Layout.astro";
-import { getPosts } from "../../lib/sanity";
+import { client, getPosts } from "../../lib/sanity";
 import khaledJardin from "../../assets/images/khaled_jardin.JPG";
+
+const builder = createImageUrlBuilder(client);
 const posts = await getPosts();
+const featured = posts[0];
+const rest = posts.slice(1);
 ---
 
 <Layout title="Blog">
@@ -26,26 +31,120 @@ const posts = await getPosts();
 
   <section class="py-20 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-200 mx-auto">
-        {
-          posts.map((post: any) => (
-            <a
-              href={`/blog/${post.slug.current}`}
-              class="group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/30 transition-all duration-300 no-underline block"
-            >
-              <article>
-                <h2 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
-                  {post.title}
-                </h2>
-                {post.excerpt && <p class="text-marron text-sm mt-2 leading-relaxed">{post.excerpt}</p>}
-                <time class="text-xs text-oro mt-3 block font-medium">
-                  {new Date(post.publishedAt).toLocaleDateString("es", {
+      {
+        featured && (
+          <a
+            href={`/blog/${featured.slug.current}`}
+            class="group grid grid-cols-1 md:grid-cols-5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-oro/20 transition-all duration-300 no-underline mb-12"
+          >
+            <div class="md:col-span-2 bg-chocolate/5 overflow-hidden">
+              {
+                featured.image ? (
+                  <img
+                    src={builder.image(featured.image).width(600).height(400).url()}
+                    alt=""
+                    class="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div class="w-full h-64 md:h-full bg-gradient-to-br from-oro/20 to-chocolate/20 flex items-center justify-center">
+                    <span class="font-serif text-6xl text-oro/30">📖</span>
+                  </div>
+                )
+              }
+            </div>
+            <div class="md:col-span-3 p-8 md:p-10 flex flex-col justify-center">
+              <div class="flex items-center gap-2 mb-3">
+                {
+                  featured.categories?.slice(0, 2).map((cat: any) => (
+                    <span class="text-xs font-semibold tracking-wide text-oro bg-oro/10 px-3 py-1 rounded-full">
+                      {cat.title}
+                    </span>
+                  ))
+                }
+                <span class="text-xs text-marron/60 ml-auto">
+                  {new Date(featured.publishedAt).toLocaleDateString("es", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
-                </time>
-              </article>
+                </span>
+              </div>
+              <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate group-hover:text-granate transition-colors leading-tight mb-3">
+                {featured.title}
+              </h2>
+              {featured.excerpt && (
+                <p class="text-marron leading-relaxed line-clamp-3">
+                  {featured.excerpt}
+                </p>
+              )}
+              <div class="flex items-center gap-3 mt-6">
+                <div class="w-8 h-8 rounded-full bg-chocolate/10 flex items-center justify-center">
+                  <span class="text-xs font-bold text-chocolate">
+                    {featured.author?.charAt(0) || 'K'}
+                  </span>
+                </div>
+                <span class="text-sm text-chocolate font-medium">{featured.author || 'Sheij Khaled Huerta'}</span>
+              </div>
+            </div>
+          </a>
+        )
+      }
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          rest.map((post: any) => (
+            <a
+              href={`/blog/${post.slug.current}`}
+              class="group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 no-underline flex flex-col"
+            >
+              <div class="aspect-[16/9] bg-chocolate/5 overflow-hidden">
+                {
+                  post.image ? (
+                    <img
+                      src={builder.image(post.image).width(600).height(340).url()}
+                      alt=""
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div class="w-full h-full bg-gradient-to-br from-oro/10 to-chocolate/10 flex items-center justify-center">
+                      <span class="font-serif text-4xl text-oro/20">📖</span>
+                    </div>
+                  )
+                }
+              </div>
+              <div class="p-5 flex flex-col flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                  {
+                    post.categories?.slice(0, 1).map((cat: any) => (
+                      <span class="text-[11px] font-semibold tracking-wide text-oro bg-oro/10 px-2.5 py-0.5 rounded-full">
+                        {cat.title}
+                      </span>
+                    ))
+                  }
+                  <time class="text-[11px] text-marron/60">
+                    {new Date(post.publishedAt).toLocaleDateString("es", {
+                      year: "numeric",
+                      month: "short",
+                    })}
+                  </time>
+                </div>
+                <h2 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors leading-snug mb-2">
+                  {post.title}
+                </h2>
+                {post.excerpt && (
+                  <p class="text-sm text-marron leading-relaxed line-clamp-2 flex-1">
+                    {post.excerpt}
+                  </p>
+                )}
+                <div class="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100">
+                  <div class="w-6 h-6 rounded-full bg-chocolate/10 flex items-center justify-center">
+                    <span class="text-[10px] font-bold text-chocolate">
+                      {post.author?.charAt(0) || 'K'}
+                    </span>
+                  </div>
+                  <span class="text-xs text-chocolate/70">{post.author || 'Sheij Khaled Huerta'}</span>
+                </div>
+              </div>
             </a>
           ))
         }

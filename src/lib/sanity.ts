@@ -22,8 +22,11 @@ export async function getPosts() {
   return await client.fetch(`*[_type == "post"] | order(publishedAt desc) {
     title,
     slug,
+    author,
     excerpt,
+    image,
     publishedAt,
+    categories[]->{title},
   }`);
 }
 
