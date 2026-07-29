@@ -378,11 +378,10 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
     ease: "power4.out",
   });
 
-  gsap.to(".hero-parallax", {
-    yPercent: 20,
-    ease: "none",
+  const parallaxTl = gsap.timeline({
     scrollTrigger: { trigger: ".hero-parallax", start: "top top", end: "bottom top", scrub: 1 },
   });
+  parallaxTl.fromTo(".hero-parallax", { yPercent: -15, scale: 1.15 }, { yPercent: 0, scale: 1, ease: "none" });
 
   revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
   revealOnScroll(".social-card", { from: "bottom", stagger: 0.06, distance: 50 });
