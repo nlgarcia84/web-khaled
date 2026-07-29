@@ -1,18 +1,17 @@
 ---
-import { Image } from "astro:assets";
 import Camera from "lucide-static/dist/esm/icons/camera.mjs";
 import MessageCircle from "lucide-static/dist/esm/icons/message-circle.mjs";
 import Play from "lucide-static/dist/esm/icons/play.mjs";
 import Send from "lucide-static/dist/esm/icons/send.mjs";
-import khaledEspaldas from "../assets/images/khaled_espaldas.jpg";
+import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
 import { events } from "../data/events";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Inicio">
   <section class="relative py-28 text-center overflow-hidden">
-    <Image
-      src={khaledEspaldas}
+    <img
+      src={khaledAlfombra.src}
       alt=""
       class="absolute inset-0 w-full h-full object-cover"
       aria-hidden="true"
