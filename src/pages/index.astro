@@ -23,7 +23,8 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
     <img
       src={khaledAlfombra.src}
       alt=""
-      class="absolute inset-0 w-full h-full object-cover"
+      class="absolute inset-0 w-full h-full object-cover hero-parallax"
+      fetchpriority="high"
       aria-hidden="true"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/70 to-chocolate/90"></div>
@@ -59,10 +60,10 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
   <section class="py-24 bg-white">
     <div class="max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Contenido
         </span>
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate section-title">
           Últimos artículos
         </h2>
       </div>
@@ -109,10 +110,10 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
   <section class="py-24 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Redes
         </span>
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title">
           Canales Oficiales
         </h2>
         <p class="text-sm text-marron font-medium">
@@ -207,10 +208,10 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
   <section class="py-24 bg-white">
     <div class="max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Agenda
         </span>
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title">
           Próximos eventos
         </h2>
         <p class="text-sm text-marron font-medium">
@@ -249,12 +250,12 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
 
   <section class="py-24 bg-chocolate donation-cta">
     <div class="max-w-[1140px] mx-auto px-6 text-center">
-      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
-        Donaciones
-      </span>
-      <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-4">
-        Apoya la mezquita
-      </h2>
+        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
+          Donaciones
+        </span>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-4 section-title">
+          Apoya la mezquita
+        </h2>
       <p class="text-crema/70 text-lg font-light max-w-2xl mx-auto mb-8">
         Cada donación, por pequeña que sea, se convierte en sadaqah jariyah — caridad continua —
         cada vez que alguien rece sobre ella.
@@ -263,8 +264,8 @@ const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / c
         campaign && (
           <div class="max-w-md mx-auto mb-8">
             <div class="flex justify-between text-sm text-crema/80 mb-2">
-              <span>{campaign.raised} € recaudados</span>
-              <span>Meta: {campaign.goal} €</span>
+              <span><span class="counter" data-target="{campaign.raised}">0</span> € recaudados</span>
+              <span>Meta: <span class="counter" data-target="{campaign.goal}">0</span> €</span>
             </div>
             <div class="w-full bg-white/20 rounded-full h-3 overflow-hidden">
               <div class="bg-oro h-full rounded-full transition-all duration-500" style="width: {campaignPct}%"></div>
