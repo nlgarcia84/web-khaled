@@ -338,8 +338,6 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
 
 <script>
   import gsap from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  gsap.registerPlugin(ScrollTrigger);
 
   function revealOnScroll(selector, opts = {}) {
     const { stagger = 0.1, from = "bottom", distance = 60 } = opts;
@@ -378,10 +376,7 @@ const telegramPost = await getLatestTelegramPost("khaledhuerta");
     ease: "power4.out",
   });
 
-  const parallaxTl = gsap.timeline({
-    scrollTrigger: { trigger: ".hero-parallax", start: "top top", end: "bottom top", scrub: 1 },
-  });
-  parallaxTl.fromTo(".hero-parallax", { yPercent: -15, scale: 1.15 }, { yPercent: 0, scale: 1, ease: "none" });
+  gsap.set(".hero-parallax", { scale: 1 });
 
   revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
   revealOnScroll(".social-card", { from: "bottom", stagger: 0.06, distance: 50 });
