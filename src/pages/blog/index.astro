@@ -21,7 +21,7 @@ const rest = posts.slice(1);
     />
     <div class="absolute inset-0 bg-chocolate/85"></div>
 
-    <div class="relative z-10 max-w-[1140px] mx-auto px-6">
+    <div class="relative z-10 max-w-[1140px] mx-auto px-6 hero-content">
       <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
         Blog
       </span>
@@ -40,7 +40,7 @@ const rest = posts.slice(1);
         featured && (
           <a
             href={`/blog/${featured.slug.current}`}
-            class="group grid grid-cols-1 md:grid-cols-5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-oro/20 transition-all duration-300 no-underline mb-12"
+            class="group grid grid-cols-1 md:grid-cols-5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-oro/20 transition-all duration-300 no-underline mb-12 blog-card"
           >
             <div class="md:col-span-2 bg-chocolate/5 overflow-hidden">
               {
@@ -100,7 +100,7 @@ const rest = posts.slice(1);
           rest.map((post: any) => (
             <a
               href={`/blog/${post.slug.current}`}
-              class="group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 no-underline flex flex-col"
+              class="group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-oro/20 transition-all duration-300 no-underline flex flex-col blog-card"
             >
               <div class="aspect-[16/9] bg-chocolate/5 overflow-hidden">
                 {
@@ -157,3 +157,41 @@ const rest = posts.slice(1);
     </div>
   </section>
 </Layout>
+
+<script>
+  import gsap from "gsap";
+
+  function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 60 } = {}) {
+    const els = document.querySelectorAll(selector);
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (!visible.length) return;
+        const targets = visible.map((e) => e.target);
+        if (from === "bottom") {
+          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+        } else if (from === "side") {
+          targets.forEach((t, i) => {
+            const dir = i % 2 === 0 ? -1 : 1;
+            gsap.fromTo(t, { x: dir * 80, opacity: 0, filter: "blur(6px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out", delay: i * stagger });
+          });
+        }
+        targets.forEach((t) => observer.unobserve(t));
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => observer.observe(el));
+  }
+
+  gsap.from(".hero-content > *", {
+    y: 80,
+    opacity: 0,
+    filter: "blur(10px)",
+    duration: 1.2,
+    stagger: 0.15,
+    ease: "power4.out",
+  });
+
+  revealOnScroll(".blog-card", { stagger: 0.1 });
+</script>

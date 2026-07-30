@@ -19,7 +19,7 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
       aria-hidden="true"
     />
     <div class="absolute inset-0 bg-chocolate/85"></div>
-    <div class="relative z-10 max-w-[800px] mx-auto px-6">
+    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
       <p
         class="font-serif text-oro text-lg md:text-xl italic font-semibold mb-6"
       >
@@ -40,9 +40,11 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 
   <section class="py-20 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
-      <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate text-center mb-8">
-        Campañas activas
-      </h2>
+      <div class="section-header">
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate text-center mb-8">
+          Campañas activas
+        </h2>
+      </div>
 
       <a
         href="/alfombra"
@@ -70,9 +72,11 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         <span class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg">&rarr;</span>
       </a>
 
-      <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6 mt-14">
-        Donaciones generales
-      </h2>
+      <div class="section-header">
+        <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6 mt-14">
+          Donaciones generales
+        </h2>
+      </div>
 
       <div
         class="bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm max-w-200 mx-auto mb-6 cursor-pointer select-none"
@@ -158,9 +162,11 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         </div>
       </div>
 
-      <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6">
-        Métodos de pago
-      </h2>
+      <div class="section-header">
+        <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6">
+          Métodos de pago
+        </h2>
+      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-200 mx-auto">
         <div

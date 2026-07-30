@@ -36,7 +36,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 ---
 
 <Layout title="Inicio">
-  <section class="relative pt-24 md:pt-32 pb-16 text-center overflow-hidden flex flex-col min-h-[100dvh]">
+  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[100dvh]">
     <img
       src={khaledAlfombra.src}
       alt=""
@@ -314,13 +314,13 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
       <div class="max-w-2xl mx-auto space-y-4 events-list">
         {
-          events.map((event) => {
+          events.map((event, i) => {
             const date = new Date(event.date);
             const day = date.getDate();
             const month = date.toLocaleDateString("es", { month: "short" });
             const flag = event.Lugar.includes("México") ? "🇲🇽" : event.Lugar.includes("Argentina") ? "🇦🇷" : event.Lugar.includes("Chile") ? "🇨🇱" : "";
             return (
-              <div class="event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5">
+              <div class={"event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" + (i === 0 ? " nearest-event" : "")}>
                 <div class="w-14 h-14 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
                   <span class="text-lg font-bold text-oro leading-none">{day}</span>
                   <span class="text-[10px] font-semibold text-oro uppercase tracking-wide">{month}</span>
@@ -388,4 +388,15 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
   revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".event-card", { from: "side", stagger: 0.08 });
+
+  const nearest = document.querySelector(".nearest-event");
+  if (nearest) {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        gsap.fromTo(nearest, { scale: 0.92, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: "power4.out" });
+        observer.unobserve(nearest);
+      }
+    }, { threshold: 0.2 });
+    observer.observe(nearest);
+  }
 </script>
