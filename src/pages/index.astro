@@ -36,7 +36,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 ---
 
 <Layout title="Inicio">
-  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100dvh-5rem)]">
+  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]">
     <img
       src={khaledAlfombra.src}
       alt=""
@@ -345,12 +345,21 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 <script>
   import gsap from "gsap";
 
+  let scrollTimeout;
+  let isScrolling = false;
+  document.addEventListener("scroll", () => {
+    if (!isScrolling) isScrolling = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => { isScrolling = false; }, 150);
+  }, { passive: true });
+
   function revealOnScroll(selector, opts = {}) {
     const { stagger = 0.1, from = "bottom", distance = 40 } = opts;
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
     const observer = new IntersectionObserver(
       (entries) => {
+        if (isScrolling) return;
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
