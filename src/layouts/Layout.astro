@@ -1,4 +1,5 @@
 ---
+import ArrowUp from "lucide-static/dist/esm/icons/arrow-up.mjs";
 import { ClientRouter } from "astro:transitions";
 import MobileMenu from "../components/MobileMenu.tsx";
 import "../styles/global.css";
@@ -141,5 +142,35 @@ const { title } = Astro.props;
         </div>
       </div>
     </footer>
+
+    <button id="scroll-top-btn" aria-label="Volver arriba" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-oro text-chocolate shadow-lg hover:shadow-xl hover:bg-oro/90 transition-all duration-300 flex items-center justify-center opacity-0 translate-y-4 pointer-events-none">
+      <span set:html={ArrowUp} class="w-5 h-5" />
+    </button>
   </body>
 </html>
+
+<script>
+  const btn = document.getElementById("scroll-top-btn");
+  if (btn) {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const shouldShow = window.scrollY > window.innerHeight;
+          btn.classList.toggle("opacity-0", !shouldShow);
+          btn.classList.toggle("translate-y-4", !shouldShow);
+          btn.classList.toggle("pointer-events-none", !shouldShow);
+          btn.classList.toggle("opacity-100", shouldShow);
+          btn.classList.toggle("translate-y-0", shouldShow);
+          btn.classList.toggle("pointer-events-auto", shouldShow);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    document.addEventListener("scroll", onScroll, { passive: true });
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+</script>
