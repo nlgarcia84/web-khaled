@@ -156,8 +156,10 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
                   loading="lazy"
                 />
               ) : (
-                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-500/10 to-red-600/5">
-                  <span class="h-10 w-10 text-red-500/40" set:html={Play} />
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-600 via-red-500 to-rose-400">
+                  <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                    <span class="h-6 w-6 text-white" set:html={Play} />
+                  </div>
                 </div>
               )
             }
@@ -190,8 +192,10 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
                   loading="lazy"
                 />
               ) : (
-                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-400 via-purple-400 to-yellow-300">
-                  <span class="text-white/80 font-bold text-2xl" style="font-family: serif;">IG</span>
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-500">
+                  <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                    <span class="text-white font-bold text-xl" style="font-family: serif;">IG</span>
+                  </div>
                 </div>
               )
             }
@@ -215,8 +219,10 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-blue-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
         >
           <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500/10 to-blue-600/5">
-              <span class="text-blue-500/40 font-bold text-3xl" style="font-family: serif;">f</span>
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-700 via-blue-500 to-sky-400">
+              <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                <span class="text-white font-bold text-2xl" style="font-family: serif;">f</span>
+              </div>
             </div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
@@ -238,8 +244,10 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
         >
           <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-500/10 to-sky-600/5">
-              <span class="text-sky-500/40 font-bold text-xl" style="font-family: serif;">TG</span>
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-600 via-cyan-500 to-teal-400">
+              <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                <span class="text-white font-bold text-lg" style="font-family: serif;">TG</span>
+              </div>
             </div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
@@ -380,7 +388,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   gsap.set(".hero-parallax", { scale: 1 });
 
   revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
-  revealOnScroll(".social-card", { from: "bottom", stagger: 0.06, distance: 50 });
+  revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".event-card", { from: "side", stagger: 0.08 });
   revealOnScroll(".donation-cta > *", { from: "bottom", stagger: 0.1, distance: 40 });
 </script>
