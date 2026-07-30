@@ -143,8 +143,8 @@ const { title } = Astro.props;
       </div>
     </footer>
 
-    <button id="scroll-top-btn" aria-label="Volver arriba" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-oro text-chocolate shadow-lg hover:shadow-xl hover:bg-oro/90 transition-all duration-300 flex items-center justify-center opacity-0 translate-y-4 pointer-events-none">
-      <span set:html={ArrowUp} class="w-5 h-5" />
+    <button id="scroll-top-btn" aria-label="Volver arriba" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-oro text-chocolate shadow-lg hover:shadow-xl hover:bg-oro/90 transition-all duration-300 ease-in-out flex items-center justify-center cursor-pointer opacity-0 translate-y-4 pointer-events-none">
+      <span set:html={ArrowUp} class="w-5 h-5 flex items-center justify-center" />
     </button>
   </body>
 </html>
