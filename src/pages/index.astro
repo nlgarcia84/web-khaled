@@ -76,7 +76,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   <section class="py-24 bg-[#fdfcf9]">
     <div class="max-w-[1140px] mx-auto px-6">
-      <div class="text-center mb-14">
+      <div class="text-center mb-14 section-header">
         <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Contenido
         </span>
@@ -127,7 +127,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   <section class="py-24 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
-      <div class="text-center mb-14">
+      <div class="text-center mb-14 section-header">
         <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Redes
         </span>
@@ -292,7 +292,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   <section class="py-24 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
-      <div class="text-center mb-14">
+      <div class="text-center mb-14 section-header">
         <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Agenda
         </span>
@@ -376,6 +376,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   gsap.set(".hero-parallax", { scale: 1 });
 
+  revealOnScroll(".section-header > *", { stagger: 0.12, distance: 40 });
   revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
   revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".event-card", { from: "side", stagger: 0.08 });
