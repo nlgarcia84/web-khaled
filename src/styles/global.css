@@ -13,3 +13,12 @@
   --font-sans: "Plus Jakarta Sans", sans-serif;
 }
 
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(187, 148, 87, 0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(187, 148, 87, 0.1); }
+}
+
+.nearest-event {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
