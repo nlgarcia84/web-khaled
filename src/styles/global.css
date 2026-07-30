@@ -13,12 +13,32 @@
   --font-sans: "Plus Jakarta Sans", sans-serif;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(187, 148, 87, 0.3); }
-  50% { box-shadow: 0 0 0 6px rgba(187, 148, 87, 0.1); }
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(187, 148, 87, 0.5); }
+  100% { box-shadow: 0 0 0 12px rgba(187, 148, 87, 0); }
 }
 
 .nearest-event {
-  animation: pulse-glow 2.5s ease-in-out infinite;
+  position: relative;
+}
+
+.nearest-event::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 1.5px solid rgba(187, 148, 87, 0.4);
+  animation: pulse-ring 2s ease-out infinite;
+  pointer-events: none;
+}
+
+.nearest-event::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 1.5px solid rgba(187, 148, 87, 0.2);
+  animation: pulse-ring 2s ease-out 0.6s infinite;
+  pointer-events: none;
 }
 
