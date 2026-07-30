@@ -18,10 +18,10 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
         Contacto
       </span>
       <h1 class="font-serif text-4xl md:text-5xl font-bold text-white leading-tight">
-        Ponte en contacto
+        Ponte en contacto conmigo
       </h1>
       <p class="text-crema/70 text-lg mt-3 max-w-xl mx-auto">
-        Escríbenos para consultas, colaboraciones o simplemente para saludar.
+        Escríbeme para consultas, colaboraciones o simplemente para saludar.
       </p>
     </div>
   </section>
@@ -95,39 +95,42 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
 <script>
   import gsap from "gsap";
 
-  function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 60 } = {}) {
+  function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 40 } = {}) {
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
+    gsap.set(els, { willChange: "transform, opacity" });
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
+        const base = { duration: 0.9, ease: "power3.out", overwrite: "auto", force3D: true };
         if (from === "bottom") {
-          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(2px)" }, { y: 0, opacity: 1, filter: "blur(0px)", stagger, ...base });
         } else if (from === "side") {
           targets.forEach((t, i) => {
             const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(t, { x: dir * 80, opacity: 0, filter: "blur(6px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out", delay: i * stagger });
+            gsap.fromTo(t, { x: dir * 40, opacity: 0, filter: "blur(2px)" }, { x: 0, opacity: 1, filter: "blur(0px)", delay: i * stagger, ...base, onComplete: () => { t.style.opacity = ""; t.style.filter = ""; } });
           });
         }
         targets.forEach((t) => observer.unobserve(t));
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.2 },
     );
     els.forEach((el) => observer.observe(el));
   }
 
   gsap.from(".hero-content > *", {
-    y: 80,
+    y: 60,
     opacity: 0,
-    filter: "blur(10px)",
-    duration: 1.2,
-    stagger: 0.15,
-    ease: "power4.out",
+    filter: "blur(2px)",
+    duration: 0.9,
+    stagger: 0.12,
+    ease: "power3.out",
+    force3D: true,
   });
 
-  revealOnScroll(".form-card", { from: "bottom", stagger: 0.1, distance: 50 });
+  revealOnScroll(".form-card", { from: "bottom", stagger: 0.1, distance: 40 });
 
   const form = document.getElementById("contact-form") as HTMLFormElement;
   const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;

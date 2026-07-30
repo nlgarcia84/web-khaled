@@ -320,19 +320,19 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
             const month = date.toLocaleDateString("es", { month: "short" });
             const flag = event.Lugar.includes("México") ? "🇲🇽" : event.Lugar.includes("Argentina") ? "🇦🇷" : event.Lugar.includes("Chile") ? "🇨🇱" : "";
             return (
-              <div class={"event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" + (i === 0 ? " nearest-event" : " opacity-50 hover:opacity-100 grayscale hover:grayscale-0")}>
+              <div class={"event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" + (i === 0 ? " nearest-event" : " opacity-50 grayscale")}>
                 <div class="w-14 h-14 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
-                  <span class="text-lg font-bold text-oro leading-none">{day}</span>
-                  <span class="text-[10px] font-semibold text-oro uppercase tracking-wide">{month}</span>
+                  <span class="text-2xl font-bold text-oro leading-none">{day}</span>
+                  <span class="text-sm font-semibold text-oro uppercase tracking-wide">{month}</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h3 class="font-serif text-base font-bold text-chocolate leading-snug">{event.title}</h3>
+                  <h3 class="font-serif text-lg font-bold text-chocolate leading-snug">{event.title}</h3>
                   <div class="flex items-center gap-1.5 mt-1">
-                    <span class="text-sm shrink-0">{flag}</span>
-                    <p class="text-sm text-marron/70 truncate">{event.Lugar}</p>
+                    <span class="text-base shrink-0">{flag}</span>
+                    <p class="text-base text-marron/70 truncate">{event.Lugar}</p>
                   </div>
                 </div>
-                <span class="text-marron/30 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-lg shrink-0">&rarr;</span>
+                <span class="text-marron/30 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-xl shrink-0">&rarr;</span>
               </div>
             )
           })
@@ -346,54 +346,56 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   import gsap from "gsap";
 
   function revealOnScroll(selector, opts = {}) {
-    const { stagger = 0.1, from = "bottom", distance = 60 } = opts;
+    const { stagger = 0.1, from = "bottom", distance = 40 } = opts;
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
+    gsap.set(els, { willChange: "transform, opacity" });
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        const vars = { opacity: 0, duration: 1.2, stagger, ease: "power4.out", filter: "blur(6px)" };
+        const base = { duration: 0.9, ease: "power3.out", overwrite: "auto", force3D: true };
         if (from === "bottom") {
-          gsap.fromTo(targets, { y: distance, ...vars }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(2px)" }, { y: 0, opacity: 1, filter: "blur(0px)", stagger, ...base });
         } else if (from === "center") {
-          gsap.set(targets, { transformOrigin: "center center", filter: "blur(6px)" });
-          gsap.fromTo(targets, { opacity: 0, scale: 0.4, y: 40, rotation: -3 }, { opacity: 1, scale: 1, y: 0, rotation: 0, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+          gsap.set(targets, { transformOrigin: "center center" });
+          gsap.fromTo(targets, { opacity: 0, scale: 0.9, y: 20, filter: "blur(2px)" }, { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", stagger, ...base });
         } else if (from === "side") {
           targets.forEach((t, i) => {
             const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(t, { x: dir * 80, opacity: 0, filter: "blur(6px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out", delay: i * stagger });
+            gsap.fromTo(t, { x: dir * 40, opacity: 0, filter: "blur(2px)" }, { x: 0, opacity: 1, filter: "blur(0px)", delay: i * stagger, ...base, onComplete: () => { t.style.opacity = ""; t.style.filter = ""; } });
           });
         }
         targets.forEach((t) => observer.unobserve(t));
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.2 },
     );
     els.forEach((el) => observer.observe(el));
   }
 
   gsap.from(".hero-content > *", {
-    y: 80,
+    y: 60,
     opacity: 0,
-    filter: "blur(10px)",
-    duration: 1.2,
-    stagger: 0.15,
-    ease: "power4.out",
+    filter: "blur(2px)",
+    duration: 0.9,
+    stagger: 0.12,
+    ease: "power3.out",
+    force3D: true,
   });
 
   gsap.set(".hero-parallax", { scale: 1 });
 
-  revealOnScroll(".section-header > *", { stagger: 0.12, distance: 40 });
-  revealOnScroll(".blog-card", { from: "center", stagger: 0.1 });
+  revealOnScroll(".section-header > *", { stagger: 0.1, distance: 30 });
+  revealOnScroll(".blog-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
-  revealOnScroll(".event-card", { from: "side", stagger: 0.08 });
+  revealOnScroll(".event-card", { from: "side", stagger: 0.06 });
 
   const nearest = document.querySelector(".nearest-event");
   if (nearest) {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        gsap.fromTo(nearest, { scale: 0.92, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: "power4.out" });
+        gsap.fromTo(nearest, { scale: 0.95, opacity: 0, force3D: true }, { scale: 1, opacity: 1, duration: 0.8, ease: "power3.out", force3D: true });
         observer.unobserve(nearest);
       }
     }, { threshold: 0.2 });

@@ -150,6 +150,9 @@ const { title } = Astro.props;
 </html>
 
 <script>
+  window.scrollTo(0, 0);
+  document.addEventListener("astro:after-swap", () => window.scrollTo(0, 0));
+
   const btn = document.getElementById("scroll-top-btn");
   if (btn) {
     let ticking = false;
