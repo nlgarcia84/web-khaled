@@ -14,6 +14,13 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    const isGeneral = !campaignSlug;
+    const productName = isGeneral ? "Donación general - Musala" : "Donación - Alfombra para la Musala";
+    const origin = request.headers.get("origin") || "https://www.khaledhuerta.com";
+
+    const metadata: Record<string, string> = {};
+    if (campaignSlug) metadata.campaignSlug = campaignSlug;
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -21,19 +28,15 @@ export const POST: APIRoute = async ({ request }) => {
         {
           price_data: {
             currency: "eur",
-            product_data: {
-              name: "Donación - Alfombra para la Musala",
-            },
+            product_data: { name: productName },
             unit_amount: Math.round(amount * 100),
           },
           quantity: 1,
         },
       ],
-      metadata: {
-        campaignSlug,
-      },
-      success_url: `${request.headers.get("origin")}/alfombra?donacion=exito`,
-      cancel_url: `${request.headers.get("origin")}/alfombra`,
+      metadata,
+      success_url: `${origin}/donar?donacion=exito`,
+      cancel_url: `${origin}/donar`,
     });
 
     return new Response(JSON.stringify({ url: session.url }), {

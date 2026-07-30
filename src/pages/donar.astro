@@ -74,15 +74,15 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         Donaciones generales
       </h2>
 
-      <a
-        href="/alfombra"
-        class="group bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro transition-all duration-300 max-w-200 mx-auto mb-14 flex items-center justify-between no-underline"
+      <div
+        class="bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm max-w-200 mx-auto mb-6 cursor-pointer select-none"
+        id="general-donation-card"
       >
         <div class="flex items-center gap-4">
           <span class="text-2xl shrink-0">🤲</span>
           <div>
             <div class="flex items-center gap-3 mb-1">
-              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
+              <h3 class="font-serif text-lg font-bold text-chocolate">
                 Donación sin campaña específica
               </h3>
             </div>
@@ -92,8 +92,34 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
             </p>
           </div>
         </div>
-        <span class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg">&rarr;</span>
-      </a>
+
+        <div id="general-donation-form" class="hidden mt-6 pt-6 border-t border-oro/20">
+          <p class="font-serif text-base font-bold text-chocolate mb-4 text-center">
+            Elige tu contribución
+          </p>
+
+          <div class="grid grid-cols-3 gap-3 mb-6">
+            <button class="gen-amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate" data-amount="10">10 €</button>
+            <button class="gen-amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate" data-amount="20">20 €</button>
+            <button class="gen-amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate" data-amount="50">50 €</button>
+            <button class="gen-amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate" data-amount="100">100 €</button>
+            <button class="gen-amount-btn border-2 border-oro bg-oro/5 rounded-lg py-3 px-4 text-center transition-colors cursor-pointer font-bold text-chocolate" data-amount="200">200 €</button>
+            <button class="gen-amount-btn border border-gray-200 rounded-lg py-3 px-4 text-center hover:border-oro hover:text-oro transition-colors cursor-pointer font-medium text-chocolate" data-amount="500">500 €</button>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm text-marron mb-2">Otra cantidad</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-chocolate font-medium">€</span>
+              <input type="number" id="gen-custom-amount" min="1" step="1" placeholder="0" class="w-full border border-gray-200 rounded-lg py-3 pl-10 pr-4 text-chocolate font-medium focus:outline-none focus:border-oro focus:ring-1 focus:ring-oro" />
+            </div>
+          </div>
+
+          <button id="gen-stripe-btn" class="w-full bg-chocolate text-white text-center py-3 px-6 rounded-lg font-medium hover:bg-chocolate/90 transition-colors cursor-pointer border-none text-base">
+            Donar con tarjeta
+          </button>
+        </div>
+      </div>
 
       <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6">
         Métodos de pago
@@ -101,11 +127,14 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-200 mx-auto">
         <div
-          class="bg-white border-l-4 border-l-oro rounded-lg shadow-sm p-5"
+          class="bg-white border-l-4 border-l-gray-300 rounded-lg shadow-sm p-5"
         >
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-oro/10 rounded-lg flex items-center justify-center text-lg shrink-0">
-              💳
+            <div class="w-10 h-10 shrink-0 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="h-6" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <line x1="2" y1="10" x2="22" y2="10"/>
+              </svg>
             </div>
             <div>
               <h3 class="font-sans text-sm font-bold text-chocolate uppercase tracking-wide">
@@ -119,34 +148,33 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         </div>
 
         <div
-          class="bg-white border-l-4 border-l-blue-600 rounded-lg shadow-sm p-5"
+          class="bg-white border-l-4 border-l-gray-300 rounded-lg shadow-sm p-5"
         >
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 shrink-0 flex items-center justify-center">
-              <svg viewBox="0 0 56 14" class="h-4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.15 0H4.3a.39.39 0 0 0-.38.32L2.13 9.08a.38.38 0 0 0 .37.44h2.2a.38.38 0 0 0 .38-.32l.49-2.8a.38.38 0 0 1 .38-.32h1.74c1.86 0 2.88-.9 3.12-2.68.1-.71.03-1.3-.22-1.74-.3-.53-.86-.82-1.64-.96C9.17.06 8.74 0 10.15 0z" fill="#001C64"/>
-                <path d="M9.97 2.5c-.08.47-.4.64-.83.64H8.4l.42-2.44c.02-.13.12-.22.25-.22h.53c.19 0 .31.05.37.16.07.12.07.3 0 .53-.06.34 0 .72 0 1.33z" fill="#009CDF"/>
-                <path d="M12.05 1.57c0 .04-.05.3-.05.33-.14.89-.63 1.26-1.29 1.26h-.32a.28.28 0 0 0-.27.23l-.07.4c0 .02-.02.04-.03.06l-.3 1.7-.02.07" fill="#009CDF"/>
-                <path d="M12.05 1.57c0 .04-.05.3-.05.33-.14.89-.63 1.26-1.29 1.26h-.32a.28.28 0 0 0-.27.23l-.07.4c0 .02-.02.04-.03.06l-.3 1.7-.02.07" fill="#009CDF"/>
-                <path d="M22.16 0h-5.85a.39.39 0 0 0-.38.32l-1.79 8.76a.38.38 0 0 0 .37.44h2.2a.38.38 0 0 0 .38-.32l.48-2.8a.38.38 0 0 1 .38-.32h1.74c1.86 0 2.88-.9 3.12-2.68.1-.71.03-1.3-.22-1.74-.3-.53-.86-.82-1.64-.96C21.18.06 20.75 0 22.16 0z" fill="#001C64"/>
-                <path d="M21.98 2.5c-.08.47-.4.64-.83.64h-.74l.42-2.44c.02-.13.12-.22.25-.22h.53c.19 0 .31.05.37.16.07.12.07.3 0 .53-.06.34 0 .72 0 1.33z" fill="#009CDF"/>
-                <path d="M24.06 1.57c0 .04-.05.3-.05.33-.14.89-.63 1.26-1.29 1.26h-.32c-.13 0-.24.1-.27.23l-.07.4c0 .02-.02.04-.03.06l-.3 1.7c-.02.1.03.2.13.24l.13.04c.2 0 .38-.1.45-.28l.29-1.47c.01-.1.08-.17.19-.17h.35c.42 0 .75-.22.82-.66.06-.37.02-.63-.16-.8-.07-.06-.11-.1 0-.08z" fill="#001C64"/>
-                <path d="M26.4 2.43h-.87c-.11 0-.2.07-.23.17l-.67 3.56c-.02.1.03.2.13.24l.12.04c.18 0 .34-.1.36-.28l.55-2.93c.01-.1.08-.17.19-.17h.55c.45 0 .7-.2.75-.62.02-.12 0-.22-.04-.3-.06-.12-.2-.15-.36-.14z" fill="#001C64"/>
-                <path d="M26.93 1.14c-.06.1-.1.24-.12.41-.14.9-.74 1.26-1.44 1.26h-.33c-.14 0-.27.1-.3.24l-.28 1.5-.01.04c-.01.11.06.2.16.22l.08.02c.16 0 .32-.1.34-.26l.22-1.17c.01-.06.06-.1.12-.1h.34c.7 0 1.2-.4 1.32-1.15.06-.35.04-.6-.1-.73-.08-.07-.13-.1-.02-.1.12 0 .43.05.49.17 0 .1-.12.14-.18.23z" fill="#009CDF"/>
-                <path d="M29.43 3.55c-.08.44-.41.67-.85.68-.11 0-.19-.01-.26-.04l.08-.4a.27.27 0 0 1 .15-.02c.18 0 .37-.08.4-.25a.38.38 0 0 0 0-.18c-.02-.1-.1-.15-.24-.15-.1 0-.23.04-.32.13a.42.42 0 0 0-.1.17l-.27 1.42a.1.1 0 0 0 .07.11l.14.04c.08 0 .16-.04.18-.12l.06-.3a.48.48 0 0 1 .45-.3c.26 0 .42.14.46.41.02.1.02.16 0 .2z" fill="#001C64"/>
-                <path d="M32.49.82l-.79 4.13a.22.22 0 0 1-.22.17h-.54a.15.15 0 0 1-.13-.2l.77-4.03a.3.3 0 0 1 .29-.23h.58c.08 0 .14.06.12.14z" fill="#001C64"/>
-                <path d="M35.83 3.55c-.08.44-.41.67-.85.68-.1 0-.19-.01-.26-.04l.08-.4a.27.27 0 0 1 .15-.02c.18 0 .37-.08.4-.25a.38.38 0 0 0 0-.18c-.02-.1-.1-.15-.24-.15-.1 0-.23.04-.32.13a.42.42 0 0 0-.1.17l-.27 1.42a.1.1 0 0 0 .07.11l.14.04c.08 0 .16-.04.18-.12l.06-.3a.48.48 0 0 1 .45-.3c.26 0 .42.14.46.41.02.1.02.16 0 .2z" fill="#001C64"/>
-                <path d="M37.38 2.43h-.87c-.1 0-.2.07-.23.17l-.67 3.56c-.02.1.03.2.13.24l.12.04c.18 0 .34-.1.36-.28l.55-2.93c.01-.1.08-.17.19-.17h.55c.45 0 .7-.2.75-.62.02-.12 0-.22-.04-.29-.06-.12-.2-.15-.36-.14z" fill="#001C64"/>
-                <path d="M39.33.82l-.78 4.13a.22.22 0 0 1-.22.17h-.55a.15.15 0 0 1-.12-.2l.76-4.03a.3.3 0 0 1 .29-.23h.58c.08 0 .14.06.12.14z" fill="#001C64"/>
-                <path d="M39.48 5.24c.02 0 .04 0 .06.01l-.06.3a.1.1 0 0 1-.1.09h-.55a.2.2 0 0 1-.15-.06c-.04-.04-.05-.1-.04-.17l.07-.36.07-.07c.07.2.2.28.4.28h.22c.16 0 .28-.06.32-.17l-.07-.13c-.02-.01-.05.01-.06.03-.02.02-.04.04-.07.06-.04.02-.09.03-.17.03h-.22c-.28 0-.44-.2-.4-.5l.04-.22a.2.2 0 0 1 .19-.17h.82c-.04.2-.08.42-.12.6-.03.2-.06.4-.09.5 0 .02 0 .04-.01.06z" fill="#009CDF"/>
-                <path d="M44.6 3.36l-.1.03c.06.08.14.12.26.12.12 0 .24-.02.36-.06l.05.18c-.14.06-.28.09-.43.09-.25 0-.42-.1-.51-.3-.04-.08-.05-.18-.04-.28l.38-2.06h.5l-.08.44h.41l-.08.42h-.4c-.04.23-.1.45-.17.57-.1.15-.16.25-.15.35 0 .1.05.16.14.16.04 0 .1-.02.2-.08l.07.2a.65.65 0 0 1-.28.08c-.2 0-.3-.1-.3-.31 0-.04 0-.1.01-.18z" fill="#001C64"/>
-                <path d="M45.95 3.36c-.1.1-.2.14-.34.14-.14 0-.26-.03-.34-.1-.09-.07-.14-.18-.14-.33 0-.07.02-.16.05-.27l.31-1.68h.5l-.3 1.64a.45.45 0 0 0-.02.14c0 .08.03.12.1.12a.28.28 0 0 0 .17-.08l-.08.42z" fill="#001C64"/>
-                <path d="M46.3 3.5h.67l.04-.19h-.6l.08-.4a.6.6 0 0 1 .24-.01c.14 0 .26.04.35.11.08.07.14.17.18.31a.95.95 0 0 1 .02.5c-.08.37-.28.56-.62.56a.5.5 0 0 1-.37-.13c-.1-.09-.13-.2-.1-.37l.07-.38zm.16.34c-.03.13.01.2.11.2.05 0 .1-.04.14-.13.03-.08.05-.17.04-.26 0-.08-.03-.13-.1-.16a.3.3 0 0 0-.17-.03l-.08-.01-.04.2c0 .05-.01.1-.02.15.02.04.05.06.09.06.02 0 .03 0 .04-.01z" fill="#001C64"/>
-                <path d="M50.34 2.8h-.5l-.24 1.27a.32.32 0 0 0-.01.1c0 .06.03.08.09.08.02 0 .06 0 .1-.01l-.03.2c-.1.05-.21.06-.32.06-.12 0-.2-.02-.25-.08a.4.4 0 0 1-.07-.26c0-.09.02-.2.05-.33l.23-1.2h-.25l.03-.2h.25l.12-.62h.5l-.11.62h.47l-.06.2z" fill="#001C64"/>
-                <path d="M51.04 2.6h.43l.1.52c.05-.2.14-.36.28-.48.09-.07.18-.11.27-.11a.3.3 0 0 1 .14.02l-.07.22a.22.22 0 0 0-.1-.02c-.17 0-.32.13-.44.38-.03.07-.06.16-.08.28l-.12.65h-.5l.31-1.64z" fill="#001C64"/>
-                <path d="M52.92 2.46h.39l-.2.97h.4c.16 0 .28-.02.35-.07a.43.43 0 0 0 .16-.18l.2-.14c.04.07.06.14.06.2 0 .1-.06.2-.17.3a.8.8 0 0 1-.5.16h-.4l-.2 1.13h-.22l.22-1.15h-.28l.07-.36h.27l.2-.97z" fill="#001C64"/>
-                <path d="M54.8 3.36l-.1.03c.06.08.14.12.26.12.12 0 .24-.02.36-.06l.05.18c-.14.06-.28.09-.43.09-.25 0-.42-.1-.51-.3-.04-.08-.05-.18-.04-.28l.38-2.06h.5l-.08.44h.41l-.08.42h-.4c-.04.23-.1.45-.17.57-.1.15-.16.25-.15.35 0 .1.05.16.14.16.04 0 .1-.02.2-.08l.07.2a.65.65 0 0 1-.28.08c-.2 0-.3-.1-.3-.31 0-.04 0-.1.01-.18z" fill="#001C64"/>
-                <path d="M55.8 3.36c-.1.1-.2.14-.34.14-.14 0-.26-.03-.34-.1-.09-.07-.14-.18-.14-.33 0-.07.02-.16.05-.27l.31-1.68h.5l-.3 1.64a.45.45 0 0 0-.02.14c0 .08.03.12.1.12a.28.28 0 0 0 .17-.08l-.08.42z" fill="#001C64"/>
+              <svg viewBox="0 0 56 14" class="h-4" fill="#888" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.15 0H4.3a.39.39 0 0 0-.38.32L2.13 9.08a.38.38 0 0 0 .37.44h2.2a.38.38 0 0 0 .38-.32l.49-2.8a.38.38 0 0 1 .38-.32h1.74c1.86 0 2.88-.9 3.12-2.68.1-.71.03-1.3-.22-1.74-.3-.53-.86-.82-1.64-.96C9.17.06 8.74 0 10.15 0z"/>
+                <path d="M9.97 2.5c-.08.47-.4.64-.83.64H8.4l.42-2.44c.02-.13.12-.22.25-.22h.53c.19 0 .31.05.37.16.07.12.07.3 0 .53-.06.34 0 .72 0 1.33z"/>
+                <path d="M12.05 1.57c0 .04-.05.3-.05.33-.14.89-.63 1.26-1.29 1.26h-.32a.28.28 0 0 0-.27.23l-.07.4c0 .02-.02.04-.03.06l-.3 1.7-.02.07"/>
+                <path d="M22.16 0h-5.85a.39.39 0 0 0-.38.32l-1.79 8.76a.38.38 0 0 0 .37.44h2.2a.38.38 0 0 0 .38-.32l.48-2.8a.38.38 0 0 1 .38-.32h1.74c1.86 0 2.88-.9 3.12-2.68.1-.71.03-1.3-.22-1.74-.3-.53-.86-.82-1.64-.96C21.18.06 20.75 0 22.16 0z"/>
+                <path d="M21.98 2.5c-.08.47-.4.64-.83.64h-.74l.42-2.44c.02-.13.12-.22.25-.22h.53c.19 0 .31.05.37.16.07.12.07.3 0 .53-.06.34 0 .72 0 1.33z"/>
+                <path d="M24.06 1.57c0 .04-.05.3-.05.33-.14.89-.63 1.26-1.29 1.26h-.32c-.13 0-.24.1-.27.23l-.07.4c0 .02-.02.04-.03.06l-.3 1.7c-.02.1.03.2.13.24l.13.04c.2 0 .38-.1.45-.28l.29-1.47c.01-.1.08-.17.19-.17h.35c.42 0 .75-.22.82-.66.06-.37.02-.63-.16-.8-.07-.06-.11-.1 0-.08z"/>
+                <path d="M26.4 2.43h-.87c-.11 0-.2.07-.23.17l-.67 3.56c-.02.1.03.2.13.24l.12.04c.18 0 .34-.1.36-.28l.55-2.93c.01-.1.08-.17.19-.17h.55c.45 0 .7-.2.75-.62.02-.12 0-.22-.04-.3-.06-.12-.2-.15-.36-.14z"/>
+                <path d="M26.93 1.14c-.06.1-.1.24-.12.41-.14.9-.74 1.26-1.44 1.26h-.33c-.14 0-.27.1-.3.24l-.28 1.5-.01.04c-.01.11.06.2.16.22l.08.02c.16 0 .32-.1.34-.26l.22-1.17c.01-.06.06-.1.12-.1h.34c.7 0 1.2-.4 1.32-1.15.06-.35.04-.6-.1-.73-.08-.07-.13-.1-.02-.1.12 0 .43.05.49.17 0 .1-.12.14-.18.23z"/>
+                <path d="M29.43 3.55c-.08.44-.41.67-.85.68-.11 0-.19-.01-.26-.04l.08-.4a.27.27 0 0 1 .15-.02c.18 0 .37-.08.4-.25a.38.38 0 0 0 0-.18c-.02-.1-.1-.15-.24-.15-.1 0-.23.04-.32.13a.42.42 0 0 0-.1.17l-.27 1.42a.1.1 0 0 0 .07.11l.14.04c.08 0 .16-.04.18-.12l.06-.3a.48.48 0 0 1 .45-.3c.26 0 .42.14.46.41.02.1.02.16 0 .2z"/>
+                <path d="M32.49.82l-.79 4.13a.22.22 0 0 1-.22.17h-.54a.15.15 0 0 1-.13-.2l.77-4.03a.3.3 0 0 1 .29-.23h.58c.08 0 .14.06.12.14z"/>
+                <path d="M35.83 3.55c-.08.44-.41.67-.85.68-.1 0-.19-.01-.26-.04l.08-.4a.27.27 0 0 1 .15-.02c.18 0 .37-.08.4-.25a.38.38 0 0 0 0-.18c-.02-.1-.1-.15-.24-.15-.1 0-.23.04-.32.13a.42.42 0 0 0-.1.17l-.27 1.42a.1.1 0 0 0 .07.11l.14.04c.08 0 .16-.04.18-.12l.06-.3a.48.48 0 0 1 .45-.3c.26 0 .42.14.46.41.02.1.02.16 0 .2z"/>
+                <path d="M37.38 2.43h-.87c-.1 0-.2.07-.23.17l-.67 3.56c-.02.1.03.2.13.24l.12.04c.18 0 .34-.1.36-.28l.55-2.93c.01-.1.08-.17.19-.17h.55c.45 0 .7-.2.75-.62.02-.12 0-.22-.04-.29-.06-.12-.2-.15-.36-.14z"/>
+                <path d="M39.33.82l-.78 4.13a.22.22 0 0 1-.22.17h-.55a.15.15 0 0 1-.12-.2l.76-4.03a.3.3 0 0 1 .29-.23h.58c.08 0 .14.06.12.14z"/>
+                <path d="M39.48 5.24c.02 0 .04 0 .06.01l-.06.3a.1.1 0 0 1-.1.09h-.55a.2.2 0 0 1-.15-.06c-.04-.04-.05-.1-.04-.17l.07-.36.07-.07c.07.2.2.28.4.28h.22c.16 0 .28-.06.32-.17l-.07-.13c-.02-.01-.05.01-.06.03-.02.02-.04.04-.07.06-.04.02-.09.03-.17.03h-.22c-.28 0-.44-.2-.4-.5l.04-.22a.2.2 0 0 1 .19-.17h.82c-.04.2-.08.42-.12.6-.03.2-.06.4-.09.5 0 .02 0 .04-.01.06z"/>
+                <path d="M44.6 3.36l-.1.03c.06.08.14.12.26.12.12 0 .24-.02.36-.06l.05.18c-.14.06-.28.09-.43.09-.25 0-.42-.1-.51-.3-.04-.08-.05-.18-.04-.28l.38-2.06h.5l-.08.44h.41l-.08.42h-.4c-.04.23-.1.45-.17.57-.1.15-.16.25-.15.35 0 .1.05.16.14.16.04 0 .1-.02.2-.08l.07.2a.65.65 0 0 1-.28.08c-.2 0-.3-.1-.3-.31 0-.04 0-.1.01-.18z"/>
+                <path d="M45.95 3.36c-.1.1-.2.14-.34.14-.14 0-.26-.03-.34-.1-.09-.07-.14-.18-.14-.33 0-.07.02-.16.05-.27l.31-1.68h.5l-.3 1.64a.45.45 0 0 0-.02.14c0 .08.03.12.1.12a.28.28 0 0 0 .17-.08l-.08.42z"/>
+                <path d="M46.3 3.5h.67l.04-.19h-.6l.08-.4a.6.6 0 0 1 .24-.01c.14 0 .26.04.35.11.08.07.14.17.18.31a.95.95 0 0 1 .02.5c-.08.37-.28.56-.62.56a.5.5 0 0 1-.37-.13c-.1-.09-.13-.2-.1-.37l.07-.38zm.16.34c-.03.13.01.2.11.2.05 0 .1-.04.14-.13.03-.08.05-.17.04-.26 0-.08-.03-.13-.1-.16a.3.3 0 0 0-.17-.03l-.08-.01-.04.2c0 .05-.01.1-.02.15.02.04.05.06.09.06.02 0 .03 0 .04-.01z"/>
+                <path d="M50.34 2.8h-.5l-.24 1.27a.32.32 0 0 0-.01.1c0 .06.03.08.09.08.02 0 .06 0 .1-.01l-.03.2c-.1.05-.21.06-.32.06-.12 0-.2-.02-.25-.08a.4.4 0 0 1-.07-.26c0-.09.02-.2.05-.33l.23-1.2h-.25l.03-.2h.25l.12-.62h.5l-.11.62h.47l-.06.2z"/>
+                <path d="M51.04 2.6h.43l.1.52c.05-.2.14-.36.28-.48.09-.07.18-.11.27-.11a.3.3 0 0 1 .14.02l-.07.22a.22.22 0 0 0-.1-.02c-.17 0-.32.13-.44.38-.03.07-.06.16-.08.28l-.12.65h-.5l.31-1.64z"/>
+                <path d="M52.92 2.46h.39l-.2.97h.4c.16 0 .28-.02.35-.07a.43.43 0 0 0 .16-.18l.2-.14c.04.07.06.14.06.2 0 .1-.06.2-.17.3a.8.8 0 0 1-.5.16h-.4l-.2 1.13h-.22l.22-1.15h-.28l.07-.36h.27l.2-.97z"/>
+                <path d="M54.8 3.36l-.1.03c.06.08.14.12.26.12.12 0 .24-.02.36-.06l.05.18c-.14.06-.28.09-.43.09-.25 0-.42-.1-.51-.3-.04-.08-.05-.18-.04-.28l.38-2.06h.5l-.08.44h.41l-.08.42h-.4c-.04.23-.1.45-.17.57-.1.15-.16.25-.15.35 0 .1.05.16.14.16.04 0 .1-.02.2-.08l.07.2a.65.65 0 0 1-.28.08c-.2 0-.3-.1-.3-.31 0-.04 0-.1.01-.18z"/>
+                <path d="M55.8 3.36c-.1.1-.2.14-.34.14-.14 0-.26-.03-.34-.1-.09-.07-.14-.18-.14-.33 0-.07.02-.16.05-.27l.31-1.68h.5l-.3 1.64a.45.45 0 0 0-.02.14c0 .08.03.12.1.12a.28.28 0 0 0 .17-.08l-.08.42z"/>
               </svg>
             </div>
             <div>
@@ -161,11 +189,18 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         </div>
 
         <div
-          class="bg-white border-l-4 border-l-chocolate rounded-lg shadow-sm p-5"
+          class="bg-white border-l-4 border-l-gray-300 rounded-lg shadow-sm p-5"
         >
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-chocolate/10 rounded-lg flex items-center justify-center text-sm font-bold text-chocolate shrink-0">
-              BBVA
+            <div class="w-10 h-10 shrink-0 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="h-6" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2"/>
+                <path d="M8 2v4"/>
+                <path d="M16 2v4"/>
+                <path d="M3 10h18"/>
+                <path d="M10 14h4"/>
+                <path d="M12 14v4"/>
+              </svg>
             </div>
             <div>
               <h3 class="font-sans text-sm font-bold text-chocolate uppercase tracking-wide">
@@ -179,11 +214,14 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         </div>
 
         <div
-          class="bg-white border-l-4 border-l-oro/40 rounded-lg shadow-sm p-5 opacity-70"
+          class="bg-white border-l-4 border-l-gray-300 rounded-lg shadow-sm p-5 opacity-70"
         >
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-oro/5 rounded-lg flex items-center justify-center text-lg shrink-0">
-              ₿
+            <div class="w-10 h-10 shrink-0 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="h-5" fill="#888" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 22.09C6.45 22.09 1.91 17.55 1.91 12S6.45 1.91 12 1.91 22.09 6.45 22.09 12 17.55 22.09 12 22.09z"/>
+                <path d="M12 4.77c-.33 0-.6.22-.6.5v1.2c-1.14.2-2.03.76-2.03 1.43 0 .6.54 1.08 1.2 1.08h.83v1.37c-.23.02-.49.02-.8.02-1.69 0-3.6-.55-3.6-2.2 0-.72.6-1.4 1.43-1.63-.66-.25-1.03-.75-1.03-1.3 0-.8.72-1.54 1.8-1.78v-.37c0-.28-.27-.5-.6-.5s-.6.22-.6.5v.18c-.44.15-.77.42-.77.74 0 .35.4.62.94.62.8 0 1.63-.38 1.63-1.54 0-.98-.77-1.8-1.8-1.8s-1.8.82-1.8 1.8c0 .88.6 1.63 1.43 1.8v.06c-1.5.35-2.43 1.3-2.43 2.26 0 1.32 1.26 2.26 3.2 2.37.12.46.38.86.77 1.14v2c0 .28.27.5.6.5s.6-.22.6-.5v-1.2c1.14-.2 2.03-.76 2.03-1.43 0-.6-.54-1.08-1.2-1.08h-.83v-1.37c.23-.02.49-.02.8-.02 1.69 0 3.6.55 3.6 2.2 0 .72-.6 1.4-1.43 1.63.66.25 1.03.75 1.03 1.3 0 .8-.72 1.54-1.8 1.78v.37c0 .28-.27.5-.6.5s-.6-.22-.6-.5v-.18c-.44-.15-.77-.42-.77-.74 0-.35.4-.62.94-.62.8 0 1.63.38 1.63 1.54 0 .98.77 1.8 1.8 1.8s1.8-.82 1.8-1.8c0-.88-.6-1.63-1.43-1.8v-.06c1.5-.35 2.43-1.3 2.43-2.26 0-1.32-1.26-2.26-3.2-2.37-.12-.46-.38-.86-.77-1.14v-2c0-.28-.27-.5-.6-.5z"/>
+              </svg>
             </div>
             <div>
               <h3 class="font-sans text-sm font-bold text-chocolate uppercase tracking-wide">
@@ -221,3 +259,69 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
     </div>
   </section>
 </Layout>
+
+<script>
+  const card = document.getElementById("general-donation-card");
+  const form = document.getElementById("general-donation-form");
+  let isOpen = false;
+
+  card?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest("button, input");
+    if (btn) return;
+    isOpen = !isOpen;
+    form?.classList.toggle("hidden", !isOpen);
+  });
+
+  const amountBtns = document.querySelectorAll(".gen-amount-btn");
+  const customInput = document.getElementById("gen-custom-amount") as HTMLInputElement;
+  let selectedAmount = 200;
+
+  amountBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      amountBtns.forEach((b) => {
+        b.className = b.className.replace(/border-2 border-oro bg-oro\/5 font-bold/, "border border-gray-200 font-medium");
+      });
+      btn.className = btn.className.replace(/border border-gray-200 font-medium/, "border-2 border-oro bg-oro/5 font-bold");
+      selectedAmount = parseInt(btn.getAttribute("data-amount") || "0");
+      customInput.value = "";
+    });
+  });
+
+  customInput?.addEventListener("input", () => {
+    if (customInput.value) {
+      amountBtns.forEach((b) => {
+        b.className = b.className.replace(/border-2 border-oro bg-oro\/5 font-bold/, "border border-gray-200 font-medium");
+      });
+      selectedAmount = parseInt(customInput.value);
+    }
+  });
+
+  const stripeBtn = document.getElementById("gen-stripe-btn");
+  stripeBtn?.addEventListener("click", async () => {
+    const amount = selectedAmount || parseInt(customInput.value);
+    if (!amount || amount < 1) {
+      alert("Selecciona una cantidad");
+      return;
+    }
+    stripeBtn.disabled = true;
+    stripeBtn.textContent = "Procesando...";
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Error al procesar el pago. Intenta de nuevo.");
+      }
+    } catch {
+      alert("Error de conexión. Intenta de nuevo.");
+    } finally {
+      stripeBtn.disabled = false;
+      stripeBtn.textContent = "Donar con tarjeta";
+    }
+  });
+</script>
