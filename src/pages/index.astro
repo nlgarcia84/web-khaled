@@ -320,7 +320,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
             const month = date.toLocaleDateString("es", { month: "short" });
             const flag = event.Lugar.includes("México") ? "🇲🇽" : event.Lugar.includes("Argentina") ? "🇦🇷" : event.Lugar.includes("Chile") ? "🇨🇱" : "";
             return (
-              <div class={"event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" + (i === 0 ? " nearest-event" : " opacity-60 hover:opacity-100")}>
+              <div class={"event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" + (i === 0 ? " nearest-event" : " opacity-40 hover:opacity-100")}>
                 <div class="w-14 h-14 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
                   <span class="text-lg font-bold text-oro leading-none">{day}</span>
                   <span class="text-[10px] font-semibold text-oro uppercase tracking-wide">{month}</span>
