@@ -74,12 +74,15 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         Donaciones generales
       </h2>
 
-      <div class="bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm max-w-200 mx-auto mb-14">
+      <a
+        href="/alfombra"
+        class="group bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm hover:shadow-md hover:border-oro transition-all duration-300 max-w-200 mx-auto mb-14 flex items-center justify-between no-underline"
+      >
         <div class="flex items-center gap-4">
           <span class="text-2xl shrink-0">🤲</span>
           <div>
             <div class="flex items-center gap-3 mb-1">
-              <h3 class="font-serif text-lg font-bold text-chocolate">
+              <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors">
                 Donación sin campaña específica
               </h3>
             </div>
@@ -89,7 +92,8 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
             </p>
           </div>
         </div>
-      </div>
+        <span class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg">&rarr;</span>
+      </a>
 
       <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate text-center mb-6">
         Métodos de pago
