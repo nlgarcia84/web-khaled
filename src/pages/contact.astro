@@ -98,19 +98,18 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
   function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 40 } = {}) {
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
-    gsap.set(els, { willChange: "transform, opacity" });
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        const base = { duration: 0.9, ease: "power3.out", overwrite: "auto", force3D: true };
+        const base = { duration: 0.8, ease: "power2.out", overwrite: "auto", force3D: true };
         if (from === "bottom") {
-          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(2px)" }, { y: 0, opacity: 1, filter: "blur(0px)", stagger, ...base });
+          gsap.fromTo(targets, { y: distance, opacity: 0 }, { y: 0, opacity: 1, stagger, ...base });
         } else if (from === "side") {
           targets.forEach((t, i) => {
             const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(t, { x: dir * 40, opacity: 0, filter: "blur(2px)" }, { x: 0, opacity: 1, filter: "blur(0px)", delay: i * stagger, ...base, onComplete: () => { t.style.opacity = ""; t.style.filter = ""; } });
+            gsap.fromTo(t, { x: dir * 30, opacity: 0 }, { x: 0, opacity: 1, delay: i * stagger, ...base });
           });
         }
         targets.forEach((t) => observer.unobserve(t));
@@ -121,12 +120,11 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
   }
 
   gsap.from(".hero-content > *", {
-    y: 60,
+    y: 50,
     opacity: 0,
-    filter: "blur(2px)",
-    duration: 0.9,
+    duration: 0.8,
     stagger: 0.12,
-    ease: "power3.out",
+    ease: "power2.out",
     force3D: true,
   });
 

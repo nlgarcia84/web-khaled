@@ -36,7 +36,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 ---
 
 <Layout title="Inicio">
-  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[100dvh]">
+  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100dvh-5rem)]">
     <img
       src={khaledAlfombra.src}
       alt=""
@@ -349,22 +349,21 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
     const { stagger = 0.1, from = "bottom", distance = 40 } = opts;
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
-    gsap.set(els, { willChange: "transform, opacity" });
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        const base = { duration: 0.9, ease: "power3.out", overwrite: "auto", force3D: true };
+        const base = { duration: 0.8, ease: "power2.out", overwrite: "auto", force3D: true };
         if (from === "bottom") {
-          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(2px)" }, { y: 0, opacity: 1, filter: "blur(0px)", stagger, ...base });
+          gsap.fromTo(targets, { y: distance, opacity: 0 }, { y: 0, opacity: 1, stagger, ...base });
         } else if (from === "center") {
           gsap.set(targets, { transformOrigin: "center center" });
-          gsap.fromTo(targets, { opacity: 0, scale: 0.9, y: 20, filter: "blur(2px)" }, { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", stagger, ...base });
+          gsap.fromTo(targets, { opacity: 0, scale: 0.92, y: 16 }, { opacity: 1, scale: 1, y: 0, stagger, ...base });
         } else if (from === "side") {
           targets.forEach((t, i) => {
             const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(t, { x: dir * 40, opacity: 0, filter: "blur(2px)" }, { x: 0, opacity: 1, filter: "blur(0px)", delay: i * stagger, ...base, onComplete: () => { t.style.opacity = ""; t.style.filter = ""; } });
+            gsap.fromTo(t, { x: dir * 30, opacity: 0 }, { x: 0, opacity: 1, delay: i * stagger, ...base });
           });
         }
         targets.forEach((t) => observer.unobserve(t));
@@ -375,12 +374,11 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   }
 
   gsap.from(".hero-content > *", {
-    y: 60,
+    y: 50,
     opacity: 0,
-    filter: "blur(2px)",
-    duration: 0.9,
+    duration: 0.8,
     stagger: 0.12,
-    ease: "power3.out",
+    ease: "power2.out",
     force3D: true,
   });
 
@@ -391,11 +389,15 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".event-card", { from: "side", stagger: 0.06 });
 
+  document.querySelectorAll(".event-card").forEach((card, i) => {
+    if (i > 0) card.style.opacity = "0.5";
+  });
+
   const nearest = document.querySelector(".nearest-event");
   if (nearest) {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        gsap.fromTo(nearest, { scale: 0.95, opacity: 0, force3D: true }, { scale: 1, opacity: 1, duration: 0.8, ease: "power3.out", force3D: true });
+        gsap.fromTo(nearest, { scale: 0.95, opacity: 0, force3D: true }, { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out", force3D: true });
         observer.unobserve(nearest);
       }
     }, { threshold: 0.2 });
