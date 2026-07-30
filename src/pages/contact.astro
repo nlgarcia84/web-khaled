@@ -13,19 +13,22 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
       aria-hidden="true"
     />
     <div class="absolute inset-0 bg-chocolate/85"></div>
-    <div class="relative z-10 max-w-[800px] mx-auto px-6">
+    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
       <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
         Contacto
       </span>
-      <h1 class="font-serif text-3xl md:text-4xl font-bold text-white">
+      <h1 class="font-serif text-4xl md:text-5xl font-bold text-white leading-tight">
         Ponte en contacto
       </h1>
+      <p class="text-crema/70 text-lg mt-3 max-w-xl mx-auto">
+        Escríbenos para consultas, colaboraciones o simplemente para saludar.
+      </p>
     </div>
   </section>
 
   <section class="py-24 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
-      <div class="max-w-lg mx-auto">
+      <div class="max-w-lg mx-auto form-card">
         <div class="mb-8">
             <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
               Escríbenos
@@ -90,6 +93,42 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
 </Layout>
 
 <script>
+  import gsap from "gsap";
+
+  function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 60 } = {}) {
+    const els = document.querySelectorAll(selector);
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (!visible.length) return;
+        const targets = visible.map((e) => e.target);
+        if (from === "bottom") {
+          gsap.fromTo(targets, { y: distance, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger, ease: "power4.out" });
+        } else if (from === "side") {
+          targets.forEach((t, i) => {
+            const dir = i % 2 === 0 ? -1 : 1;
+            gsap.fromTo(t, { x: dir * 80, opacity: 0, filter: "blur(6px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out", delay: i * stagger });
+          });
+        }
+        targets.forEach((t) => observer.unobserve(t));
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => observer.observe(el));
+  }
+
+  gsap.from(".hero-content > *", {
+    y: 80,
+    opacity: 0,
+    filter: "blur(10px)",
+    duration: 1.2,
+    stagger: 0.15,
+    ease: "power4.out",
+  });
+
+  revealOnScroll(".form-card", { from: "bottom", stagger: 0.1, distance: 50 });
+
   const form = document.getElementById("contact-form") as HTMLFormElement;
   const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
   const messageDiv = document.getElementById("form-message") as HTMLDivElement;
