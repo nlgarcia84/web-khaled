@@ -9,11 +9,13 @@ export const POST: APIRoute = async ({ request }) => {
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
 
+  console.log("Webhook received. Signature present:", !!sig, "Secret starts with:", endpointSecret?.slice(0, 10));
+
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, sig!, endpointSecret);
-  } catch (err) {
-    console.error("Stripe webhook signature verification failed:", err);
+  } catch (err: any) {
+    console.error("Stripe webhook signature verification failed:", err.message);
     return new Response("Webhook Error", { status: 400 });
   }
 
