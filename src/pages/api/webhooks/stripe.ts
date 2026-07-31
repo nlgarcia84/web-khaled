@@ -22,8 +22,13 @@ export const POST: APIRoute = async ({ request }) => {
     const campaignSlug = session.metadata?.campaignSlug;
     const amount = session.amount_total ? session.amount_total / 100 : 0;
 
-    if (!campaignSlug || amount <= 0) {
-      return new Response("Missing metadata", { status: 400 });
+    if (amount <= 0) {
+      return new Response("Invalid amount", { status: 400 });
+    }
+
+    if (!campaignSlug) {
+      console.log("General donation — no campaign to update. Amount:", amount, "€");
+      return new Response("OK", { status: 200 });
     }
 
     try {
@@ -40,6 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
       const transaction = writeClient.transaction();
       transaction.patch(campaign, (p) => p.inc({ raised: amount }));
       await transaction.commit();
+      console.log(`Donation registered: ${amount}€ → campaign "${campaignSlug}"`);
     } catch (err) {
       console.error("Error updating Sanity:", err);
       return new Response("Server Error", { status: 500 });
