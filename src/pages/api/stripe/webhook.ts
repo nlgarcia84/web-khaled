@@ -2,20 +2,25 @@ import type { APIRoute } from "astro";
 import Stripe from "stripe";
 import { writeClient } from "../../../lib/sanity";
 
-const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY ?? "");
+const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY ?? "", {
+  apiVersion: "2024-01-01",
+});
 const endpointSecret = import.meta.env.STRIPE_WEBHOOK_SECRET;
 
 export const POST: APIRoute = async ({ request }) => {
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
 
-  console.log("Webhook received. Signature present:", !!sig, "Secret starts with:", endpointSecret?.slice(0, 10));
+  if (!endpointSecret) {
+    console.error("STRIPE_WEBHOOK_SECRET is not set");
+    return new Response("Server Error", { status: 500 });
+  }
 
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, sig!, endpointSecret);
-  } catch (err: any) {
-    console.error("Stripe webhook signature verification failed:", err.message);
+  } catch (err) {
+    console.error("Stripe webhook error:", err instanceof Error ? err.message : err);
     return new Response("Webhook Error", { status: 400 });
   }
 
