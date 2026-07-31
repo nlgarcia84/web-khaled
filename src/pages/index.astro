@@ -13,6 +13,7 @@ import { getPosts } from "../lib/sanity";
 import { getCampaign } from "../lib/sanity";
 import { getLatestInstagramPost, getLatestTelegramPost } from "../lib/feeds";
 import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
 
 const posts = (await getPosts()).slice(0, 3);
 const campaign = await getCampaign("alfombra");
@@ -36,44 +37,32 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 ---
 
 <Layout title="Inicio">
-  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]">
-    <img
-      src={khaledAlfombra.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover hero-parallax"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/70 to-chocolate/85"></div>
-
-    <div class="relative z-10 max-w-200 mx-auto px-6 hero-content">
-      <p class="font-serif text-oro text-lg md:text-2xl italic font-semibold mb-6 leading-relaxed">
-        "Los modales se aprenden antes que el conocimiento"
-      </p>
-      <h1 class="font-serif text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-6">
-        Difundiendo el mensaje del Islam en Español con rigor, sabiduría y cercanía
-      </h1>
-      <p class="text-crema/80 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto mb-8">
-        Un siervo de Allah que recuerda el camino de los justos predecesores.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/donar"
-          class="inline-flex items-center justify-center gap-2 bg-oro text-chocolate font-semibold px-8 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline"
-        >
-          <span set:html={Heart} class="w-5 h-5" />
-          Apoyar la causa
-        </a>
-        <a
-          href="/biografia"
-          class="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-8 py-3 rounded-lg hover:bg-white/10 transition-colors no-underline"
-        >
-          Conocer más
-          <span set:html={ArrowRight} class="w-4 h-4" />
-        </a>
-      </div>
+  <HeroSection
+    image={khaledAlfombra}
+    quote='"Los modales se aprenden antes que el conocimiento"'
+    title="Difundiendo el mensaje del Islam en Español con rigor, sabiduría y cercanía"
+    description="Un siervo de Allah que recuerda el camino de los justos predecesores."
+    overlay="gradient"
+    maxWidth="800px"
+    imageClass="hero-parallax"
+  >
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="/donar"
+        class="inline-flex items-center justify-center gap-2 bg-oro text-chocolate font-semibold px-8 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline"
+      >
+        <span set:html={Heart} class="w-5 h-5" />
+        Apoyar la causa
+      </a>
+      <a
+        href="/biografia"
+        class="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-8 py-3 rounded-lg hover:bg-white/10 transition-colors no-underline"
+      >
+        Conocer más
+        <span set:html={ArrowRight} class="w-4 h-4" />
+      </a>
     </div>
-  </section>
+  </HeroSection>
 
   <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#fdfcf9] via-[#fdfcf9] to-[#f8f9fa]">
     <img
@@ -381,15 +370,6 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
     );
     els.forEach((el) => observer.observe(el));
   }
-
-  gsap.from(".hero-content > *", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
-    force3D: true,
-  });
 
   gsap.set(".hero-parallax", { scale: 1 });
 

@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
 import { getDocumentos } from "../lib/sanity";
 import khaledEscribe from "../assets/images/khaled_escribe.png";
 
@@ -8,37 +9,13 @@ const driveFolderId = "16Q2ZHIA23Dqw8z1aMrVisEE_HrJNA_RY";
 ---
 
 <Layout title="Biblioteca">
-  <section
-    class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]"
-  >
-    <img
-      src={khaledEscribe.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/75 to-chocolate/90"></div>
-
-    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <span
-        class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4"
-      >
-        Recursos
-      </span>
-      <h1
-        class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-tight"
-      >
-        Biblioteca
-      </h1>
-      <p
-        class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto"
-      >
-        Documentos, libros y materiales de estudio en PDF y formatos editables.
-        Todo el contenido se sincroniza automáticamente desde Google Drive.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    image={khaledEscribe}
+    label="Recursos"
+    title="Biblioteca"
+    description="Documentos, libros y materiales de estudio en PDF y formatos editables. Todo el contenido se sincroniza automáticamente desde Google Drive."
+    overlay="gradient-dark"
+  />
 
   {
     documentos.length > 0 && (
@@ -158,15 +135,6 @@ const driveFolderId = "16Q2ZHIA23Dqw8z1aMrVisEE_HrJNA_RY";
 
 <script>
   import gsap from "gsap";
-
-  gsap.from(".hero-content > *", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
-    force3D: true,
-  });
 
   gsap.from(".document-card", {
     y: 40,

@@ -1,6 +1,7 @@
 ---
 import { createImageUrlBuilder } from "@sanity/image-url";
 import Layout from "../../layouts/Layout.astro";
+import HeroSection from "../../components/HeroSection.astro";
 import { client, getPosts } from "../../lib/sanity";
 import khaledJardin from "../../assets/images/khaled_jardin.JPG";
 
@@ -11,28 +12,16 @@ const rest = posts.slice(1);
 ---
 
 <Layout title="Blog">
-  <section class="relative py-28 md:py-36 text-center overflow-hidden flex flex-col justify-center min-h-[60vh]">
-    <img
-      src={khaledJardin.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover object-[center_30%]"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-chocolate/85"></div>
-
-    <div class="relative z-10 max-w-[1140px] mx-auto px-6 hero-content">
-      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
-        Blog
-      </span>
-      <h1 class="font-serif text-4xl md:text-5xl font-bold text-white leading-tight">
-        Artículos y reflexiones
-      </h1>
-      <p class="text-crema/70 text-lg mt-3 max-w-2xl">
-        Textos, notas y reflexiones sobre la fe, la vida y el camino hacia Al-lah.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    image={khaledJardin}
+    label="Blog"
+    title="Artículos y reflexiones"
+    description="Textos, notas y reflexiones sobre la fe, la vida y el camino hacia Al-lah."
+    size="short"
+    titleSize="md"
+    maxWidth="1140px"
+    imagePosition="center 30%"
+  />
 
   <section class="py-20 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
@@ -193,15 +182,6 @@ const rest = posts.slice(1);
     );
     els.forEach((el) => observer.observe(el));
   }
-
-  gsap.from(".hero-content > *", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
-    force3D: true,
-  });
 
   revealOnScroll(".blog-card", { stagger: 0.1 });
 </script>

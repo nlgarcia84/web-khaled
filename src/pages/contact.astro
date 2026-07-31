@@ -1,36 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
 import khaledVentana from "../assets/images/khaled_ventana.jpg";
 ---
 
 <Layout title="Contacto">
-  <section
-    class="relative py-28 md:py-36 text-center overflow-hidden flex flex-col justify-center min-h-[60vh]"
-  >
-    <img
-      src={khaledVentana.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-chocolate/85"></div>
-    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <span
-        class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4"
-      >
-        Contacto
-      </span>
-      <h1
-        class="font-serif text-4xl md:text-5xl font-bold text-white leading-tight"
-      >
-        Ponte en contacto conmigo
-      </h1>
-      <p class="text-crema/70 text-lg mt-3 max-w-xl mx-auto">
-        Escríbeme para consultas, colaboraciones o simplemente para saludar.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    image={khaledVentana}
+    label="Contacto"
+    title="Ponte en contacto conmigo"
+    description="Escríbeme para consultas, colaboraciones o simplemente para saludar."
+    size="short"
+    titleSize="md"
+  />
 
   <section class="py-24 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
@@ -171,15 +153,6 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
     );
     els.forEach((el) => observer.observe(el));
   }
-
-  gsap.from(".hero-content > *", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
-    force3D: true,
-  });
 
   revealOnScroll(".form-card", { from: "bottom", stagger: 0.1, distance: 40 });
 

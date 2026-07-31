@@ -1,32 +1,16 @@
 ---
 import khaledEscritorio from "../assets/images/khaled_escritorio.JPG";
 import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
 ---
 
 <Layout title="Biografía">
-  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]">
-    <img
-      src={khaledEscritorio.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-chocolate/85"></div>
-
-    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
-        Sobre el Autor
-      </span>
-      <h1 class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-8 leading-tight">
-        Sheij Khaled Huerta
-      </h1>
-      <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed">
-        Un camino riguroso dedicado a la preservación, traducción y difusión
-        de las ciencias tradicionales del Islam en lengua española.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    image={khaledEscritorio}
+    label="Sobre el Autor"
+    title="Sheij Khaled Huerta"
+    description="Un camino riguroso dedicado a la preservación, traducción y difusión de las ciencias tradicionales del Islam en lengua española."
+  />
 
   <section class="py-16 bg-white">
     <div class="max-w-[1140px] mx-auto px-6">
@@ -129,15 +113,6 @@ import Layout from "../layouts/Layout.astro";
     );
     els.forEach((el) => observer.observe(el));
   }
-
-  gsap.from(".hero-content > *", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
-    force3D: true,
-  });
 
   revealOnScroll(".trayectoria-sidebar", { from: "bottom", stagger: 0.1, distance: 40 });
   revealOnScroll(".trayectoria-item", { from: "side", stagger: 0.1 });

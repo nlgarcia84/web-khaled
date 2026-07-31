@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
 import { getCampaign } from "../lib/sanity";
 import khalesMusala from "../assets/images/khales_musala.jpeg";
 
@@ -10,33 +11,14 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 ---
 
 <Layout title="Donar">
-  <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]">
-    <img
-      src={khalesMusala.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover object-[center_80%]"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-chocolate/85"></div>
-    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <p
-        class="font-serif text-oro text-lg md:text-xl italic font-semibold mb-6"
-      >
-        "La caridad no disminuye la riqueza" (Muslim)
-      </p>
-      <h1
-        class="font-serif text-white text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4"
-      >
-        Apoya la Musala
-      </h1>
-      <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto">
-        Tu donación ayuda a mantener y expandir los servicios de la musala
-        para toda la comunidad. Cada contribución, por pequeña que sea, marca
-        la diferencia.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    image={khalesMusala}
+    quote='"La caridad no disminuye la riqueza" (Muslim)'
+    title="Apoya la Musala"
+    description="Tu donación ayuda a mantener y expandir los servicios de la musala para toda la comunidad. Cada contribución, por pequeña que sea, marca la diferencia."
+    titleSize="lg"
+    imagePosition="center 80%"
+  />
 
   <section class="py-20 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">

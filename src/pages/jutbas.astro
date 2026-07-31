@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
 import khaledJutba from "../assets/images/khaled_jutba.png";
 import { getStream } from "../lib/sanity";
 import { getLiveStream } from "../lib/youtube";
@@ -13,51 +14,28 @@ const videoId = live?.videoId ?? "";
 ---
 
 <Layout title="Jutbas en directo">
-  <section
-    class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]"
+  <HeroSection
+    image={khaledJutba}
+    title={stream?.title || "Jutbas en directo"}
+    description="Conéctate cada viernes a la transmisión en vivo de la jutba. Una oportunidad semanal para reflexionar, aprender y fortalecer el iman en comunidad."
+    overlay="gradient-dark"
   >
-    <img
-      src={khaledJutba.src}
-      alt=""
-      class="absolute inset-0 w-full h-full object-cover"
-      fetchpriority="high"
-      aria-hidden="true"
-    />
-    <div
-      class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/75 to-chocolate/90"
-    >
-    </div>
-
-    <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      {
-        isLive ? (
-          <div class="inline-flex items-center gap-2 bg-red-600/90 backdrop-blur-sm text-white text-sm font-bold px-5 py-2 rounded-full mb-6 live-badge">
-            <span class="relative flex h-3 w-3">
-              <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 live-ping" />
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-white" />
-            </span>
-            En directo ahora
-          </div>
-        ) : (
-          <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
-            Todos los viernes
+    {
+      isLive ? (
+        <div slot="label" class="inline-flex items-center gap-2 bg-red-600/90 backdrop-blur-sm text-white text-sm font-bold px-5 py-2 rounded-full mb-6 live-badge">
+          <span class="relative flex h-3 w-3">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 live-ping" />
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-white" />
           </span>
-        )
-      }
-      <h1
-        class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-tight"
-      >
-        {stream?.title || "Jutbas en directo"}
-      </h1>
-      <p
-        class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto"
-      >
-        Conéctate cada viernes a la transmisión en vivo de la jutba. Una
-        oportunidad semanal para reflexionar, aprender y fortalecer el iman en
-        comunidad.
-      </p>
-    </div>
-  </section>
+          En directo ahora
+        </div>
+      ) : (
+        <span slot="label" class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
+          Todos los viernes
+        </span>
+      )
+    }
+  </HeroSection>
 
   <section class="py-16 bg-gris-claro">
     <div class="max-w-[1200px] mx-auto px-6">
@@ -230,15 +208,6 @@ const videoId = live?.videoId ?? "";
 
 <script>
   import gsap from "gsap";
-
-  gsap.from(".hero-content > *", {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
-    force3D: true,
-  });
 
   const streamLive = document.querySelector(".stream-live");
   if (streamLive) {
