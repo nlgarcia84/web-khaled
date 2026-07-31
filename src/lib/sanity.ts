@@ -73,3 +73,23 @@ export async function getStream() {
   }`,
   );
 }
+
+export async function getDocumentos() {
+  return await client.fetch<
+    Array<{
+      _id: string;
+      title: string;
+      fileId: string;
+      type: string;
+      description: string;
+    }>
+  >(
+    `*[_type == "documento"] | order(title asc) {
+    _id,
+    title,
+    fileId,
+    type,
+    description,
+  }`,
+  );
+}
