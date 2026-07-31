@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
-import crypto from "crypto";
 import { writeClient } from "../../../lib/sanity";
 
 const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY ?? "", {
@@ -8,53 +7,26 @@ const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY ?? "", {
 });
 const endpointSecret = import.meta.env.STRIPE_WEBHOOK_SECRET;
 
-function verifySignature(payload: string, sig: string, secret: string): boolean {
-  const parts = sig.split(",").reduce(
-    (acc, part) => {
-      const [k, v] = part.split("=");
-      acc[k] = v;
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-
-  if (!parts.t || !parts.v1) return false;
-
-  const signedPayload = `${parts.t}.${payload}`;
-  const expected = crypto
-    .createHmac("sha256", secret)
-    .update(signedPayload, "utf8")
-    .digest("hex");
-
-  try {
-    return crypto.timingSafeEqual(
-      Buffer.from(expected, "utf8"),
-      Buffer.from(parts.v1, "utf8"),
-    );
-  } catch {
-    return false;
-  }
-}
-
 export const POST: APIRoute = async ({ request }) => {
-  const body = await request.text();
+  const body = Buffer.from(await request.arrayBuffer());
   const sig = request.headers.get("stripe-signature");
 
   if (!endpointSecret) {
-    console.error("STRIPE_WEBHOOK_SECRET is not set");
+    console.error("STRIPE_WEBHOOK_SECRET not set");
     return new Response("Server Error", { status: 500 });
   }
 
-  if (!sig || !verifySignature(body, sig, endpointSecret)) {
-    console.error("Stripe webhook: signature verification failed");
-    return new Response("Webhook Error", { status: 400 });
+  if (!sig) {
+    console.error("Missing stripe-signature header");
+    return new Response("Bad Request", { status: 400 });
   }
 
   let event: Stripe.Event;
   try {
-    event = JSON.parse(body) as Stripe.Event;
-  } catch {
-    return new Response("Invalid JSON", { status: 400 });
+    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+  } catch (err) {
+    console.error("Stripe signature verification failed:", err instanceof Error ? err.message : err);
+    return new Response("Webhook Error", { status: 400 });
   }
 
   if (event.type === "checkout.session.completed") {
