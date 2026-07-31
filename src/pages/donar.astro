@@ -65,8 +65,9 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
               Meta: {goal.toLocaleString()} € — Cada donación acerca la alfombra
             </p>
             <div class="w-full bg-gray-200 rounded-full h-2 mt-2 max-w-60 overflow-hidden">
-              <div class="bg-oro h-full rounded-full" style="width: {Math.min(percentage, 100)}%"></div>
+              <div class="bg-oro h-full rounded-full" style={`width: ${Math.min(percentage, 100)}%`}></div>
             </div>
+            <p class="text-xs text-marron mt-1">{percentage}% completado</p>
           </div>
         </div>
         <span class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg">&rarr;</span>
