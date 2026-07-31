@@ -59,3 +59,14 @@ export async function getCampaign(slug: string) {
     { slug },
   );
 }
+
+export async function getStream() {
+  return await client.fetch(
+    `*[_type == "stream"][0] {
+    title,
+    youtubeVideoId,
+    isLive,
+    chatEnabled,
+  }`,
+  );
+}

@@ -28,7 +28,9 @@ const { title } = Astro.props;
     />
     <ClientRouter />
   </head>
-  <body class="bg-white text-chocolate font-sans antialiased m-0 p-0 min-h-screen flex flex-col">
+  <body
+    class="bg-white text-chocolate font-sans antialiased m-0 p-0 min-h-screen flex flex-col"
+  >
     <header class="bg-chocolate sticky top-0 z-50">
       <div
         class="max-w-[1140px] mx-auto px-6 h-20 flex justify-between items-center"
@@ -66,10 +68,10 @@ const { title } = Astro.props;
             >Contacto</a
           >
           <a
-  href="/jutbas"
-  class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-semibold text-sm"
-  >Jutbas</a
->
+            href="/jutbas"
+            class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-semibold text-sm"
+            >Jutbas</a
+          >
           <a
             href="/donar"
             class="text-oro/90 hover:text-oro transition-colors duration-200 no-underline font-semibold text-sm"
@@ -130,9 +132,7 @@ const { title } = Astro.props;
             >
               Contacto
             </h4>
-            <p class="text-sm text-white/60 leading-relaxed">
-              Formulario
-            </p>
+            <p class="text-sm text-white/60 leading-relaxed">Formulario</p>
           </div>
         </div>
         <div class="border-t border-white/10 mt-12 pt-8 text-center">
@@ -142,14 +142,28 @@ const { title } = Astro.props;
           </p>
           <p class="text-xs text-white/30 mt-2">
             Web desarrollada con <span class="text-red-400">&hearts;</span> por
-            <a href="https://normanleyva.dev" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-oro transition-colors no-underline"> normanleyva.dev</a>
+            <a
+              href="https://normanleyva.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-white/40 hover:text-oro transition-colors no-underline"
+            >
+              normanleyva.dev</a
+            >
           </p>
         </div>
       </div>
     </footer>
 
-    <button id="scroll-top-btn" aria-label="Volver arriba" class="fixed bottom-6 right-6 z-30 w-12 h-12 rounded-full bg-oro text-chocolate shadow-lg hover:shadow-xl hover:bg-oro/90 transition-all duration-300 ease-in-out flex items-center justify-center cursor-pointer opacity-0 translate-y-4 pointer-events-none">
-      <span set:html={ArrowUp} class="w-5 h-5 flex items-center justify-center" />
+    <button
+      id="scroll-top-btn"
+      aria-label="Volver arriba"
+      class="fixed bottom-6 right-6 z-30 w-12 h-12 rounded-full bg-oro text-chocolate shadow-lg hover:shadow-xl hover:bg-oro/90 transition-all duration-300 ease-in-out flex items-center justify-center cursor-pointer opacity-0 translate-y-4 pointer-events-none"
+    >
+      <span
+        set:html={ArrowUp}
+        class="w-5 h-5 flex items-center justify-center"
+      />
     </button>
   </body>
 </html>

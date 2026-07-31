@@ -1,9 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import khaledJutba from "../assets/images/khaled-jutba.jpg";
+import { getStream } from "../lib/sanity";
+import khaledJutba from "../assets/images/khaled_jutba.png";
+
+const stream = await getStream();
+const isLive = stream?.isLive ?? false;
+const videoId = stream?.youtubeVideoId ?? "";
+const chatEnabled = stream?.chatEnabled ?? true;
 ---
-<Layout title="Jutbas">
-    <section class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]">
+
+<Layout title="Jutbas en directo">
+  <section
+    class="relative py-20 md:py-28 text-center overflow-hidden flex flex-col justify-center min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)]"
+  >
     <img
       src={khaledJutba.src}
       alt=""
@@ -14,16 +23,105 @@ import khaledJutba from "../assets/images/khaled-jutba.jpg";
     <div class="absolute inset-0 bg-chocolate/85"></div>
 
     <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
-        Sobre el Autor
+      <span
+        class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4"
+      >
+        Todos los viernes
       </span>
-      <h1 class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-8 leading-tight">
-        Sheij Khaled Huerta
+      <h1
+        class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-8 leading-tight"
+      >
+        {stream?.title || "Jutbas en directo"}
       </h1>
-      <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed">
-        Un camino riguroso dedicado a la preservación, traducción y difusión
-        de las ciencias tradicionales del Islam en lengua española.
+      <p
+        class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto"
+      >
+        Conectate cada viernes a la transmision en vivo de la jutba. Una
+        oportunidad semanal para reflexionar, aprender y fortalecer el iman en
+        comunidad.
       </p>
     </div>
   </section>
+
+  <section class="py-16 bg-gris-claro">
+    <div class="max-w-[1200px] mx-auto px-6">
+      {
+        isLive && videoId ? (
+          <div>
+            <div class="text-center mb-8">
+              <span
+                class="inline-flex items-center gap-2 bg-red-600 text-white text-sm font-bold px-4 py-1.5 rounded-full animate-pulse"
+              >
+                <span class="w-2.5 h-2.5 bg-white rounded-full"></span>
+                En directo ahora
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="lg:col-span-2">
+                <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+                  <iframe
+                    class="absolute inset-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+
+              {
+                chatEnabled && (
+                  <div class="h-[500px] lg:h-auto bg-white rounded-xl overflow-hidden shadow-lg">
+                    <iframe
+                      class="w-full h-full"
+                      src={`https://www.youtube.com/live_chat?v=${videoId}&embed_domain=www.khaledhuerta.com`}
+                      title="Chat en vivo"
+                      frameborder="0"
+                    ></iframe>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        ) : (
+          <div class="text-center py-16">
+            <div class="mb-6">
+              <span class="text-6xl">🕌</span>
+            </div>
+            <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-4">
+              Proxima jutba
+            </h2>
+            <p class="text-marron text-lg max-w-xl mx-auto mb-8">
+              No hay transmision en este momento. La jutba se emite todos los
+              viernes en directo. Vuelve el proximo viernes para conectarte.
+            </p>
+            <div class="inline-flex items-center gap-3 bg-white border border-oro/30 rounded-xl px-6 py-4 shadow-sm">
+              <span class="text-3xl">📅</span>
+              <div class="text-left">
+                <p class="text-sm text-marron font-medium">Todos los viernes</p>
+                <p class="text-lg font-bold text-chocolate">En directo desde YouTube</p>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
 </Layout>
+
+<script>
+  function getNextFriday(): string {
+    const now = new Date();
+    const day = now.getDay();
+    const diff = day <= 5 ? 5 - day : 5 + (7 - day);
+    const friday = new Date(now);
+    friday.setDate(now.getDate() + (diff === 0 ? 0 : diff));
+    return friday.toLocaleDateString("es", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+  }
+</script>
