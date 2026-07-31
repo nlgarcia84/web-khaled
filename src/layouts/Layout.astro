@@ -46,7 +46,7 @@ const { title } = Astro.props;
 
         <MobileMenu client:load />
 
-        <nav class="hidden md:flex gap-8">
+        <nav class="hidden md:flex gap-8 items-center">
           <a
             href="/"
             class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-medium text-sm"
@@ -74,7 +74,7 @@ const { title } = Astro.props;
           >
           <a
             href="/donar"
-            class="bg-oro text-chocolate hover:bg-oro/90 transition-all duration-200 no-underline font-bold text-sm px-4 py-2 rounded-lg"
+            class="inline-flex items-center bg-oro text-chocolate hover:bg-oro/90 transition-all duration-200 no-underline font-bold text-sm px-4 py-1.5 rounded-lg"
             >Donar</a
           >
         </nav>
