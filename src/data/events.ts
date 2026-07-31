@@ -5,11 +5,6 @@ export interface Event {
 }
 export const events: Event[] = [
   {
-    date: "2026-07-24",
-    title: "Serie de los derechos del Islam",
-    Lugar: "México, Musala Al Imán",
-  },
-  {
     date: "2026-09-25",
     title: "El significado de gratitud para los sálaf",
     Lugar: "Buenos Aires, Argentina - Mezquita Al Ahmad",

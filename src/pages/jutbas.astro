@@ -23,16 +23,28 @@ const videoId = live?.videoId ?? "";
       fetchpriority="high"
       aria-hidden="true"
     />
-    <div class="absolute inset-0 bg-chocolate/85"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-chocolate/80 via-chocolate/75 to-chocolate/90"></div>
 
     <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <span
-        class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4"
-      >
-        Todos los viernes
-      </span>
+      {
+        isLive ? (
+          <div class="inline-flex items-center gap-2 bg-red-600/90 backdrop-blur-sm text-white text-sm font-bold px-5 py-2 rounded-full mb-6 live-badge">
+            <span class="relative flex h-3 w-3">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 live-ping"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+            </span>
+            En directo ahora
+          </div>
+        ) : (
+          <span
+            class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4"
+          >
+            Todos los viernes
+          </span>
+        )
+      }
       <h1
-        class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-8 leading-tight"
+        class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-tight"
       >
         {stream?.title || "Jutbas en directo"}
       </h1>
@@ -50,22 +62,25 @@ const videoId = live?.videoId ?? "";
     <div class="max-w-[1200px] mx-auto px-6">
       {
         isLive ? (
-          <div>
-            <div class="text-center mb-8">
-              <span
-                class="inline-flex items-center gap-2 bg-red-600 text-white text-sm font-bold px-4 py-1.5 rounded-full animate-pulse"
-              >
-                <span class="w-2.5 h-2.5 bg-white rounded-full"></span>
-                En directo ahora
-              </span>
-              <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate mt-4">
+          <div class="stream-live">
+            <div class="text-center mb-10">
+              <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate">
                 {live.title}
               </h2>
+              <div class="flex items-center justify-center gap-2 mt-3">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 live-ping"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+                <span class="text-sm text-marron font-medium">Transmitiendo en YouTube</span>
+              </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 stream-grid">
               <div class="lg:col-span-2">
-                <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+                <div
+                  class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl ring-2 ring-red-500/30 stream-video"
+                >
                   <iframe
                     class="absolute inset-0 w-full h-full"
                     src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
@@ -79,9 +94,20 @@ const videoId = live?.videoId ?? "";
 
               {
                 chatEnabled && (
-                  <div class="h-[500px] lg:h-auto bg-white rounded-xl overflow-hidden shadow-lg">
+                  <div
+                    class="h-[500px] lg:h-auto bg-white rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-100 stream-chat"
+                  >
+                    <div
+                      class="bg-chocolate text-white text-xs font-bold tracking-wider uppercase px-4 py-3 text-center"
+                    >
+                      <span class="relative inline-flex h-2 w-2 mr-2">
+                        <span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 live-ping"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+                      </span>
+                      Chat en vivo
+                    </div>
                     <iframe
-                      class="w-full h-full"
+                      class="w-full h-[calc(100%-40px)]"
                       src={`https://www.youtube.com/live_chat?v=${videoId}&embed_domain=www.khaledhuerta.com`}
                       title="Chat en vivo"
                       frameborder="0"
@@ -92,22 +118,39 @@ const videoId = live?.videoId ?? "";
             </div>
           </div>
         ) : (
-          <div class="text-center py-16">
-            <div class="mb-6">
-              <span class="text-6xl">🕌</span>
+          <div class="stream-offline text-center py-12 md:py-20">
+            <div class="offline-indicator mb-10">
+              <div class="connection-ring">
+                <div class="connection-ring-inner">
+                  <span class="text-5xl md:text-6xl">📡</span>
+                </div>
+              </div>
             </div>
+
             <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate mb-4">
               Proxima jutba
             </h2>
-            <p class="text-marron text-lg max-w-xl mx-auto mb-8">
+            <p class="text-marron/70 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
               No hay transmision en este momento. La jutba se emite todos los
-              viernes en directo. Vuelve el proximo viernes para conectarte.
+              viernes en directo. Vuelve el proximo viernes para conectarte a la
+              transmision.
             </p>
-            <div class="inline-flex items-center gap-3 bg-white border border-oro/30 rounded-xl px-6 py-4 shadow-sm">
-              <span class="text-3xl">📅</span>
-              <div class="text-left">
-                <p class="text-sm text-marron font-medium">Todos los viernes</p>
-                <p class="text-lg font-bold text-chocolate">En directo desde YouTube</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto">
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <span class="text-2xl">🕌</span>
+                <p class="font-bold text-chocolate mt-3 text-sm">Cada viernes</p>
+                <p class="text-xs text-marron/60 mt-1">Jutba semanal</p>
+              </div>
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <span class="text-2xl">📺</span>
+                <p class="font-bold text-chocolate mt-3 text-sm">YouTube Live</p>
+                <p class="text-xs text-marron/60 mt-1">Transmision en HD</p>
+              </div>
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <span class="text-2xl">💬</span>
+                <p class="font-bold text-chocolate mt-3 text-sm">Chat en vivo</p>
+                <p class="text-xs text-marron/60 mt-1">Interactua en tiempo real</p>
               </div>
             </div>
           </div>
@@ -116,3 +159,117 @@ const videoId = live?.videoId ?? "";
     </div>
   </section>
 </Layout>
+
+<style is:global>
+  @keyframes live-ping {
+    75%, 100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  .live-ping {
+    animation: live-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes connection-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(187, 148, 87, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 0 20px rgba(187, 148, 87, 0);
+    }
+  }
+
+  @keyframes ring-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .connection-ring {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: connection-pulse 2.5s ease-in-out infinite;
+  }
+
+  .connection-ring::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px dashed rgba(187, 148, 87, 0.25);
+    animation: ring-rotate 20s linear infinite;
+  }
+
+  .connection-ring-inner {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid rgba(187, 148, 87, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+
+  gsap.from(".hero-content > *", {
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.12,
+    ease: "power2.out",
+    force3D: true,
+  });
+
+  const streamLive = document.querySelector(".stream-live");
+  if (streamLive) {
+    gsap.from(".stream-live > *", {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      force3D: true,
+      delay: 0.3,
+    });
+  }
+
+  const streamOffline = document.querySelector(".stream-offline");
+  if (streamOffline) {
+    gsap.from(".offline-indicator", {
+      scale: 0.8,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.out",
+      force3D: true,
+    });
+    gsap.from(".stream-offline h2, .stream-offline > p", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power2.out",
+      force3D: true,
+      delay: 0.2,
+    });
+    gsap.from(".stream-offline .grid > *", {
+      y: 40,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.1,
+      ease: "power2.out",
+      force3D: true,
+      delay: 0.5,
+    });
+  }
+</script>
