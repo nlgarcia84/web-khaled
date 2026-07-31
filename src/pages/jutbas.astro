@@ -1,12 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getStream } from "../lib/sanity";
+import { getLiveStream } from "../lib/youtube";
 import khaledJutba from "../assets/images/khaled_jutba.png";
 
 const stream = await getStream();
-const isLive = stream?.isLive ?? false;
-const videoId = stream?.youtubeVideoId ?? "";
+const channelId = stream?.channelId ?? "";
 const chatEnabled = stream?.chatEnabled ?? true;
+const live = channelId ? await getLiveStream(channelId) : null;
+const isLive = live !== null;
+const videoId = live?.videoId ?? "";
 ---
 
 <Layout title="Jutbas en directo">
@@ -46,7 +49,7 @@ const chatEnabled = stream?.chatEnabled ?? true;
   <section class="py-16 bg-gris-claro">
     <div class="max-w-[1200px] mx-auto px-6">
       {
-        isLive && videoId ? (
+        isLive ? (
           <div>
             <div class="text-center mb-8">
               <span
@@ -55,6 +58,9 @@ const chatEnabled = stream?.chatEnabled ?? true;
                 <span class="w-2.5 h-2.5 bg-white rounded-full"></span>
                 En directo ahora
               </span>
+              <h2 class="font-serif text-xl md:text-2xl font-bold text-chocolate mt-4">
+                {live.title}
+              </h2>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -110,18 +116,3 @@ const chatEnabled = stream?.chatEnabled ?? true;
     </div>
   </section>
 </Layout>
-
-<script>
-  function getNextFriday(): string {
-    const now = new Date();
-    const day = now.getDay();
-    const diff = day <= 5 ? 5 - day : 5 + (7 - day);
-    const friday = new Date(now);
-    friday.setDate(now.getDate() + (diff === 0 ? 0 : diff));
-    return friday.toLocaleDateString("es", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-    });
-  }
-</script>

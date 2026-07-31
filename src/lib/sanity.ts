@@ -61,11 +61,14 @@ export async function getCampaign(slug: string) {
 }
 
 export async function getStream() {
-  return await client.fetch(
+  return await client.fetch<{
+    title: string;
+    channelId: string;
+    chatEnabled: boolean;
+  }>(
     `*[_type == "stream"][0] {
     title,
-    youtubeVideoId,
-    isLive,
+    channelId,
     chatEnabled,
   }`,
   );

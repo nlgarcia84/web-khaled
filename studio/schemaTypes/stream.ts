@@ -7,38 +7,29 @@ export default defineType({
   fields: [
     defineField({
       name: "title",
-      title: "Título",
+      title: "Título de la sección",
+      type: "string",
+      initialValue: "Jutbas en directo",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "channelId",
+      title: "YouTube Channel ID",
+      description: "ID del canal de YouTube para detectar transmisiones en vivo automáticamente",
       type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "youtubeVideoId",
-      title: "YouTube Video ID",
-      description:
-        'Solo el ID del video, ej: "dQw4w9WgXcQ" (no la URL completa)',
-      type: "string",
-    }),
-    defineField({
-      name: "isLive",
-      title: "¿En directo?",
-      description: "Actívalo cuando estés transmitiendo en vivo",
-      type: "boolean",
-      initialValue: false,
-    }),
-    defineField({
       name: "chatEnabled",
-      title: "Chat en vivo habilitado",
+      title: "Chat en vivo",
       type: "boolean",
       initialValue: true,
     }),
   ],
   preview: {
-    select: { title: "title", isLive: "isLive" },
-    prepare({ title, isLive }) {
-      return {
-        title,
-        subtitle: isLive ? "🔴 En directo" : "⚫ Fuera de línea",
-      };
+    select: { title: "title" },
+    prepare({ title }) {
+      return { title, subtitle: "Detección automática de directos" };
     },
   },
 });
