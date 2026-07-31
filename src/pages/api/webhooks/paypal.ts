@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { writeClient } from "../../../lib/sanity";
 
 const PAYPAL_URL = "https://ipnpb.paypal.com/cgi-bin/webscr";
 
@@ -22,27 +23,34 @@ export const POST: APIRoute = async ({ request }) => {
     const params = new URLSearchParams(body);
 
     const paymentStatus = params.get("payment_status");
-    const txnType = params.get("txn_type");
     const amount = params.get("mc_gross");
     const currency = params.get("mc_currency");
     const payerEmail = params.get("payer_email");
     const txnId = params.get("txn_id");
-    const receiverEmail = params.get("receiver_email");
+    const custom = params.get("custom");
 
     if (paymentStatus !== "Completed") {
-      console.log(`PayPal IPN: payment status "${paymentStatus}", skipping`);
+      console.log(`PayPal IPN: status "${paymentStatus}", skipping`);
       return new Response("OK", { status: 200 });
     }
 
-    console.log(`
-========== PayPal Donation ==========
-Amount: ${amount} ${currency}
-Payer:  ${payerEmail}
-Txn ID: ${txnId}
-Recipient: ${receiverEmail}
-Type:   ${txnType}
-=====================================`);
+    console.log(`PayPal IPN verified: ${amount} ${currency} from ${payerEmail} [${txnId}]`);
 
+    const value = amount ? parseFloat(amount) : 0;
+
+    if (custom && value > 0) {
+      const campaign = await writeClient.fetch(
+        `*[_type == "campaign" && slug.current == $slug][0]._id`,
+        { slug: custom },
+      );
+
+      if (campaign) {
+        const transaction = writeClient.transaction();
+        transaction.patch(campaign, (p: { inc: (args: { raised: number }) => void }) => p.inc({ raised: value }));
+        await transaction.commit();
+        console.log(`PayPal IPN → campaign "${custom}" updated: +${value}€`);
+      }
+    }
   } catch (err) {
     console.error("PayPal IPN error:", err);
     return new Response("Server Error", { status: 500 });
