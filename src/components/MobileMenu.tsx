@@ -67,6 +67,7 @@ export default function MobileMenu() {
           <a href="/blog">Blog</a>
           <a href="/contact">Contacto</a>
           <a href="/jutbas">Jutbas</a>
+          <a href="/biblioteca">Biblioteca</a>
           <a href="/donar" class="inline-block bg-oro text-chocolate font-bold px-4 py-2 rounded-lg text-sm">
             Donar
           </a>
