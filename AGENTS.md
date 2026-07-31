@@ -1,131 +1,131 @@
-## Development
+## Desarrollo
 
-When starting the dev server, use background mode:
+Al iniciar el servidor de desarrollo, usar modo background:
 
 ```
 astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+Gestionar el servidor con `astro dev stop`, `astro dev status` y `astro dev logs`.
 
 ---
 
-## API Routes
+## Rutas API
 
-All routes are under `src/pages/api/` as Astro API endpoints (SSR on Vercel). Base URL: `https://www.khaledhuerta.com`
+Todas las rutas están en `src/pages/api/` como endpoints API de Astro (SSR en Vercel). URL base: `https://www.khaledhuerta.com`
 
-### Payments
+### Pagos
 
-| Route | Method | Description | Key Env Vars |
+| Ruta | Método | Descripción | Variables de entorno clave |
 |---|---|---|---|
-| `/api/create-checkout` | POST | Stripe Checkout session. Body: `{ amount, campaignSlug? }`. Redirects to Stripe. | `STRIPE_SECRET_KEY` |
-| `/api/create-paypal-order` | POST | PayPal order. Body: `{ amount, campaignSlug? }`. Returns `{ id }`. | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` |
-| `/api/capture-paypal-order` | POST | Capture approved PayPal order + update Sanity `raised`. Body: `{ orderID, campaignSlug? }`. | `SANITY_TOKEN`, `PAYPAL_CLIENT_SECRET` |
-| `/api/webhooks/stripe` | POST | Stripe webhook (legacy, old path). Deprecated in favor of `/api/stripe/webhook`. | `STRIPE_WEBHOOK_SECRET` |
-| `/api/stripe/webhook` | POST | Stripe webhook (current). Handles `checkout.session.completed` (updates Sanity `raised`) and `charge.refunded` (logs). | `STRIPE_WEBHOOK_SECRET`, `SANITY_TOKEN` |
-| `/api/webhooks/paypal` | POST | PayPal IPN webhook (backup). Validates with PayPal, updates Sanity `raised` if `custom` param matches a campaign slug. | `SANITY_TOKEN` |
+| `/api/create-checkout` | POST | Sesión de Stripe Checkout. Body: `{ amount, campaignSlug? }`. Redirige a Stripe. | `STRIPE_SECRET_KEY` |
+| `/api/create-paypal-order` | POST | Orden de PayPal. Body: `{ amount, campaignSlug? }`. Retorna `{ id }`. | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` |
+| `/api/capture-paypal-order` | POST | Captura orden aprobada de PayPal + actualiza `raised` en Sanity. Body: `{ orderID, campaignSlug? }`. | `SANITY_TOKEN`, `PAYPAL_CLIENT_SECRET` |
+| `/api/webhooks/stripe` | POST | Webhook de Stripe (legacy, ruta antigua). Obsoleto, usar `/api/stripe/webhook`. | `STRIPE_WEBHOOK_SECRET` |
+| `/api/stripe/webhook` | POST | Webhook de Stripe (actual). Maneja `checkout.session.completed` (actualiza `raised` en Sanity) y `charge.refunded` (registra en logs). | `STRIPE_WEBHOOK_SECRET`, `SANITY_TOKEN` |
+| `/api/webhooks/paypal` | POST | Webhook IPN de PayPal (respaldo). Valida con PayPal, actualiza `raised` en Sanity si el parámetro `custom` coincide con un slug de campaña. | `SANITY_TOKEN` |
 
-### Other
+### Otras
 
-| Route | Method | Description |
+| Ruta | Método | Descripción |
 |---|---|---|
-| `/api/contact` | POST | Contact form. Sends email via Resend to `kane.wwe@gmail.com`. Body: FormData `{ nombre, email, mensaje }`. | `RESEND_API_KEY` |
+| `/api/contact` | POST | Formulario de contacto. Envía email vía Resend a `kane.wwe@gmail.com`. Body: FormData `{ nombre, email, mensaje }`. `RESEND_API_KEY` |
 
-### Payment Flow
+### Flujo de pago
 
 **Stripe:**
-1. Frontend → `POST /api/create-checkout` with `{ amount, campaignSlug }`
-2. Returns Stripe session URL → browser redirects to Stripe Checkout
-3. User completes payment → Stripe calls `POST /api/stripe/webhook`
-4. Webhook verifies signature (`STRIPE_WEBHOOK_SECRET`) → increments `raised` on Sanity campaign document
+1. Frontend → `POST /api/create-checkout` con `{ amount, campaignSlug }`
+2. Retorna URL de sesión de Stripe → el navegador redirige a Stripe Checkout
+3. El usuario completa el pago → Stripe llama a `POST /api/stripe/webhook`
+4. El webhook verifica la firma (`STRIPE_WEBHOOK_SECRET`) → incrementa `raised` en el documento de campaña de Sanity
 
 **PayPal:**
-1. Frontend loads PayPal SDK with `PUBLIC_PAYPAL_CLIENT_ID`
-2. Button click → `POST /api/create-paypal-order` → returns order ID
-3. User approves in PayPal popup → `POST /api/capture-paypal-order` → captures payment + updates Sanity
-4. IPN backup: PayPal also calls `POST /api/webhooks/paypal` with payment details
+1. Frontend carga PayPal SDK con `PUBLIC_PAYPAL_CLIENT_ID`
+2. Click en botón → `POST /api/create-paypal-order` → retorna ID de orden
+3. Usuario aprueba en popup de PayPal → `POST /api/capture-paypal-order` → captura el pago + actualiza Sanity
+4. Respaldo IPN: PayPal también llama a `POST /api/webhooks/paypal` con los detalles del pago
 
-**General donations** (no `campaignSlug`): logged but not tracked in Sanity.
+**Donaciones generales** (sin `campaignSlug`): se registran en logs pero no se rastrean en Sanity.
 
 ---
 
 ## Sanity CMS
 
-**Studio URL:** `https://khaled-blog.sanity.studio/`
-**API:** Server-side via `src/lib/sanity.ts`. Read-only `client` (CDN cached) and `writeClient` (token-authenticated for mutations).
+**URL del Studio:** `https://khaled-blog.sanity.studio/`
+**API:** Lado servidor vía `src/lib/sanity.ts`. Cliente de solo lectura `client` (cache CDN) y `writeClient` (autenticado con token para mutaciones).
 
-### Schema Types (`studio/schemaTypes/`)
+### Tipos de esquema (`studio/schemaTypes/`)
 
-| Type | File | Fields | Used By |
+| Tipo | Archivo | Campos | Usado por |
 |---|---|---|---|
-| `post` | `post.ts` | title, slug, author, excerpt, image, body, publishedAt, categories | `/blog` listing, `/blog/[slug]` detail |
-| `category` | `category.ts` | title, description | Blog categories |
-| `campaign` | `campaign.ts` | title, slug, goal, raised, description, active | `/donar` progress bar, Stripe/PayPal webhooks update `raised` |
-| `stream` | `stream.ts` | title, channelId, chatEnabled | `/jutbas` — channelId queried via YouTube Data API to detect live streams |
-| `documento` | `documento.ts` | title, fileId, type (pdf/docx/other), description | `/biblioteca` — Google Drive embeds + modal preview |
-| `blockContent` | `blockContent.ts` | Portable Text blocks | Blog post body content |
+| `post` | `post.ts` | title, slug, author, excerpt, image, body, publishedAt, categories | Listado `/blog`, detalle `/blog/[slug]` |
+| `category` | `category.ts` | title, description | Categorías del blog |
+| `campaign` | `campaign.ts` | title, slug, goal, raised, description, active | Barra de progreso en `/donar`, webhooks Stripe/PayPal actualizan `raised` |
+| `stream` | `stream.ts` | title, channelId, chatEnabled | `/jutbas` — channelId consultado vía YouTube Data API para detectar directos |
+| `documento` | `documento.ts` | title, fileId, type (pdf/docx/other), description | `/biblioteca` — embeds de Google Drive + vista previa en modal |
+| `blockContent` | `blockContent.ts` | Bloques Portable Text | Contenido del cuerpo de los posts del blog |
 
-### Sanity Queries (`src/lib/sanity.ts`)
+### Consultas de Sanity (`src/lib/sanity.ts`)
 
-| Function | GROQ Query | Returns |
+| Función | Consulta GROQ | Retorna |
 |---|---|---|
-| `getPosts()` | `*[_type == "post"] \| order(publishedAt desc)` | All posts with basic fields + category titles |
-| `getPost(slug)` | `*[_type == "post" && slug.current == $slug][0]` | Single post with body |
-| `getCampaign(slug)` | `*[_type == "campaign" && slug.current == $slug][0]` | Campaign with goal, raised, active |
-| `getStream()` | `*[_type == "stream"][0]` | Stream config with channelId, chatEnabled |
-| `getDocumentos()` | `*[_type == "documento"] \| order(title asc)` | All documents with fileId, type |
+| `getPosts()` | `*[_type == "post"] \| order(publishedAt desc)` | Todos los posts con campos básicos + títulos de categoría |
+| `getPost(slug)` | `*[_type == "post" && slug.current == $slug][0]` | Un solo post con cuerpo |
+| `getCampaign(slug)` | `*[_type == "campaign" && slug.current == $slug][0]` | Campaña con goal, raised, active |
+| `getStream()` | `*[_type == "stream"][0]` | Configuración de stream con channelId, chatEnabled |
+| `getDocumentos()` | `*[_type == "documento"] \| order(title asc)` | Todos los documentos con fileId, type |
 
-### Environment Variables (Sanity)
+### Variables de entorno (Sanity)
 
-| Variable | Purpose | Client/Server |
+| Variable | Propósito | Cliente/Servidor |
 |---|---|---|
-| `SANITY_TOKEN` | Write token for mutations (webhook → campaign raised) | Server only (`import.meta.env`) |
+| `SANITY_TOKEN` | Token de escritura para mutaciones (webhook → campaña raised) | Solo servidor (`import.meta.env`) |
 
 ---
 
-## Relevant Libraries
+## Librerías relevantes
 
 ### `src/lib/paypal.ts`
-PayPal REST API helpers:
+Helpers de la API REST de PayPal:
 - `getAccessToken()` — OAuth2 client credentials
-- `createPayPalOrder(amount, campaignSlug?)` — Creates order with EUR currency, stores campaignSlug in `purchase_units[0].custom_id`
-- `capturePayPalOrder(orderID)` — Captures approved order
+- `createPayPalOrder(amount, campaignSlug?)` — Crea orden con moneda EUR, guarda campaignSlug en `purchase_units[0].custom_id`
+- `capturePayPalOrder(orderID)` — Captura una orden aprobada
 
 ### `src/lib/youtube.ts`
 YouTube Data API:
-- `getLiveStream(channelId)` — Queries `search?eventType=live` and returns `{ videoId, title, thumbnail }` or `null`
+- `getLiveStream(channelId)` — Consulta `search?eventType=live` y retorna `{ videoId, title, thumbnail }` o `null`
 
 ### `src/lib/feeds.ts`
-External data scraping:
-- `getLatestInstagramPost(username)` — Scrapes Instagram profile HTML for latest post
-- `getLatestTelegramPost(username)` — Scrapes Telegram public channel HTML
+Scraping de datos externos:
+- `getLatestInstagramPost(username)` — Scrapea el HTML del perfil de Instagram para obtener la última publicación
+- `getLatestTelegramPost(username)` — Scrapea el HTML del canal público de Telegram
 
 ---
 
-## Environment Variables Checklist
+## Checklist de variables de entorno
 
-| Variable | Required | Vercel | Local `.env` |
+| Variable | Requerida | Vercel | `.env` local |
 |---|---|---|---|
-| `STRIPE_SECRET_KEY` | Yes | `sk_live_...` | Same |
-| `STRIPE_WEBHOOK_SECRET` | Yes | `whsec_...` | Same |
-| `SANITY_TOKEN` | Yes | `sk...` | Same |
-| `RESEND_API_KEY` | Yes | `re_...` | Same |
-| `PUBLIC_PAYPAL_CLIENT_ID` | Optional | Live Client ID | Same |
-| `PAYPAL_CLIENT_ID` | Optional | Live Client ID | Same |
-| `PAYPAL_CLIENT_SECRET` | Optional | Live Secret | Same |
-| `YOUTUBE_API_KEY` | Optional | API Key | Same |
+| `STRIPE_SECRET_KEY` | Sí | `sk_live_...` | Igual |
+| `STRIPE_WEBHOOK_SECRET` | Sí | `whsec_...` | Igual |
+| `SANITY_TOKEN` | Sí | `sk...` | Igual |
+| `RESEND_API_KEY` | Sí | `re_...` | Igual |
+| `PUBLIC_PAYPAL_CLIENT_ID` | Opcional | Live Client ID | Igual |
+| `PAYPAL_CLIENT_ID` | Opcional | Live Client ID | Igual |
+| `PAYPAL_CLIENT_SECRET` | Opcional | Live Secret | Igual |
+| `YOUTUBE_API_KEY` | Opcional | API Key | Igual |
 
 ---
 
-## Documentation
+## Documentación
 
-Full documentation: https://docs.astro.build
+Documentación completa: https://docs.astro.build
 
-Consult these guides before working on related tasks:
+Consultar estas guías antes de trabajar en tareas relacionadas:
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+- [Agregar páginas, rutas dinámicas o middleware](https://docs.astro.build/en/guides/routing/)
+- [Trabajar con componentes de Astro](https://docs.astro.build/en/basics/astro-components/)
+- [Usar componentes React, Vue, Svelte u otros frameworks](https://docs.astro.build/en/guides/framework-components/)
+- [Agregar o gestionar contenido](https://docs.astro.build/en/guides/content-collections/)
+- [Agregar estilos o usar Tailwind](https://docs.astro.build/en/guides/styling/)
+- [Soportar múltiples idiomas](https://docs.astro.build/en/guides/internationalization/)
