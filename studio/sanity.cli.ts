@@ -8,5 +8,6 @@ export default defineCliConfig({
   studioHost: 'khaled-blog',
   deployment: {
     autoUpdates: true,
+    appId: "yejgkvvlniqjrtgzuyn6dcyp",
   },
 })
