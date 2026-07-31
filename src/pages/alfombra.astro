@@ -229,32 +229,40 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
   });
 
   const paypalScript = document.createElement("script");
-  paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.PUBLIC_PAYPAL_CLIENT_ID}&currency=EUR`;
-  paypalScript.onload = () => {
-    (window as any).paypal?.Buttons?.({
-      style: { layout: "horizontal", shape: "rect", label: "paypal", tagline: false },
-      createOrder() {
-        const amount = parseInt(customAmount.value);
-        if (!amount || amount < 1) {
-          alert("Selecciona una cantidad");
-          throw new Error("Missing amount");
-        }
-        return fetch("/api/create-paypal-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount, campaignSlug: "alfombra" }),
-        }).then(r => r.json()).then(d => d.id);
-      },
-      onApprove(data: any) {
-        return fetch("/api/capture-paypal-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderID: data.orderID, campaignSlug: "alfombra" }),
-        }).then(() => {
-          window.location.href = "/donar?donacion=exito";
-        });
-      },
-    })?.render("#paypal-btn");
-  };
-  document.head.appendChild(paypalScript);
+  const clientId = import.meta.env.PUBLIC_PAYPAL_CLIENT_ID;
+  if (!clientId || clientId === "TU_PAYPAL_CLIENT_ID") {
+    const fallback = document.getElementById("paypal-btn");
+    if (fallback) {
+      fallback.innerHTML = `<a href="https://www.paypal.com/paypalme/huertakhaled" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 px-6 rounded-lg font-medium border border-gray-300 text-chocolate hover:border-oro hover:text-oro transition-colors no-underline">Donar con PayPal</a>`;
+    }
+  } else {
+    paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR`;
+    paypalScript.onload = () => {
+      (window as any).paypal?.Buttons?.({
+        style: { layout: "horizontal", shape: "rect", label: "paypal", tagline: false },
+        createOrder() {
+          const amount = parseInt(customAmount.value);
+          if (!amount || amount < 1) {
+            alert("Selecciona una cantidad");
+            throw new Error("Missing amount");
+          }
+          return fetch("/api/create-paypal-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount, campaignSlug: "alfombra" }),
+          }).then(r => r.json()).then(d => d.id);
+        },
+        onApprove(data: any) {
+          return fetch("/api/capture-paypal-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderID: data.orderID, campaignSlug: "alfombra" }),
+          }).then(() => {
+            window.location.href = "/donar?donacion=exito";
+          });
+        },
+      })?.render("#paypal-btn");
+    };
+    document.head.appendChild(paypalScript);
+  }
 </script>
