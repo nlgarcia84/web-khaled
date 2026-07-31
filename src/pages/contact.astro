@@ -4,7 +4,9 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
 ---
 
 <Layout title="Contacto">
-  <section class="relative py-28 md:py-36 text-center overflow-hidden flex flex-col justify-center min-h-[60vh]">
+  <section
+    class="relative py-28 md:py-36 text-center overflow-hidden flex flex-col justify-center min-h-[60vh]"
+  >
     <img
       src={khaledVentana.src}
       alt=""
@@ -14,10 +16,14 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
     />
     <div class="absolute inset-0 bg-chocolate/85"></div>
     <div class="relative z-10 max-w-[800px] mx-auto px-6 hero-content">
-      <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4">
+      <span
+        class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-4"
+      >
         Contacto
       </span>
-      <h1 class="font-serif text-4xl md:text-5xl font-bold text-white leading-tight">
+      <h1
+        class="font-serif text-4xl md:text-5xl font-bold text-white leading-tight"
+      >
         Ponte en contacto conmigo
       </h1>
       <p class="text-crema/70 text-lg mt-3 max-w-xl mx-auto">
@@ -30,65 +36,81 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
     <div class="max-w-[1140px] mx-auto px-6">
       <div class="max-w-lg mx-auto form-card">
         <div class="mb-8">
-            <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3">
-              Escríbenos
-            </span>
-            <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate">
-              Envíanos un mensaje
-            </h2>
+          <span
+            class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3"
+          >
+            Escríbeme
+          </span>
+          <h2 class="font-serif text-2xl md:text-3xl font-bold text-chocolate">
+            Envíame un mensaje
+          </h2>
+        </div>
+
+        <form
+          id="contact-form"
+          class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 space-y-5"
+        >
+          <div>
+            <label
+              for="nombre"
+              class="block text-sm font-medium text-chocolate mb-1.5"
+              >Nombre</label
+            >
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              required
+              class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-chocolate placeholder:text-marron/50 focus:outline-none focus:ring-2 focus:ring-oro/40 focus:border-oro transition-colors bg-white"
+              placeholder="Tu nombre"
+            />
           </div>
 
-          <form id="contact-form" class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 space-y-5">
-            <div>
-              <label for="nombre" class="block text-sm font-medium text-chocolate mb-1.5">Nombre</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                required
-                class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-chocolate placeholder:text-marron/50 focus:outline-none focus:ring-2 focus:ring-oro/40 focus:border-oro transition-colors bg-white"
-                placeholder="Tu nombre"
-              />
-            </div>
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-chocolate mb-1.5"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-chocolate placeholder:text-marron/50 focus:outline-none focus:ring-2 focus:ring-oro/40 focus:border-oro transition-colors bg-white"
+              placeholder="tu@email.com"
+            />
+          </div>
 
-            <div>
-              <label for="email" class="block text-sm font-medium text-chocolate mb-1.5">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-chocolate placeholder:text-marron/50 focus:outline-none focus:ring-2 focus:ring-oro/40 focus:border-oro transition-colors bg-white"
-                placeholder="tu@email.com"
-              />
-            </div>
+          <div>
+            <label
+              for="mensaje"
+              class="block text-sm font-medium text-chocolate mb-1.5"
+              >Mensaje</label
+            >
+            <textarea
+              id="mensaje"
+              name="mensaje"
+              rows="5"
+              required
+              class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-chocolate placeholder:text-marron/50 focus:outline-none focus:ring-2 focus:ring-oro/40 focus:border-oro transition-colors bg-white resize-y"
+              placeholder="Escribe tu mensaje..."></textarea>
+          </div>
 
-            <div>
-              <label for="mensaje" class="block text-sm font-medium text-chocolate mb-1.5">Mensaje</label>
-              <textarea
-                id="mensaje"
-                name="mensaje"
-                rows="5"
-                required
-                class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-chocolate placeholder:text-marron/50 focus:outline-none focus:ring-2 focus:ring-oro/40 focus:border-oro transition-colors bg-white resize-y"
-                placeholder="Escribe tu mensaje..."
-              ></textarea>
-            </div>
+          <div>
+            <button
+              type="submit"
+              id="submit-btn"
+              class="w-full bg-chocolate text-white py-3 px-6 rounded-lg font-medium text-sm hover:bg-chocolate/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oro/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Enviar Mensaje
+            </button>
+          </div>
 
-            <div>
-              <button
-                type="submit"
-                id="submit-btn"
-                class="w-full bg-chocolate text-white py-3 px-6 rounded-lg font-medium text-sm hover:bg-chocolate/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oro/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Enviar Mensaje
-              </button>
-            </div>
-
-            <div id="form-message" class="hidden text-center text-sm"></div>
-          </form>
-        </div>
+          <div id="form-message" class="hidden text-center text-sm"></div>
+        </form>
       </div>
+    </div>
   </section>
 </Layout>
 
@@ -97,13 +119,22 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
 
   let scrollTimeout;
   let isScrolling = false;
-  document.addEventListener("scroll", () => {
-    if (!isScrolling) isScrolling = true;
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => { isScrolling = false; }, 150);
-  }, { passive: true });
+  document.addEventListener(
+    "scroll",
+    () => {
+      if (!isScrolling) isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 150);
+    },
+    { passive: true },
+  );
 
-  function revealOnScroll(selector, { from = "bottom", stagger = 0.08, distance = 40 } = {}) {
+  function revealOnScroll(
+    selector,
+    { from = "bottom", stagger = 0.08, distance = 40 } = {},
+  ) {
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
     const observer = new IntersectionObserver(
@@ -112,13 +143,26 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        const base = { duration: 0.8, ease: "power2.out", overwrite: "auto", force3D: true };
+        const base = {
+          duration: 0.8,
+          ease: "power2.out",
+          overwrite: "auto",
+          force3D: true,
+        };
         if (from === "bottom") {
-          gsap.fromTo(targets, { y: distance, opacity: 0 }, { y: 0, opacity: 1, stagger, ...base });
+          gsap.fromTo(
+            targets,
+            { y: distance, opacity: 0 },
+            { y: 0, opacity: 1, stagger, ...base },
+          );
         } else if (from === "side") {
           targets.forEach((t, i) => {
             const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(t, { x: dir * 30, opacity: 0 }, { x: 0, opacity: 1, delay: i * stagger, ...base });
+            gsap.fromTo(
+              t,
+              { x: dir * 30, opacity: 0 },
+              { x: 0, opacity: 1, delay: i * stagger, ...base },
+            );
           });
         }
         targets.forEach((t) => observer.unobserve(t));
