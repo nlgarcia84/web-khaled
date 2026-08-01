@@ -40,6 +40,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response("OK", { status: 200 });
     }
 
+    const sessionId = session.id;
     try {
       const campaign = await writeClient.fetch(
         `*[_type == "campaign" && slug.current == $slug][0]._id`,
