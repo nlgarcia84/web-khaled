@@ -41,8 +41,6 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     try {
-      console.log("Sanity token exists:", !!import.meta.env.SANITY_TOKEN);
-      
       const campaign = await writeClient.fetch(
         `*[_type == "campaign" && slug.current == $slug][0]._id`,
         { slug: campaignSlug },
@@ -57,8 +55,8 @@ export const POST: APIRoute = async ({ request }) => {
       t.patch(campaign, (p) => p.inc({ raised: amount }));
       await t.commit();
       console.log(`Donation: ${amount}€ → "${campaignSlug}"`);
-    } catch (err) {
-      console.error("Sanity error:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+    } catch (err: any) {
+      console.error("Sanity fail:", err?.message || err, "status:", err?.statusCode);
       return new Response("Server Error", { status: 500 });
     }
   }
