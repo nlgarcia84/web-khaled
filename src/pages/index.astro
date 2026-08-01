@@ -15,6 +15,7 @@ import { getCampaign } from "../lib/sanity";
 import { getLatestInstagramPost, getLatestTelegramPost } from "../lib/feeds";
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
+import { Image } from "astro:assets";
 
 const posts = (await getPosts()).slice(0, 3);
 const campaign = await getCampaign("alfombra");
@@ -75,8 +76,8 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   <section
     class="py-24 relative overflow-hidden bg-gradient-to-b from-[#fdfcf9] via-[#fdfcf9] to-[#f8f9fa]"
   >
-    <img
-      src={khaledBoligrafo.src}
+    <Image
+      src={khaledBoligrafo}
       alt=""
       class="absolute inset-0 w-full h-full object-cover opacity-10 [mask-image:linear-gradient(to_bottom,black,black_90%,transparent)]"
       aria-hidden="true"
@@ -471,8 +472,8 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           class="hidden lg:block absolute right-0 w-7/12 z-20"
           style="top: -50%;"
         >
-          <img
-            src={khaledLibreta.src}
+          <Image
+            src={khaledLibreta}
             alt=""
             class="w-full h-auto pl-10"
             aria-hidden="true"
