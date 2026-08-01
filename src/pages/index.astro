@@ -1,17 +1,12 @@
 ---
-import Camera from "lucide-static/dist/esm/icons/camera.mjs";
-import MessageCircle from "lucide-static/dist/esm/icons/message-circle.mjs";
 import Play from "lucide-static/dist/esm/icons/play.mjs";
-import Send from "lucide-static/dist/esm/icons/send.mjs";
-import MapPin from "lucide-static/dist/esm/icons/map-pin.mjs";
 import Heart from "lucide-static/dist/esm/icons/heart.mjs";
 import ArrowRight from "lucide-static/dist/esm/icons/arrow-right.mjs";
 import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
 import khaledBoligrafo from "../assets/images/khaled_boligrafo.jpg";
 import khaledLibreta from "../assets/images/khaled_libreta.png";
 import { events } from "../data/events";
-import { getPosts } from "../lib/sanity";
-import { getCampaign } from "../lib/sanity";
+import { getPosts, getCampaign } from "../lib/sanity";
 import { getLatestInstagramPost, getLatestTelegramPost } from "../lib/feeds";
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
