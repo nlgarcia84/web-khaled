@@ -399,7 +399,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   <section class="py-24 bg-gris-claro relative overflow-hidden">
     <div class="relative z-10 max-w-[1140px] mx-auto px-6">
-      <div class="text-center mb-14 section-header">
+      <div class="text-center mb-14 section-header relative z-30">
         <span
           class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label"
         >
@@ -416,7 +416,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
       </div>
 
       <div class="relative max-w-4xl mx-auto">
-        <div class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list">
+        <div class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list relative z-30">
           {
             events.map((event, i) => {
               const date = new Date(event.date);
