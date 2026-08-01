@@ -91,13 +91,27 @@ const driveFolderId = "16Q2ZHIA23Dqw8z1aMrVisEE_HrJNA_RY";
         </p>
       </div>
 
-      <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white drive-embed">
+      <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white drive-embed hidden md:block">
         <iframe
           src={`https://drive.google.com/embeddedfolderview?id=${driveFolderId}#grid`}
           class="w-full h-[70vh] min-h-[500px] border-0"
           title="Google Drive — Biblioteca"
           loading="lazy"
         ></iframe>
+      </div>
+      <div class="text-center md:hidden mt-6">
+        <a
+          href={`https://drive.google.com/drive/folders/${driveFolderId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-oro text-chocolate font-bold px-6 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline"
+        >
+          <span class="text-xl">📂</span>
+          Abrir biblioteca en Drive
+        </a>
+        <p class="text-xs text-marron/50 mt-3">
+          La carpeta se abre en la app de Google Drive
+        </p>
       </div>
     </div>
   </section>
