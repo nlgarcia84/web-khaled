@@ -15,7 +15,7 @@ export const writeClient = createClient({
   dataset,
   useCdn: false,
   apiVersion: "2024-01-01",
-  token: import.meta.env.SANITY_TOKEN,
+  token: process.env.SANITY_TOKEN,
 });
 
 export async function getPosts() {
