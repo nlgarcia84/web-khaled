@@ -481,27 +481,12 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 <script>
   import gsap from "gsap";
 
-  let scrollTimeout;
-  let isScrolling = false;
-  document.addEventListener(
-    "scroll",
-    () => {
-      if (!isScrolling) isScrolling = true;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-      }, 150);
-    },
-    { passive: true },
-  );
-
   function revealOnScroll(selector, opts = {}) {
     const { stagger = 0.1, from = "bottom", distance = 40 } = opts;
     const els = document.querySelectorAll(selector);
     if (!els.length) return;
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (isScrolling) return;
+        (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);

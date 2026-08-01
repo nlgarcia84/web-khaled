@@ -99,20 +99,6 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
 <script>
   import gsap from "gsap";
 
-  let scrollTimeout;
-  let isScrolling = false;
-  document.addEventListener(
-    "scroll",
-    () => {
-      if (!isScrolling) isScrolling = true;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-      }, 150);
-    },
-    { passive: true },
-  );
-
   function revealOnScroll(
     selector,
     { from = "bottom", stagger = 0.08, distance = 40 } = {},
@@ -121,7 +107,6 @@ import khaledVentana from "../assets/images/khaled_ventana.jpg";
     if (!els.length) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (isScrolling) return;
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
