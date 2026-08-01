@@ -397,9 +397,9 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
     </div>
   </section>
 
-  <section class="py-24 bg-gris-claro relative overflow-hidden">
+  <section class="py-24 bg-gris-claro relative">
     <div class="relative z-10 max-w-[1140px] mx-auto px-6">
-      <div class="relative z-30 text-center mb-20 section-header">
+      <div class="relative z-30 text-center mb-14 section-header">
         <span
           class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label"
         >
@@ -415,8 +415,10 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         </p>
       </div>
 
-      <div class="relative max-w-4xl mx-auto mt-12 pb-16">
-        <div class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list relative z-10">
+      <div class="relative max-w-4xl mx-auto pt-8 pb-16">
+        <div
+          class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list relative z-10"
+        >
           {
             events.map((event, i) => {
               const date = new Date(event.date);
@@ -464,7 +466,9 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           }
         </div>
 
-        <div class="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-6/12 z-20">
+        <div
+          class="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-6/12 z-20"
+        >
           <img
             src={khaledLibreta.src}
             alt=""
