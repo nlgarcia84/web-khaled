@@ -465,12 +465,15 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         </div>
 
         <div class="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-5/12 z-20">
-          <img
-            src={khaledLibreta.src}
-            alt=""
-            class="w-full h-auto rounded-2xl"
-            aria-hidden="true"
-          />
+          <div class="relative rounded-2xl overflow-hidden">
+            <img
+              src={khaledLibreta.src}
+              alt=""
+              class="w-full h-auto"
+              aria-hidden="true"
+            />
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,#f8f9fa_0%,transparent_25%)]"></div>
+          </div>
         </div>
       </div>
     </div>
