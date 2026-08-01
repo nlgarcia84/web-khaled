@@ -176,9 +176,8 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
               latestVideo.id ? (
                 <img
                   src={`https://img.youtube.com/vi/${latestVideo.id}/maxresdefault.jpg`}
-                  alt=""
+                  alt="Último video de YouTube"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
                 />
               ) : (
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-600 via-red-500 to-rose-400">
@@ -224,9 +223,8 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
               instagramPost?.thumbnail ? (
                 <img
                   src={instagramPost.thumbnail}
-                  alt=""
+                  alt={instagramPost?.caption || "Instagram"}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
                 />
               ) : (
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-500">
@@ -473,7 +471,6 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
             alt=""
             class="w-full h-auto pl-10"
             aria-hidden="true"
-            loading="lazy"
           />
         </div>
       </div>
