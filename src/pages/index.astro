@@ -415,7 +415,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         </p>
       </div>
 
-      <div class="relative max-w-4xl mx-auto pt-8 pb-16">
+      <div class="relative max-w-4xl mx-auto pt-8 pb-16 flex items-center">
         <div
           class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list relative z-10"
         >
@@ -467,7 +467,8 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         </div>
 
         <div
-          class="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-6/12 z-20"
+          class="hidden lg:block absolute right-0 w-6/12 z-20"
+          style="top: 0;"
         >
           <img
             src={khaledLibreta.src}
