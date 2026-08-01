@@ -36,8 +36,9 @@ const rest = posts.slice(1);
                 featured.image ? (
                   <img
                     src={builder.image(featured.image).width(600).height(400).url()}
-                    alt=""
+                    alt={featured.title}
                     class="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fetchpriority="high"
                   />
                 ) : (
                   <div class="w-full h-64 md:h-full bg-gradient-to-br from-oro/20 to-chocolate/20 flex items-center justify-center">
@@ -96,8 +97,9 @@ const rest = posts.slice(1);
                   post.image ? (
                     <img
                       src={builder.image(post.image).width(600).height(340).url()}
-                      alt=""
+                      alt={post.title}
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
                   ) : (
                     <div class="w-full h-full bg-gradient-to-br from-oro/10 to-chocolate/10 flex items-center justify-center">
