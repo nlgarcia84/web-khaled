@@ -399,7 +399,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   <section class="py-24 bg-gris-claro relative">
     <div class="relative z-10 max-w-[1140px] mx-auto px-6">
-      <div class="relative z-30 text-center mb-14 section-header">
+      <div class="relative z-30 text-center mb-40 section-header">
         <span
           class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label"
         >
@@ -434,12 +434,12 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
               return (
                 <div
                   class={
-                    "event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" +
+                    "event-card group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-6" +
                     (i === 0 ? " nearest-event" : " opacity-50 grayscale")
                   }
                 >
-                  <div class="w-14 h-14 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
-                    <span class="text-2xl font-bold text-oro leading-none">
+                  <div class="w-16 h-16 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
+                    <span class="text-3xl font-bold text-oro leading-none">
                       {day}
                     </span>
                     <span class="text-sm font-semibold text-oro uppercase tracking-wide">
@@ -447,7 +447,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
                     </span>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h3 class="font-serif text-lg font-bold text-chocolate leading-snug">
+                    <h3 class="font-serif text-xl font-bold text-chocolate leading-snug">
                       {event.title}
                     </h3>
                     <div class="flex items-center gap-1.5 mt-1">
@@ -468,7 +468,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
         <div
           class="hidden lg:block absolute right-0 w-6/12 z-20"
-          style="top: 0;"
+          style="top: -50%;"
         >
           <img
             src={khaledLibreta.src}
