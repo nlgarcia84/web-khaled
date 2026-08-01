@@ -160,7 +160,7 @@ const rest = posts.slice(1);
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        const base = { duration: 0.8, ease: "power2.out", overwrite: "auto", force3D: true };
+        const base = { duration: 0.4, ease: "power1.out", overwrite: "auto", force3D: true };
         if (from === "bottom") {
           gsap.fromTo(targets, { y: distance, opacity: 0 }, { y: 0, opacity: 1, stagger, ...base });
         } else if (from === "side") {
