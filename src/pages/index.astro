@@ -8,7 +8,7 @@ import Heart from "lucide-static/dist/esm/icons/heart.mjs";
 import ArrowRight from "lucide-static/dist/esm/icons/arrow-right.mjs";
 import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
 import khaledBoligrafo from "../assets/images/khaled_boligrafo.jpg";
-import khaledLibreta from "../assets/images/khaled_libreta.jpeg";
+import khaledLibreta from "../assets/images/khaled_libreta.png";
 import { events } from "../data/events";
 import { getPosts } from "../lib/sanity";
 import { getCampaign } from "../lib/sanity";
@@ -18,17 +18,24 @@ import HeroSection from "../components/HeroSection.astro";
 
 const posts = (await getPosts()).slice(0, 3);
 const campaign = await getCampaign("alfombra");
-const campaignPct = campaign?.goal > 0 ? Math.round(((campaign?.raised ?? 0) / campaign.goal) * 100) : 0;
+const campaignPct =
+  campaign?.goal > 0
+    ? Math.round(((campaign?.raised ?? 0) / campaign.goal) * 100)
+    : 0;
 
 const YT_CHANNEL_ID = "UCKSkh4JFzzyhqkAiocfq5-Q";
 let latestVideo = { title: "Último video", id: "" };
 try {
-  const rss = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`);
+  const rss = await fetch(
+    `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`,
+  );
   const xml = await rss.text();
   const entry = xml.match(/<entry>[\s\S]*?<\/entry>/);
   if (entry) {
-    const title = entry[0].match(/<title>(.*?)<\/title>/)?.[1] || latestVideo.title;
-    const videoId = entry[0].match(/<yt:videoId>(.*?)<\/yt:videoId>/)?.[1] || "";
+    const title =
+      entry[0].match(/<title>(.*?)<\/title>/)?.[1] || latestVideo.title;
+    const videoId =
+      entry[0].match(/<yt:videoId>(.*?)<\/yt:videoId>/)?.[1] || "";
     latestVideo = { title, id: videoId };
   }
 } catch {}
@@ -65,31 +72,42 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
     </div>
   </HeroSection>
 
-  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#fdfcf9] via-[#fdfcf9] to-[#f8f9fa]">
+  <section
+    class="py-24 relative overflow-hidden bg-gradient-to-b from-[#fdfcf9] via-[#fdfcf9] to-[#f8f9fa]"
+  >
     <img
       src={khaledBoligrafo.src}
       alt=""
       class="absolute inset-0 w-full h-full object-cover opacity-10 [mask-image:linear-gradient(to_bottom,black,black_90%,transparent)]"
       aria-hidden="true"
     />
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_60%,#fdfcf9_88%)] [mask-image:linear-gradient(to_bottom,black,black_90%,transparent)]"></div>
+    <div
+      class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_60%,#fdfcf9_88%)] [mask-image:linear-gradient(to_bottom,black,black_90%,transparent)]"
+    >
+    </div>
     <div class="relative z-10 max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14 section-header">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
+        <span
+          class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label"
+        >
           Contenido
         </span>
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate section-title">
+        <h2
+          class="font-serif text-3xl md:text-4xl font-bold text-chocolate section-title"
+        >
           Últimos artículos
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-200 mx-auto blog-grid">
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-200 mx-auto blog-grid"
+      >
         {
           posts.map((post: any) => (
             <a
               href={`/blog/${post.slug.current}`}
               class="blog-card group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 no-underline block"
             >
-              <div class="w-8 h-0.5 bg-oro/60 rounded-full mb-4"></div>
+              <div class="w-8 h-0.5 bg-oro/60 rounded-full mb-4" />
               <time class="text-xs text-oro font-medium tracking-wide">
                 {new Date(post.publishedAt).toLocaleDateString("es", {
                   year: "numeric",
@@ -117,7 +135,10 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           href="/blog"
           class="inline-flex items-center justify-center gap-2 bg-oro text-crema font-semibold px-6 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline text-lg"
         >
-          Ver todos los artículos <span set:html={ArrowRight} class="w-4 h-4 inline-flex items-center" />
+          Ver todos los artículos <span
+            set:html={ArrowRight}
+            class="w-4 h-4 inline-flex items-center"
+          />
         </a>
       </div>
     </div>
@@ -126,10 +147,14 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   <section class="py-24 bg-gris-claro">
     <div class="max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14 section-header">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
+        <span
+          class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label"
+        >
           Redes
         </span>
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title">
+        <h2
+          class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title"
+        >
           Canales Oficiales
         </h2>
         <p class="text-sm text-marron font-medium">
@@ -137,9 +162,13 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-w-6xl mx-auto"
+      >
         <a
-          href={latestVideo.id ? `https://youtu.be/${latestVideo.id}` : "https://www.youtube.com/@khaledhuerta"}
+          href={latestVideo.id
+            ? `https://youtu.be/${latestVideo.id}`
+            : "https://www.youtube.com/@khaledhuerta"}
           target="_blank"
           rel="noopener noreferrer"
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-red-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
@@ -163,19 +192,31 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
             }
           </div>
           <div class="p-5 flex-1 flex flex-col">
-            <span class="text-[11px] font-semibold tracking-wide text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full self-start">YouTube</span>
-            <p class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase">Último video</p>
-            <h3 class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+            <span
+              class="text-[11px] font-semibold tracking-wide text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full self-start"
+              >YouTube</span
+            >
+            <p
+              class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase"
+            >
+              Último video
+            </p>
+            <h3
+              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
+            >
               {latestVideo.title}
             </h3>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-red-600 mt-3 group-hover:gap-2 transition-all">
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium text-red-600 mt-3 group-hover:gap-2 transition-all"
+            >
               Ver video <span set:html={ArrowRight} class="w-3 h-3" />
             </span>
           </div>
         </a>
 
         <a
-          href={instagramPost?.url || "https://www.instagram.com/khaled.huerta/"}
+          href={instagramPost?.url ||
+            "https://www.instagram.com/khaled.huerta/"}
           target="_blank"
           rel="noopener noreferrer"
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-pink-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
@@ -192,19 +233,35 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
               ) : (
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-500">
                   <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                    <span class="text-white font-bold text-xl" style="font-family: serif;">IG</span>
+                    <span
+                      class="text-white font-bold text-xl"
+                      style="font-family: serif;"
+                    >
+                      IG
+                    </span>
                   </div>
                 </div>
               )
             }
           </div>
           <div class="p-5 flex-1 flex flex-col">
-            <span class="text-[11px] font-semibold tracking-wide text-pink-600 bg-pink-50 px-2.5 py-0.5 rounded-full self-start">Instagram</span>
-            <p class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase">Última publicación</p>
-            <h3 class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+            <span
+              class="text-[11px] font-semibold tracking-wide text-pink-600 bg-pink-50 px-2.5 py-0.5 rounded-full self-start"
+              >Instagram</span
+            >
+            <p
+              class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase"
+            >
+              Última publicación
+            </p>
+            <h3
+              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
+            >
               {instagramPost?.caption || "@khaled.huerta"}
             </h3>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-pink-600 mt-3 group-hover:gap-2 transition-all">
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium text-pink-600 mt-3 group-hover:gap-2 transition-all"
+            >
               Ver en Instagram <span set:html={ArrowRight} class="w-3 h-3" />
             </span>
           </div>
@@ -217,19 +274,37 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-blue-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
         >
           <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-700 via-blue-500 to-sky-400">
-              <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                <span class="text-white font-bold text-2xl" style="font-family: serif;">f</span>
+            <div
+              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-700 via-blue-500 to-sky-400"
+            >
+              <div
+                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
+              >
+                <span
+                  class="text-white font-bold text-2xl"
+                  style="font-family: serif;">f</span
+                >
               </div>
             </div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
-            <span class="text-[11px] font-semibold tracking-wide text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full self-start">Facebook</span>
-            <p class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase">Red social</p>
-            <h3 class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+            <span
+              class="text-[11px] font-semibold tracking-wide text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full self-start"
+              >Facebook</span
+            >
+            <p
+              class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase"
+            >
+              Red social
+            </p>
+            <h3
+              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
+            >
               Khaled Huerta
             </h3>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-blue-600 mt-3 group-hover:gap-2 transition-all">
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium text-blue-600 mt-3 group-hover:gap-2 transition-all"
+            >
               Ver página <span set:html={ArrowRight} class="w-3 h-3" />
             </span>
           </div>
@@ -242,20 +317,39 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-400/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
         >
           <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-600 via-cyan-500 to-teal-400">
-              <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                <span class="text-white font-bold text-lg" style="font-family: serif;">TG</span>
+            <div
+              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-600 via-cyan-500 to-teal-400"
+            >
+              <div
+                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
+              >
+                <span
+                  class="text-white font-bold text-lg"
+                  style="font-family: serif;">TG</span
+                >
               </div>
             </div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
-            <span class="text-[11px] font-semibold tracking-wide text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full self-start">Telegram</span>
-            <p class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase">Mensajes</p>
-            <h3 class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+            <span
+              class="text-[11px] font-semibold tracking-wide text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full self-start"
+              >Telegram</span
+            >
+            <p
+              class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase"
+            >
+              Mensajes
+            </p>
+            <h3
+              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
+            >
               {telegramPost?.text || "@khaled_huerta"}
             </h3>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-sky-600 mt-3 group-hover:gap-2 transition-all">
-              {telegramPost ? "Abrir en Telegram" : "Enviar mensaje"} <span set:html={ArrowRight} class="w-3 h-3" />
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium text-sky-600 mt-3 group-hover:gap-2 transition-all"
+            >
+              {telegramPost ? "Abrir en Telegram" : "Enviar mensaje"}
+              <span set:html={ArrowRight} class="w-3 h-3" />
             </span>
           </div>
         </a>
@@ -267,19 +361,34 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
           class="social-card group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-gray-900/30 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
         >
           <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
-              <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center">
+            <div
+              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700"
+            >
+              <div
+                class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center"
+              >
                 <span class="text-white font-bold text-xl">♪</span>
               </div>
             </div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
-            <span class="text-[11px] font-semibold tracking-wide text-gray-900 bg-gray-100 px-2.5 py-0.5 rounded-full self-start">TikTok</span>
-            <p class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase">Red social</p>
-            <h3 class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors">
+            <span
+              class="text-[11px] font-semibold tracking-wide text-gray-900 bg-gray-100 px-2.5 py-0.5 rounded-full self-start"
+              >TikTok</span
+            >
+            <p
+              class="text-[11px] text-marron/60 mt-2 font-medium tracking-wide uppercase"
+            >
+              Red social
+            </p>
+            <h3
+              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
+            >
               @khaledhuerta
             </h3>
-            <span class="inline-flex items-center gap-1 text-xs font-medium text-gray-900 mt-3 group-hover:gap-2 transition-all">
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium text-gray-900 mt-3 group-hover:gap-2 transition-all"
+            >
               Ver perfil <span set:html={ArrowRight} class="w-3 h-3" />
             </span>
           </div>
@@ -291,10 +400,14 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
   <section class="py-24 bg-gris-claro relative overflow-hidden">
     <div class="relative z-10 max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14 section-header">
-        <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
+        <span
+          class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label"
+        >
           Agenda
         </span>
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title">
+        <h2
+          class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title"
+        >
           Próximos eventos
         </h2>
         <p class="text-sm text-marron font-medium">
@@ -309,23 +422,44 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
               const date = new Date(event.date);
               const day = date.getDate();
               const month = date.toLocaleDateString("es", { month: "short" });
-              const flag = event.Lugar.includes("México") ? "🇲🇽" : event.Lugar.includes("Argentina") ? "🇦🇷" : event.Lugar.includes("Chile") ? "🇨🇱" : "";
+              const flag = event.Lugar.includes("México")
+                ? "🇲🇽"
+                : event.Lugar.includes("Argentina")
+                  ? "🇦🇷"
+                  : event.Lugar.includes("Chile")
+                    ? "🇨🇱"
+                    : "";
               return (
-                <div class={"event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" + (i === 0 ? " nearest-event" : " opacity-50 grayscale")}>
+                <div
+                  class={
+                    "event-card group bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-5" +
+                    (i === 0 ? " nearest-event" : " opacity-50 grayscale")
+                  }
+                >
                   <div class="w-14 h-14 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
-                    <span class="text-2xl font-bold text-oro leading-none">{day}</span>
-                    <span class="text-sm font-semibold text-oro uppercase tracking-wide">{month}</span>
+                    <span class="text-2xl font-bold text-oro leading-none">
+                      {day}
+                    </span>
+                    <span class="text-sm font-semibold text-oro uppercase tracking-wide">
+                      {month}
+                    </span>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h3 class="font-serif text-lg font-bold text-chocolate leading-snug">{event.title}</h3>
+                    <h3 class="font-serif text-lg font-bold text-chocolate leading-snug">
+                      {event.title}
+                    </h3>
                     <div class="flex items-center gap-1.5 mt-1">
                       <span class="text-base shrink-0">{flag}</span>
-                      <p class="text-base text-marron/70 truncate">{event.Lugar}</p>
+                      <p class="text-base text-marron/70 truncate">
+                        {event.Lugar}
+                      </p>
                     </div>
                   </div>
-                  <span class="text-marron/30 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-xl shrink-0">&rarr;</span>
+                  <span class="text-marron/30 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-xl shrink-0">
+                    &rarr;
+                  </span>
                 </div>
-              )
+              );
             })
           }
         </div>
@@ -338,6 +472,7 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
               class="absolute inset-0 w-full h-full object-cover"
               aria-hidden="true"
             />
+            <div class="absolute inset-0 bg-[linear-gradient(to_bottom,#f8f9fa_0%,transparent_18%,transparent_82%,#f8f9fa_100%)]"></div>
           </div>
         </div>
       </div>
@@ -350,11 +485,17 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   let scrollTimeout;
   let isScrolling = false;
-  document.addEventListener("scroll", () => {
-    if (!isScrolling) isScrolling = true;
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => { isScrolling = false; }, 150);
-  }, { passive: true });
+  document.addEventListener(
+    "scroll",
+    () => {
+      if (!isScrolling) isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 150);
+    },
+    { passive: true },
+  );
 
   function revealOnScroll(selector, opts = {}) {
     const { stagger = 0.1, from = "bottom", distance = 40 } = opts;
@@ -366,16 +507,33 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
         const targets = visible.map((e) => e.target);
-        const base = { duration: 0.8, ease: "power2.out", overwrite: "auto", force3D: true };
+        const base = {
+          duration: 0.8,
+          ease: "power2.out",
+          overwrite: "auto",
+          force3D: true,
+        };
         if (from === "bottom") {
-          gsap.fromTo(targets, { y: distance, opacity: 0 }, { y: 0, opacity: 1, stagger, ...base });
+          gsap.fromTo(
+            targets,
+            { y: distance, opacity: 0 },
+            { y: 0, opacity: 1, stagger, ...base },
+          );
         } else if (from === "center") {
           gsap.set(targets, { transformOrigin: "center center" });
-          gsap.fromTo(targets, { opacity: 0, scale: 0.92, y: 16 }, { opacity: 1, scale: 1, y: 0, stagger, ...base });
+          gsap.fromTo(
+            targets,
+            { opacity: 0, scale: 0.92, y: 16 },
+            { opacity: 1, scale: 1, y: 0, stagger, ...base },
+          );
         } else if (from === "side") {
           targets.forEach((t, i) => {
             const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(t, { x: dir * 30, opacity: 0 }, { x: 0, opacity: 1, delay: i * stagger, ...base });
+            gsap.fromTo(
+              t,
+              { x: dir * 30, opacity: 0 },
+              { x: 0, opacity: 1, delay: i * stagger, ...base },
+            );
           });
         }
         targets.forEach((t) => observer.unobserve(t));
@@ -398,12 +556,25 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
 
   const nearest = document.querySelector(".nearest-event");
   if (nearest) {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        gsap.fromTo(nearest, { scale: 0.95, opacity: 0, force3D: true }, { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out", force3D: true });
-        observer.unobserve(nearest);
-      }
-    }, { threshold: 0.2 });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          gsap.fromTo(
+            nearest,
+            { scale: 0.95, opacity: 0, force3D: true },
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+              force3D: true,
+            },
+          );
+          observer.unobserve(nearest);
+        }
+      },
+      { threshold: 0.2 },
+    );
     observer.observe(nearest);
   }
 </script>
