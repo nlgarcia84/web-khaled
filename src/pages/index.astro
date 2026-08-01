@@ -331,14 +331,13 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
         </div>
 
         <div class="w-full lg:w-5/12 relative">
-          <div class="relative aspect-[4/3]">
+          <div class="relative aspect-[4/3] rounded-2xl overflow-hidden">
             <img
               src={khaledLibreta.src}
               alt=""
-              class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+              class="w-full h-full object-cover [-webkit-mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_80%)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_80%)]"
               aria-hidden="true"
             />
-            <div class="absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_35%,rgba(248,249,250,0.4)_60%,rgba(248,249,250,0.85)_85%,#f8f9fa_100%)]"></div>
           </div>
         </div>
       </div>
