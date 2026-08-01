@@ -8,6 +8,7 @@ import Heart from "lucide-static/dist/esm/icons/heart.mjs";
 import ArrowRight from "lucide-static/dist/esm/icons/arrow-right.mjs";
 import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
 import khaledBoligrafo from "../assets/images/khaled_boligrafo.jpg";
+import khaledLibreta from "../assets/images/khaled_libreta.jpeg";
 import { events } from "../data/events";
 import { getPosts } from "../lib/sanity";
 import { getCampaign } from "../lib/sanity";
@@ -287,8 +288,15 @@ const telegramPost = await getLatestTelegramPost("khaled_huerta");
     </div>
   </section>
 
-  <section class="py-24 bg-gris-claro">
-    <div class="max-w-[1140px] mx-auto px-6">
+  <section class="py-24 bg-gris-claro relative overflow-hidden">
+    <img
+      src={khaledLibreta.src}
+      alt=""
+      class="absolute inset-0 w-full h-full object-cover opacity-10"
+      aria-hidden="true"
+    />
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(248,249,250,0.92)_70%)]"></div>
+    <div class="relative z-10 max-w-[1140px] mx-auto px-6">
       <div class="text-center mb-14 section-header">
         <span class="font-sans text-xs font-bold tracking-[0.2em] text-oro uppercase block mb-3 section-label">
           Agenda
