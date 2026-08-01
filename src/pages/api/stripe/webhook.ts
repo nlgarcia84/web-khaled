@@ -43,8 +43,8 @@ export const POST: APIRoute = async ({ request }) => {
     const sessionId = session.id;
     try {
       const campaign = await writeClient.fetch(
-        `*[_type == "campaign" && slug.current == $slug][0]._id`,
-        { slug: campaignSlug },
+        `*[_type == "campaign" && slug.current == $slug][0]{ _id, raised, "already": $sessionId in processed[]}`,
+        { slug: campaignSlug, sessionId },
       );
 
       if (!campaign) {
@@ -52,8 +52,15 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response("OK", { status: 200 });
       }
 
+      if (campaign.already) {
+        console.log(`Session ${sessionId} already processed, skipping`);
+        return new Response("OK", { status: 200 });
+      }
+
       const t = writeClient.transaction();
-      t.patch(campaign, (p) => p.inc({ raised: amount }));
+      t.patch(campaign._id, (p) =>
+        p.setIfMissing({ processed: [] }).insert("after", "processed[-1]", [sessionId]).inc({ raised: amount }),
+      );
       await t.commit();
       console.log(`Donation: ${amount}€ → "${campaignSlug}"`);
     } catch (err: any) {
