@@ -21,9 +21,7 @@ Todas las rutas están en `src/pages/api/` como endpoints API de Astro (SSR en V
 | `/api/create-checkout` | POST | Sesión de Stripe Checkout. Body: `{ amount, campaignSlug? }`. Redirige a Stripe. | `STRIPE_SECRET_KEY` |
 | `/api/create-paypal-order` | POST | Orden de PayPal. Body: `{ amount, campaignSlug? }`. Retorna `{ id }`. | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` |
 | `/api/capture-paypal-order` | POST | Captura orden aprobada de PayPal + actualiza `raised` en Sanity. Body: `{ orderID, campaignSlug? }`. | `SANITY_TOKEN`, `PAYPAL_CLIENT_SECRET` |
-| `/api/webhooks/stripe` | POST | Webhook de Stripe (legacy, ruta antigua). Obsoleto, usar `/api/stripe/webhook`. | `STRIPE_WEBHOOK_SECRET` |
-| `/api/stripe/webhook` | POST | Webhook de Stripe (actual). Maneja `checkout.session.completed` (actualiza `raised` en Sanity) y `charge.refunded` (registra en logs). | `STRIPE_WEBHOOK_SECRET`, `SANITY_TOKEN` |
-| `/api/webhooks/paypal` | POST | Webhook IPN de PayPal (respaldo). Valida con PayPal, actualiza `raised` en Sanity si el parámetro `custom` coincide con un slug de campaña. | `SANITY_TOKEN` |
+| `/api/stripe/webhook` | POST | Webhook de Stripe. Maneja `checkout.session.completed` (actualiza `raised` en Sanity) y `charge.refunded` (registra en logs). | `STRIPE_WEBHOOK_SECRET`, `SANITY_TOKEN` |
 
 ### Otras
 
@@ -43,7 +41,6 @@ Todas las rutas están en `src/pages/api/` como endpoints API de Astro (SSR en V
 1. Frontend carga PayPal SDK con `PUBLIC_PAYPAL_CLIENT_ID`
 2. Click en botón → `POST /api/create-paypal-order` → retorna ID de orden
 3. Usuario aprueba en popup de PayPal → `POST /api/capture-paypal-order` → captura el pago + actualiza Sanity
-4. Respaldo IPN: PayPal también llama a `POST /api/webhooks/paypal` con los detalles del pago
 
 **Donaciones generales** (sin `campaignSlug`): se registran en logs pero no se rastrean en Sanity.
 
@@ -94,11 +91,6 @@ Helpers de la API REST de PayPal:
 ### `src/lib/youtube.ts`
 YouTube Data API:
 - `getLiveStream(channelId)` — Consulta `search?eventType=live` y retorna `{ videoId, title, thumbnail }` o `null`
-
-### `src/lib/feeds.ts`
-Scraping de datos externos:
-- `getLatestInstagramPost(username)` — Scrapea el HTML del perfil de Instagram para obtener la última publicación
-- `getLatestTelegramPost(username)` — Scrapea el HTML del canal público de Telegram
 
 ---
 

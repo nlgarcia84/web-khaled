@@ -37,10 +37,10 @@ const sectionClass =
 
 const overlayClass =
   overlay === "gradient"
-    ? "bg-gradient-to-b from-chocolate/80 via-chocolate/70 to-chocolate/85"
+    ? "bg-gradient-to-b from-chocolate/85 via-chocolate/75 to-chocolate/95"
     : overlay === "gradient-dark"
-      ? "bg-gradient-to-b from-chocolate/80 via-chocolate/75 to-chocolate/90"
-      : "bg-chocolate/85";
+      ? "bg-gradient-to-b from-chocolate/85 via-chocolate/80 to-chocolate/95"
+      : "bg-chocolate/90";
 
 const titleClass =
   titleSize === "xl"
@@ -56,7 +56,7 @@ const titleClass =
   <Image
     src={image}
     alt=""
-    class={`absolute inset-0 w-full h-full object-cover ${imageClass}`}
+    class={`absolute inset-0 w-full h-full object-cover contrast-110 saturate-105 ${imageClass}`}
     style={imagePosition ? `object-position: ${imagePosition}` : ""}
     fetchpriority="high"
     aria-hidden="true"
