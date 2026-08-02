@@ -39,17 +39,13 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
               <h3 class="font-serif text-lg font-bold text-granate group-hover:text-chocolate transition-colors">
                 Alfombra para la Musala
               </h3>
-              <span class="text-xs font-bold tracking-wider uppercase bg-granate text-white px-2.5 py-0.5 rounded-full animate-pulse">
-                Urgente
+              <span class="text-xs font-bold tracking-wider uppercase bg-green-600 text-white px-2.5 py-0.5 rounded-full">
+                Conseguido
               </span>
             </div>
-            <p class="text-sm text-marron mt-1">
-              Meta: {goal.toLocaleString()} € — Cada donación acerca la alfombra
+            <p class="text-sm text-green-700 font-medium mt-1">
+              Meta: {goal.toLocaleString()} € — ¡Superada! ({raised.toLocaleString()} € recaudados)
             </p>
-            <div class="w-full bg-gray-200 rounded-full h-2 mt-2 max-w-60 overflow-hidden">
-              <div class="bg-oro h-full rounded-full" style={`width: ${Math.min(percentage, 100)}%`}></div>
-            </div>
-            <p class="text-xs text-marron mt-1">{percentage}% completado</p>
           </div>
         </div>
         <span class="text-oro group-hover:translate-x-1 transition-transform font-bold text-lg">&rarr;</span>
