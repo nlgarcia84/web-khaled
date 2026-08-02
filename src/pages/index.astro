@@ -530,74 +530,82 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
   revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".event-card", { from: "side", stagger: 0.06 });
 
-  const marquee = document.querySelector(".blog-marquee");
-  if (marquee) {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const SPEED = 20; // px/s
-    let isDown = false;
-    let dragged = false;
-    let startX = 0;
-    let startScroll = 0;
-    let hovered = false;
-    let lastTime = 0;
+  let marqueeRaf = 0;
+  const initMarquee = () => {
+    const marquee = document.querySelector(".blog-marquee");
+    if (!marquee) return;
 
-    marquee.addEventListener("mouseenter", () => (hovered = true));
-    marquee.addEventListener("mouseleave", () => (hovered = false));
+      cancelAnimationFrame(marqueeRaf);
 
-    marquee.addEventListener("pointerdown", (e) => {
-      isDown = true;
-      dragged = false;
-      startX = e.clientX;
-      startScroll = marquee.scrollLeft;
-      marquee.classList.add("dragging");
-    });
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const SPEED = 30; // px/s
+      let isDown = false;
+      let dragged = false;
+      let startX = 0;
+      let startScroll = 0;
+      let lastTime = 0;
 
-    window.addEventListener("pointermove", (e) => {
-      if (!isDown) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) dragged = true;
-      if (dragged) marquee.scrollLeft = startScroll - dx;
-    });
+      marquee.querySelectorAll("a").forEach((a) => {
+        a.setAttribute("draggable", "false");
+      });
+      marquee.addEventListener("dragstart", (e) => e.preventDefault());
 
-    const endDrag = () => {
-      isDown = false;
-      marquee.classList.remove("dragging");
-    };
-    window.addEventListener("pointerup", endDrag);
-    window.addEventListener("pointercancel", endDrag);
+      marquee.addEventListener("pointerdown", (e) => {
+        isDown = true;
+        dragged = false;
+        startX = e.clientX;
+        startScroll = marquee.scrollLeft;
+        marquee.classList.add("dragging");
+      });
 
-    marquee.addEventListener(
-      "click",
-      (e) => {
-        if (dragged) {
-          e.preventDefault();
-          e.stopPropagation();
-          dragged = false;
+      window.addEventListener("pointermove", (e) => {
+        if (!isDown) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) dragged = true;
+        if (dragged) marquee.scrollLeft = startScroll - dx;
+      });
+
+      const endDrag = () => {
+        isDown = false;
+        marquee.classList.remove("dragging");
+      };
+      window.addEventListener("pointerup", endDrag);
+      window.addEventListener("pointercancel", endDrag);
+
+      marquee.addEventListener(
+        "click",
+        (e) => {
+          if (dragged) {
+            e.preventDefault();
+            e.stopPropagation();
+            dragged = false;
+          }
+        },
+        true,
+      );
+
+      function tick(time) {
+        if (!reducedMotion && !isDown && !document.hidden) {
+          const dt = lastTime ? (time - lastTime) / 1000 : 0;
+          const max = marquee.scrollWidth - marquee.clientWidth;
+          if (max > 0) {
+            marquee.scrollLeft += dt * SPEED;
+            if (marquee.scrollLeft >= max) marquee.scrollLeft = 0;
+          }
         }
-      },
-      true,
-    );
-
-    function tick(time) {
-      if (
-        lastTime &&
-        !reducedMotion &&
-        !isDown &&
-        !hovered &&
-        !document.hidden
-      ) {
-        const dt = (time - lastTime) / 1000;
-        const max = marquee.scrollWidth - marquee.clientWidth;
-        marquee.scrollLeft += dt * SPEED;
-        if (marquee.scrollLeft >= max) marquee.scrollLeft = 0;
+        lastTime = time;
+        marqueeRaf = requestAnimationFrame(tick);
       }
-      lastTime = time;
-      requestAnimationFrame(tick);
+      marqueeRaf = requestAnimationFrame(tick);
+    };
+
+    initMarquee();
+    if (!(window as any).__marqueeInit) {
+      (window as any).__marqueeInit = true;
+      document.addEventListener("astro:after-swap", initMarquee);
     }
-    requestAnimationFrame(tick);
-  }
 
   document.querySelectorAll(".event-card").forEach((card, i) => {
     if (i > 0) card.style.opacity = "0.5";
