@@ -1,6 +1,17 @@
 import type { APIRoute } from "astro";
 import { createPayPalOrder } from "../../lib/paypal";
 
+/**
+ * Crea una orden de PayPal para donaciones.
+ *
+ * @route   POST /api/create-paypal-order
+ * @param   {number} amount        - Cantidad en euros
+ * @param   {string} [campaignSlug] - Slug de campaña (se guarda en custom_id)
+ * @returns {object} { id: string } ID de la orden para el SDK de PayPal
+ *
+ * Flujo: frontend PayPal SDK → este endpoint → PayPal popup → capture-paypal-order → Sanity
+ */
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const { amount, campaignSlug } = await request.json();

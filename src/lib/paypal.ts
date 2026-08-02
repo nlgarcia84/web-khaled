@@ -1,3 +1,13 @@
+/**
+ * PayPal REST API — autenticación OAuth2, creación y captura de órdenes.
+ *
+ * - getAccessToken()       → OAuth2 client_credentials
+ * - createPayPalOrder()    → crea orden EUR, guarda campaignSlug en custom_id
+ * - capturePayPalOrder()   → captura orden aprobada por el usuario
+ *
+ * Env vars requeridas: PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
+ */
+
 const PAYPAL_API = "https://api-m.paypal.com";
 const CLIENT_ID = import.meta.env.PAYPAL_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.PAYPAL_CLIENT_SECRET;

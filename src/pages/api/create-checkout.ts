@@ -1,6 +1,16 @@
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
 
+/**
+ * Crea una sesión de Stripe Checkout para donaciones.
+ *
+ * @route   POST /api/create-checkout
+ * @param   {number} amount        - Cantidad en euros (mínimo 1)
+ * @param   {string} [campaignSlug] - Slug de campaña en Sanity (si no se pasa, es donación general)
+ * @returns {object} { url: string } URL de la sesión de Stripe para redirigir al usuario
+ *
+ * Flujo: frontend → este endpoint → Stripe Checkout → webhook → Sanity
+ */
 const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY ?? "");
 
 export const POST: APIRoute = async ({ request }) => {

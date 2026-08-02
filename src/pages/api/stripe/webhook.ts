@@ -2,6 +2,19 @@ import type { APIRoute } from "astro";
 import Stripe from "stripe";
 import { writeClient } from "../../../lib/sanity";
 
+/**
+ * Webhook de Stripe — recibe eventos de pago y actualiza Sanity.
+ *
+ * @route   POST /api/stripe/webhook
+ * @header  stripe-signature — firma HMAC para verificar autenticidad
+ *
+ * Eventos manejados:
+ * - checkout.session.completed → extrae campaignSlug y amount del metadata,
+ *   incrementa `raised` en el documento campaign de Sanity (idempotente vía processed[])
+ * - charge.refunded → log del reembolso
+ *
+ * Env vars: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
+ */
 const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY ?? "", {
   apiVersion: "2024-01-01",
 });

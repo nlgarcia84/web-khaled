@@ -2,6 +2,18 @@ import type { APIRoute } from "astro";
 import { capturePayPalOrder } from "../../lib/paypal";
 import { writeClient } from "../../lib/sanity";
 
+/**
+ * Captura una orden de PayPal aprobada y actualiza Sanity.
+ *
+ * @route   POST /api/capture-paypal-order
+ * @param   {string} orderID        - ID de la orden de PayPal
+ * @param   {string} [campaignSlug] - Slug de campaña a actualizar
+ * @returns {object} { ok: true }
+ *
+ * Se llama desde el frontend después de que el usuario aprueba el pago en el popup.
+ * Si la captura es exitosa y hay campaignSlug, incrementa `raised` en Sanity.
+ */
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const { orderID, campaignSlug } = await request.json();

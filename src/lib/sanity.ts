@@ -1,5 +1,15 @@
 import { createClient } from "@sanity/client";
 
+/**
+ * Sanity CMS — clientes y consultas.
+ *
+ * - `client`    → solo lectura, cache CDN para velocidad
+ * - `writeClient` → autenticado con token SANITY_TOKEN para mutaciones (webhooks)
+ *
+ * Tipos de documento: post, campaign, stream, documento, blockContent, category
+ * Studio URL: https://khaled-blog.sanity.studio/
+ */
+
 const projectId = "6flkjd1o";
 const dataset = "production";
 
