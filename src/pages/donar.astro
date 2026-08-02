@@ -58,7 +58,7 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
       </div>
 
       <div
-        class="bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm max-w-200 mx-auto mb-6 cursor-pointer select-none"
+        class="bg-gradient-to-br from-oro/10 to-chocolate/5 border border-oro/30 p-6 rounded-xl shadow-sm max-w-200 mx-auto mb-6"
         id="general-donation-card"
       >
         <div class="flex items-center gap-4">
@@ -76,7 +76,7 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
           </div>
         </div>
 
-        <div id="general-donation-form" class="hidden mt-6 pt-6 border-t border-oro/20">
+        <div id="general-donation-form" class="mt-6 pt-6 border-t border-oro/20">
           <p class="font-serif text-base font-bold text-chocolate mb-4 text-center">
             Elige tu contribución
           </p>
@@ -272,17 +272,6 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 </Layout>
 
 <script>
-  const card = document.getElementById("general-donation-card");
-  const form = document.getElementById("general-donation-form");
-  let isOpen = false;
-
-  card?.addEventListener("click", (e) => {
-    const btn = (e.target as HTMLElement).closest("button, input");
-    if (btn) return;
-    isOpen = !isOpen;
-    form?.classList.toggle("hidden", !isOpen);
-  });
-
   const amountBtns = document.querySelectorAll(".gen-amount-btn");
   const customInput = document.getElementById("gen-custom-amount") as HTMLInputElement;
   let selectedAmount = 200;
