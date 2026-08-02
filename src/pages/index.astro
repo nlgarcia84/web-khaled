@@ -79,9 +79,9 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
         </h2>
       </div>
       <div
-        class="blog-marquee relative overflow-x-auto overflow-y-hidden touch-pan-y cursor-grab active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+        class="blog-marquee relative overflow-hidden touch-pan-y cursor-grab active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
       >
-        <div class="blog-marquee__track flex w-max">
+        <div class="blog-marquee__track flex w-max will-change-transform">
           <div class="flex shrink-0">
             {
               posts.map((post: any) => (
@@ -533,73 +533,86 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
   let marqueeRaf = 0;
   const initMarquee = () => {
     const marquee = document.querySelector(".blog-marquee");
-    if (!marquee) return;
+    const track = marquee?.querySelector(".blog-marquee__track");
+    if (!marquee || !track) return;
 
-      cancelAnimationFrame(marqueeRaf);
+    cancelAnimationFrame(marqueeRaf);
 
-      const reducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      const SPEED = 30; // px/s
-      let isDown = false;
-      let dragged = false;
-      let startX = 0;
-      let startScroll = 0;
-      let lastTime = 0;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const SPEED = 30; // px/s
+    let x = 0;
+    let isDown = false;
+    let dragged = false;
+    let startX = 0;
+    let startXPos = 0;
+    let lastTime = 0;
+    let max = 0;
 
-      marquee.querySelectorAll("a").forEach((a) => {
-        a.setAttribute("draggable", "false");
-      });
-      marquee.addEventListener("dragstart", (e) => e.preventDefault());
-
-      marquee.addEventListener("pointerdown", (e) => {
-        isDown = true;
-        dragged = false;
-        startX = e.clientX;
-        startScroll = marquee.scrollLeft;
-        marquee.classList.add("dragging");
-      });
-
-      window.addEventListener("pointermove", (e) => {
-        if (!isDown) return;
-        const dx = e.clientX - startX;
-        if (Math.abs(dx) > 4) dragged = true;
-        if (dragged) marquee.scrollLeft = startScroll - dx;
-      });
-
-      const endDrag = () => {
-        isDown = false;
-        marquee.classList.remove("dragging");
-      };
-      window.addEventListener("pointerup", endDrag);
-      window.addEventListener("pointercancel", endDrag);
-
-      marquee.addEventListener(
-        "click",
-        (e) => {
-          if (dragged) {
-            e.preventDefault();
-            e.stopPropagation();
-            dragged = false;
-          }
-        },
-        true,
-      );
-
-      function tick(time) {
-        if (!reducedMotion && !isDown && !document.hidden) {
-          const dt = lastTime ? (time - lastTime) / 1000 : 0;
-          const max = marquee.scrollWidth - marquee.clientWidth;
-          if (max > 0) {
-            marquee.scrollLeft += dt * SPEED;
-            if (marquee.scrollLeft >= max) marquee.scrollLeft = 0;
-          }
-        }
-        lastTime = time;
-        marqueeRaf = requestAnimationFrame(tick);
-      }
-      marqueeRaf = requestAnimationFrame(tick);
+    const setX = (v: number) => {
+      x = v;
+      track.style.transform = `translate3d(${-x}px, 0, 0)`;
     };
+    const computeMax = () => {
+      max = Math.max(0, track.scrollWidth - marquee.clientWidth);
+    };
+    computeMax();
+    window.addEventListener("resize", computeMax);
+
+    marquee.querySelectorAll("a").forEach((a) => {
+      a.setAttribute("draggable", "false");
+    });
+    marquee.addEventListener("dragstart", (e) => e.preventDefault());
+
+    marquee.addEventListener("pointerdown", (e) => {
+      isDown = true;
+      dragged = false;
+      startX = e.clientX;
+      startXPos = x;
+      marquee.classList.add("dragging");
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) dragged = true;
+      if (dragged) setX(Math.min(Math.max(startXPos - dx, 0), max));
+    });
+
+    const endDrag = () => {
+      isDown = false;
+      marquee.classList.remove("dragging");
+    };
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
+
+    marquee.addEventListener(
+      "click",
+      (e) => {
+        if (dragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragged = false;
+        }
+      },
+      true,
+    );
+
+    function tick(time) {
+      if (!reducedMotion && !isDown && !document.hidden) {
+        const dt = lastTime ? (time - lastTime) / 1000 : 0;
+        if (max > 0) {
+          x += dt * SPEED;
+          if (x >= max) x = 0;
+          track.style.transform = `translate3d(${-x}px, 0, 0)`;
+        }
+      }
+      lastTime = time;
+      marqueeRaf = requestAnimationFrame(tick);
+    }
+    marqueeRaf = requestAnimationFrame(tick);
+  };
 
     initMarquee();
     if (!(window as any).__marqueeInit) {
