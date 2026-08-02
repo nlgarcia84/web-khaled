@@ -40,12 +40,16 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
               <h3 class="font-serif text-lg font-bold text-chocolate">
                 Alfombra para la Musala
               </h3>
-              <span class="text-xs font-bold tracking-wider uppercase bg-green-600 text-white px-2.5 py-0.5 rounded-full">
+              <span
+                class="text-xs font-bold tracking-wider uppercase bg-green-600 text-white px-2.5 py-0.5 rounded-full"
+              >
                 Conseguido
               </span>
             </div>
             <p class="text-sm text-green-700 font-medium mt-1">
-              Meta: {goal.toLocaleString()} € — ¡Superada! ({raised.toLocaleString()} € recaudados)
+              Meta: {goal.toLocaleString()} € — ¡Superada! ({
+                raised.toLocaleString()
+              } € recaudados)
             </p>
           </div>
         </div>
@@ -434,7 +438,9 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
     }
   });
 
-  const stripeBtn = document.getElementById("gen-stripe-btn");
+  const stripeBtn = document.getElementById(
+    "gen-stripe-btn",
+  ) as HTMLButtonElement | null;
   stripeBtn?.addEventListener("click", async () => {
     const amount = selectedAmount || parseInt(customInput.value);
     if (!amount || amount < 1) {
