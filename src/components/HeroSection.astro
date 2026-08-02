@@ -114,41 +114,51 @@ const titleClass =
 <script>
   import gsap from "gsap";
 
-  gsap.from(".hero-content > *", {
-    y: 40,
-    opacity: 0,
-    duration: 0.5,
-    stagger: 0.08,
-    ease: "power1.out",
-    force3D: true,
-  });
-
-  const typingLines = document.querySelectorAll(".typing-line");
-  if (typingLines.length) {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    typingLines.forEach((line) => {
-      const text = line.dataset.text || "";
-      const el = line.querySelector(".typing-text");
-      if (!el) return;
-
-      if (reduceMotion) {
-        el.textContent = text;
-        return;
-      }
-
-      let i = 0;
-      const type = () => {
-        if (i <= text.length) {
-          el.textContent = text.slice(0, i);
-          i++;
-          setTimeout(type, 40 + Math.random() * 70);
-        }
-      };
-      setTimeout(type, 600);
+  const init = () => {
+    gsap.from(".hero-content > *", {
+      y: 40,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.08,
+      ease: "power1.out",
+      force3D: true,
     });
+
+    const typingLines = document.querySelectorAll(".typing-line");
+    if (typingLines.length) {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      typingLines.forEach((line) => {
+        const text = line.dataset.text || "";
+        const el = line.querySelector(".typing-text");
+        if (!el) return;
+
+        el.textContent = "";
+
+        if (reduceMotion) {
+          el.textContent = text;
+          return;
+        }
+
+        let i = 0;
+        const type = () => {
+          if (i <= text.length) {
+            el.textContent = text.slice(0, i);
+            i++;
+            setTimeout(type, 40 + Math.random() * 70);
+          }
+        };
+        setTimeout(type, 600);
+      });
+    }
+  };
+
+  init();
+  if (!(window as any).__heroInit) {
+    (window as any).__heroInit = true;
+    document.addEventListener("astro:after-swap", init);
   }
 </script>
 
