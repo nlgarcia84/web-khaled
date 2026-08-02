@@ -178,27 +178,42 @@ const { title } = Astro.props;
   window.scrollTo(0, 0);
   document.addEventListener("astro:after-swap", () => window.scrollTo(0, 0));
 
-  const btn = document.getElementById("scroll-top-btn");
-  if (btn) {
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const shouldShow = window.scrollY > 300;
-          btn.classList.toggle("opacity-0", !shouldShow);
-          btn.classList.toggle("translate-y-4", !shouldShow);
-          btn.classList.toggle("pointer-events-none", !shouldShow);
-          btn.classList.toggle("opacity-100", shouldShow);
-          btn.classList.toggle("translate-y-0", shouldShow);
-          btn.classList.toggle("pointer-events-auto", shouldShow);
-          ticking = false;
-        });
-        ticking = true;
-      }
+  if (!(window as any).__scrollTopInit) {
+    (window as any).__scrollTopInit = true;
+
+    const showBtn = () => {
+      const btn = document.getElementById("scroll-top-btn");
+      if (!btn) return;
+      const shouldShow = window.scrollY > 300;
+      btn.classList.toggle("opacity-0", !shouldShow);
+      btn.classList.toggle("translate-y-4", !shouldShow);
+      btn.classList.toggle("pointer-events-none", !shouldShow);
+      btn.classList.toggle("opacity-100", shouldShow);
+      btn.classList.toggle("translate-y-0", shouldShow);
+      btn.classList.toggle("pointer-events-auto", shouldShow);
     };
-    document.addEventListener("scroll", onScroll, { passive: true });
-    btn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+    let ticking = false;
+    document.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            showBtn();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+
+    document.addEventListener("astro:after-swap", showBtn);
+
+    document.addEventListener("click", (e) => {
+      if ((e.target as Element).closest?.("#scroll-top-btn")) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     });
   }
 </script>
