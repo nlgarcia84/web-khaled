@@ -8,6 +8,7 @@ interface Props {
   quote?: string;
   title: string;
   description?: string;
+  typing?: boolean;
   size?: "full" | "short";
   overlay?: "solid" | "gradient" | "gradient-dark";
   maxWidth?: string;
@@ -22,6 +23,7 @@ const {
   quote,
   title,
   description,
+  typing = false,
   size = "full",
   overlay = "solid",
   maxWidth = "800px",
@@ -88,11 +90,21 @@ const titleClass =
     </h1>
 
     {
-      description && (
-        <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto mb-8">
-          {description}
-        </p>
-      )
+      description &&
+        (typing ? (
+          <p
+            class="font-mono text-base md:text-lg text-crema/80 font-normal leading-relaxed max-w-2xl mx-auto mb-8 typing-line"
+            data-text={description}
+          >
+            <span class="text-oro font-bold mr-1.5">❯</span>
+            <span class="typing-text"></span>
+            <span class="typing-cursor">▌</span>
+          </p>
+        ) : (
+          <p class="font-sans text-lg md:text-xl text-crema/80 font-light leading-relaxed max-w-2xl mx-auto mb-8">
+            {description}
+          </p>
+        ))
     }
 
     <slot />
@@ -110,4 +122,50 @@ const titleClass =
     ease: "power1.out",
     force3D: true,
   });
+
+  const typingLines = document.querySelectorAll(".typing-line");
+  if (typingLines.length) {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    typingLines.forEach((line) => {
+      const text = line.dataset.text || "";
+      const el = line.querySelector(".typing-text");
+      if (!el) return;
+
+      if (reduceMotion) {
+        el.textContent = text;
+        return;
+      }
+
+      let i = 0;
+      const type = () => {
+        if (i <= text.length) {
+          el.textContent = text.slice(0, i);
+          i++;
+          setTimeout(type, 40 + Math.random() * 70);
+        }
+      };
+      setTimeout(type, 600);
+    });
+  }
 </script>
+
+<style>
+  @keyframes typing-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .typing-cursor {
+    animation: typing-blink 1s steps(1) infinite;
+    margin-left: 2px;
+  }
+</style>
