@@ -78,7 +78,7 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
         </h2>
       </div>
       <div
-        class="blog-marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+        class="blog-marquee relative overflow-x-auto overflow-y-hidden touch-pan-y cursor-grab active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
       >
         <div class="blog-marquee__track flex w-max">
           <div class="flex shrink-0">
@@ -529,6 +529,75 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
   revealOnScroll(".social-card", { from: "center", stagger: 0.08 });
   revealOnScroll(".event-card", { from: "side", stagger: 0.06 });
 
+  const marquee = document.querySelector(".blog-marquee");
+  if (marquee) {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const SPEED = 20; // px/s
+    let isDown = false;
+    let dragged = false;
+    let startX = 0;
+    let startScroll = 0;
+    let hovered = false;
+    let lastTime = 0;
+
+    marquee.addEventListener("mouseenter", () => (hovered = true));
+    marquee.addEventListener("mouseleave", () => (hovered = false));
+
+    marquee.addEventListener("pointerdown", (e) => {
+      isDown = true;
+      dragged = false;
+      startX = e.clientX;
+      startScroll = marquee.scrollLeft;
+      marquee.classList.add("dragging");
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) dragged = true;
+      if (dragged) marquee.scrollLeft = startScroll - dx;
+    });
+
+    const endDrag = () => {
+      isDown = false;
+      marquee.classList.remove("dragging");
+    };
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
+
+    marquee.addEventListener(
+      "click",
+      (e) => {
+        if (dragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragged = false;
+        }
+      },
+      true,
+    );
+
+    function tick(time) {
+      if (
+        lastTime &&
+        !reducedMotion &&
+        !isDown &&
+        !hovered &&
+        !document.hidden
+      ) {
+        const dt = (time - lastTime) / 1000;
+        const max = marquee.scrollWidth - marquee.clientWidth;
+        marquee.scrollLeft += dt * SPEED;
+        if (marquee.scrollLeft >= max) marquee.scrollLeft = 0;
+      }
+      lastTime = time;
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
   document.querySelectorAll(".event-card").forEach((card, i) => {
     if (i > 0) card.style.opacity = "0.5";
   });
@@ -559,27 +628,14 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
 </script>
 
 <style is:global>
-  @keyframes blog-marquee-scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+  .blog-marquee {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
-  .blog-marquee__track {
-    animation: blog-marquee-scroll 45s linear infinite;
-    will-change: transform;
-  }
-
-  .blog-marquee:hover .blog-marquee__track {
-    animation-play-state: paused;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .blog-marquee__track {
-      animation: none;
-    }
+  .blog-marquee::-webkit-scrollbar {
+    display: none;
   }
 </style>
