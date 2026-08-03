@@ -9,7 +9,7 @@ const builder = createImageUrlBuilder(client);
 const components = {
   types: {
     image: ({ value }: any) => {
-      const url = builder.image(value).width(800).url();
+      const url = builder.image(value).width(800).format("webp").quality(80).url();
       const alt = value.alt || "";
       return `<figure class="my-8"><img src="${url}" alt="${alt}" class="rounded-xl w-full object-cover" loading="lazy" /></figure>`;
     },
@@ -51,7 +51,7 @@ const post = await getPost(slug);
         post.image && (
           <figure class="my-8">
             <img
-              src={builder.image(post.image).width(1200).url()}
+              src={builder.image(post.image).width(1200).format("webp").quality(80).url()}
               alt={post.title}
               class="w-full h-64 md:h-96 object-cover rounded-xl"
               fetchpriority="high"

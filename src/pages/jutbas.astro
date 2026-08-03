@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
-import khaledJutba from "../assets/images/khaled_jutba.png";
+import khaledJutba from "../assets/images/khaled_jutba.jpg";
 import { getStream } from "../lib/sanity";
 import { getLiveStream } from "../lib/youtube";
 
@@ -62,7 +62,7 @@ const videoId = live?.videoId ?? "";
                 <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl ring-2 ring-red-500/30 stream-video">
                   <iframe
                     class="absolute inset-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
                     title="YouTube video player"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -72,7 +72,7 @@ const videoId = live?.videoId ?? "";
               </div>
 
               {chatEnabled && (
-                <div class="h-[500px] lg:h-auto bg-white rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-100 stream-chat">
+                <div class="h-[500px] lg:h-full bg-white rounded-2xl overflow-hidden shadow-xl ring-1 ring-oro/30 stream-chat">
                   <div class="bg-chocolate text-white text-xs font-bold tracking-wider uppercase px-4 py-3 text-center">
                     <span class="relative inline-flex h-2 w-2 mr-2">
                       <span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 live-ping" />
@@ -81,10 +81,12 @@ const videoId = live?.videoId ?? "";
                     Chat en vivo
                   </div>
                   <iframe
+                    id="live-chat-frame"
                     class="w-full h-[calc(100%-40px)]"
-                    src={`https://www.youtube.com/live_chat?v=${videoId}&embed_domain=www.khaledhuerta.com`}
                     title="Chat en vivo"
                     frameborder="0"
+                    data-video-id={videoId}
+                    allow="autoplay; clipboard-write"
                   />
                 </div>
               )}
@@ -154,6 +156,20 @@ const videoId = live?.videoId ?? "";
     animation: live-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
+  .live-glow {
+    animation: live-glow-pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes live-glow-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45);
+    }
+    50% {
+      box-shadow: 0 0 0 18px rgba(220, 38, 38, 0);
+    }
+  }
+
   @keyframes connection-pulse {
     0%,
     100% {
@@ -208,6 +224,38 @@ const videoId = live?.videoId ?? "";
 
 <script>
   import gsap from "gsap";
+
+  const chatFrame = document.getElementById("live-chat-frame");
+  if (chatFrame) {
+    const chatVideoId = chatFrame.dataset.videoId;
+    chatFrame.src = `https://www.youtube.com/live_chat?v=${chatVideoId}&embed_domain=${window.location.hostname}&dark_theme=1`;
+  }
+
+  const liveVideoId = chatFrame
+    ? chatFrame.dataset.videoId
+    : document.querySelector<HTMLIFrameElement>("iframe.stream-video iframe")?.src.match(/embed\/([a-zA-Z0-9_-]+)/)?.[1] ?? null;
+
+  let abort = false;
+  window.addEventListener("astro:before-swap", () => (abort = true), { once: true });
+
+  async function pollLive() {
+    if (abort) return;
+    try {
+      const res = await fetch(`/api/live-status?videoId=${liveVideoId}`);
+      const data = await res.json();
+      if (!data.isLive) {
+        window.location.reload();
+        return;
+      }
+    } catch {
+      /* red temporal: reintentar */
+    }
+    setTimeout(pollLive, 30000);
+  }
+
+  if (window.location.pathname === "/jutbas" && liveVideoId) {
+    setTimeout(pollLive, 30000);
+  }
 
   const streamLive = document.querySelector(".stream-live");
   if (streamLive) {

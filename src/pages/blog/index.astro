@@ -34,7 +34,7 @@ const rest = posts.slice(1);
               {
                 featured.image ? (
                   <img
-                    src={builder.image(featured.image).width(600).height(400).url()}
+                    src={builder.image(featured.image).width(600).height(400).format("webp").quality(80).url()}
                     alt={featured.title}
                     class="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     fetchpriority="high"
@@ -95,7 +95,7 @@ const rest = posts.slice(1);
                 {
                   post.image ? (
                     <img
-                      src={builder.image(post.image).width(600).height(340).url()}
+                      src={builder.image(post.image).width(600).height(340).format("webp").quality(80).url()}
                       alt={post.title}
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
