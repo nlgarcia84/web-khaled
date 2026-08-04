@@ -93,47 +93,7 @@ import HeroSection from "../components/HeroSection.astro";
 </Layout>
 
 <script>
-  import gsap from "gsap";
-
-  function revealOnScroll(
-    selector,
-    { from = "bottom", stagger = 0.08, distance = 40 } = {},
-  ) {
-    const els = document.querySelectorAll(selector);
-    if (!els.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (!visible.length) return;
-        const targets = visible.map((e) => e.target);
-        const base = {
-          duration: 0.4,
-          ease: "power1.out",
-          overwrite: "auto",
-          force3D: true,
-        };
-        if (from === "bottom") {
-          gsap.fromTo(
-            targets,
-            { y: distance, opacity: 0 },
-            { y: 0, opacity: 1, stagger, ...base },
-          );
-        } else if (from === "side") {
-          targets.forEach((t, i) => {
-            const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(
-              t,
-              { x: dir * 30, opacity: 0 },
-              { x: 0, opacity: 1, delay: i * stagger, ...base },
-            );
-          });
-        }
-        targets.forEach((t) => observer.unobserve(t));
-      },
-      { threshold: 0.2 },
-    );
-    els.forEach((el) => observer.observe(el));
-  }
+  import { revealOnScroll } from "../lib/scroll-reveal";
 
   revealOnScroll(".trayectoria-sidebar", {
     from: "bottom",

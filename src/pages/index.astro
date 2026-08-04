@@ -477,52 +477,7 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
 </Layout>
 
 <script>
-  import gsap from "gsap";
-
-  function revealOnScroll(selector, opts = {}) {
-    const { stagger = 0.1, from = "bottom", distance = 40 } = opts;
-    const els = document.querySelectorAll(selector);
-    if (!els.length) return;
-    const observer = new IntersectionObserver(
-        (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (!visible.length) return;
-        const targets = visible.map((e) => e.target);
-        const base = {
-          duration: 0.4,
-          ease: "power1.out",
-          overwrite: "auto",
-          force3D: true,
-        };
-        if (from === "bottom") {
-          gsap.fromTo(
-            targets,
-            { y: distance, opacity: 0 },
-            { y: 0, opacity: 1, stagger, ...base },
-          );
-        } else if (from === "center") {
-          gsap.set(targets, { transformOrigin: "center center" });
-          gsap.fromTo(
-            targets,
-            { opacity: 0, scale: 0.92, y: 16 },
-            { opacity: 1, scale: 1, y: 0, stagger, ...base },
-          );
-        } else if (from === "side") {
-          targets.forEach((t, i) => {
-            const dir = i % 2 === 0 ? -1 : 1;
-            gsap.fromTo(
-              t,
-              { x: dir * 30, opacity: 0 },
-              { x: 0, opacity: 1, delay: i * stagger, ...base },
-            );
-          });
-        }
-        targets.forEach((t) => observer.unobserve(t));
-      },
-      { threshold: 0.2 },
-    );
-    els.forEach((el) => observer.observe(el));
-  }
+  import { revealOnScroll } from "../lib/scroll-reveal";
 
   gsap.set(".hero-parallax", { scale: 1 });
 
