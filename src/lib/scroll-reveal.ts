@@ -16,8 +16,8 @@ export function revealOnScroll(selector: string, opts: RevealOptions = {}) {
   const els = document.querySelectorAll<HTMLElement>(selector);
   if (!els.length) return;
 
-  // Precarga: elementos quedarán ocultos hasta entrar en el viewport.
-  gsap.set(els, { autoAlpha: 0 });
+  // Fallback: si el navegador no soporta IntersectionObserver, todo se ve.
+  if (!("IntersectionObserver" in window)) return;
 
   const isIntersecting = (e: IntersectionObserverEntry) => e.isIntersecting;
 
@@ -62,7 +62,7 @@ export function revealOnScroll(selector: string, opts: RevealOptions = {}) {
       targets.forEach((t, i) => animate(t, i, i * stagger));
       targets.forEach((t) => observer.unobserve(t));
     },
-    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+    { threshold: 0.05, rootMargin: "0px 0px -40px 0px" },
   );
 
   els.forEach((el) => observer.observe(el));
