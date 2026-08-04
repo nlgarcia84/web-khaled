@@ -1,30 +1,66 @@
 ---
-import { toHTML } from "@portabletext/to-html";
+import { Image } from "astro:assets";
+import { PortableText } from "astro-portabletext";
+import type { Props as PortableTextProps } from "astro-portabletext/types";
 import { createImageUrlBuilder } from "@sanity/image-url";
 import Layout from "../../layouts/Layout.astro";
 import { client, getPost, getPosts } from "../../lib/sanity";
 
+// Definición de interfaces para tipado estricto en producción
+interface SanityImage {
+  _type: "image";
+  asset: {
+    _ref: string;
+    _type: "reference";
+  };
+  alt?: string;
+}
+
+interface Post {
+  title: string;
+  publishedAt: string;
+  image?: SanityImage;
+  author?: string;
+  body: any[];
+}
+
 const builder = createImageUrlBuilder(client);
 
-const components = {
-  types: {
-    image: ({ value }: any) => {
-      const url = builder.image(value).width(800).format("webp").quality(80).url();
-      const alt = value.alt || "";
-      return `<figure class="my-8"><img src="${url}" alt="${alt}" class="rounded-xl w-full object-cover" loading="lazy" /></figure>`;
+// Componentes personalizados para el árbol de PortableText de Astro
+const portableTextComponents = {
+  type: {
+    // Renderizado seguro y optimizado de imágenes dentro del cuerpo del texto
+    image: ({ node }: PortableTextProps<SanityImage>) => {
+      const imageUrl = builder
+        .image(node)
+        .width(800)
+        .format("webp")
+        .quality(80)
+        .url();
+      const alt = node.alt || "Imagen del artículo";
+      return `<figure class="my-8"><img src="${imageUrl}" alt="${alt}" width="800" height="450" class="rounded-xl w-full object-cover" loading="lazy" decoding="async" /></figure>`;
     },
   },
 };
 
 export async function getStaticPaths() {
   const posts = await getPosts();
-  return posts.map((post: any) => ({
+  return posts.map((post: { slug: { current: string } }) => ({
     params: { slug: post.slug.current },
   }));
 }
 
 const { slug } = Astro.params as { slug: string };
-const post = await getPost(slug);
+const post = (await getPost(slug)) as Post;
+
+// Validación defensiva en Build-Time
+if (!post) {
+  return Astro.redirect("/404");
+}
+
+const heroImageUrl = post.image
+  ? builder.image(post.image).width(1200).format("webp").quality(80).url()
+  : null;
 ---
 
 <Layout title={post.title}>
@@ -37,7 +73,8 @@ const post = await getPost(slug);
         <span class="w-4 h-4">&larr;</span>
         Volver al blog
       </a>
-      <time class="text-sm text-oro font-medium">
+
+      <time class="text-sm text-oro font-medium" datetime={post.publishedAt}>
         {
           new Date(post.publishedAt).toLocaleDateString("es", {
             year: "numeric",
@@ -48,13 +85,16 @@ const post = await getPost(slug);
       </time>
 
       {
-        post.image && (
+        heroImageUrl && (
           <figure class="my-8">
-            <img
-              src={builder.image(post.image).width(1200).format("webp").quality(80).url()}
-              alt={post.title}
+            <Image
+              src={heroImageUrl}
+              alt={`Imagen de portada para ${post.title}`}
+              width={1200}
+              height={500}
               class="w-full h-64 md:h-96 object-cover rounded-xl"
               fetchpriority="high"
+              loading="eager"
             />
           </figure>
         )
@@ -65,12 +105,22 @@ const post = await getPost(slug);
       >
         {post.title}
       </h1>
+
       {post.author && <p class="text-marron text-sm mb-8">Por {post.author}</p>}
 
-      <div
-        class="prose prose-lg max-w-none text-marron leading-relaxed"
-        set:html={post.body ? toHTML(post.body, { components }) : ""}
-      />
+      {
+        /* Renderizado estructural nativo sin inyección de strings HTML crudos */
+      }
+      <div class="prose prose-lg max-w-none text-marron leading-relaxed">
+        {
+          post.body && (
+            <PortableText
+              value={post.body}
+              components={portableTextComponents}
+            />
+          )
+        }
+      </div>
     </div>
   </article>
 </Layout>
