@@ -264,7 +264,7 @@ const videoId = live?.videoId ?? "";
     } catch {
       /* red temporal: reintentar */
     }
-    setTimeout(pollLiveStreamEnd, 30000);
+    setTimeout(pollLiveStreamEnd, 10000);
   }
 
   async function pollLiveStreamStart() {
@@ -284,7 +284,7 @@ const videoId = live?.videoId ?? "";
 
   if (window.location.pathname === "/jutbas") {
     if (liveVideoId) {
-      setTimeout(pollLiveStreamEnd, 30000);
+      setTimeout(pollLiveStreamEnd, 10000);
     } else {
       setTimeout(pollLiveStreamStart, 300000);
     }
