@@ -200,9 +200,17 @@ const { title } = Astro.props;
       } catch {}
     }
 
-    checkLiveBadge();
+    const scheduleBadge = () => {
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(checkLiveBadge, { timeout: 2000 });
+      } else {
+        setTimeout(checkLiveBadge, 1500);
+      }
+    };
+
+    scheduleBadge();
     setInterval(checkLiveBadge, 30000);
-    document.addEventListener("astro:after-swap", checkLiveBadge);
+    document.addEventListener("astro:after-swap", scheduleBadge);
   }
 
   if (!(window as any).__scrollTopInit) {
