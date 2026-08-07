@@ -41,7 +41,7 @@ const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en 
           </a>
         </div>
 
-        <MobileMenu client:load />
+        <MobileMenu />
 
         <nav class="hidden md:flex gap-8 items-center">
           <a
@@ -275,5 +275,54 @@ const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en 
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
+  }
+
+  if (!(window as any).__mobileMenuInit) {
+    (window as any).__mobileMenuInit = true;
+
+    const initMobileMenu = () => {
+      const btn = document.getElementById("mobile-menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      const overlay = document.getElementById("mobile-menu-overlay");
+      const icon = btn?.querySelector(".menu-icon");
+      if (!btn || !menu || !overlay || !icon) return;
+
+      const openIcon =
+        "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 18L18 6M6 6l12 12'/></svg>";
+      const menuIcon =
+        "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6h16M4 12h16M4 18h16'/></svg>";
+
+      let openState = false;
+      const apply = () => {
+        btn.setAttribute("aria-expanded", String(openState));
+        btn.setAttribute("aria-label", openState ? "Cerrar menú" : "Abrir menú");
+        btn.classList.toggle("text-chocolate", openState);
+        btn.classList.toggle("text-white", !openState);
+        icon.innerHTML = openState ? openIcon : menuIcon;
+        menu.classList.toggle("translate-x-full", !openState);
+        menu.classList.toggle("translate-x-0", openState);
+        overlay.classList.toggle("opacity-100", openState);
+        overlay.classList.toggle("opacity-0", !openState);
+        overlay.classList.toggle("pointer-events-auto", openState);
+      };
+
+      btn.addEventListener("click", () => {
+        openState = !openState;
+        apply();
+      });
+      overlay.addEventListener("click", () => {
+        openState = false;
+        apply();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          openState = false;
+          apply();
+        }
+      });
+    };
+
+    initMobileMenu();
+    document.addEventListener("astro:after-swap", initMobileMenu);
   }
 </script>
