@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
 import { getEpisodes } from "../lib/ivoox";
-import khaledMicro from "../assets/images/khaled_micro.jpeg";
+import khaledMicro from "../assets/images/khaled_micro.png";
 
 const feed = await getEpisodes();
 const episodes = feed.episodes;
@@ -163,14 +163,7 @@ function formatDate(iso: string): string {
 </Layout>
 
 <script>
-  import gsap from "gsap";
+  import { revealOnScroll } from "../lib/scroll-reveal";
 
-  gsap.from(".audio-card", {
-    y: 40,
-    opacity: 0,
-    duration: 0.7,
-    stagger: 0.06,
-    ease: "power2.out",
-    force3D: true,
-  });
+  revealOnScroll(".audio-card", { from: "bottom", stagger: 0.06, distance: 40 });
 </script>
