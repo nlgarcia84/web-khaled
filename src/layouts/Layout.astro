@@ -3,18 +3,12 @@ import ArrowUp from "lucide-static/dist/esm/icons/arrow-up.mjs";
 import { ClientRouter } from "astro:transitions";
 import MobileMenu from "../components/MobileMenu.tsx";
 import "../styles/global.css";
-import { getStream } from "../lib/sanity";
-import { getLiveStream } from "../lib/youtube";
+
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
-
-const stream = await getStream();
-const channelId = stream?.channelId ?? "";
-const live = channelId ? await getLiveStream(channelId) : null;
-const isLive = live !== null;
 ---
 
 <!doctype html>
@@ -79,20 +73,17 @@ const isLive = live !== null;
             class="text-white/80 hover:text-oro transition-colors duration-200 no-underline font-semibold text-sm inline-flex items-center gap-2"
           >
             Jutbas
-            {
-              isLive && (
-                <span
-                  class="inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                  title="Hay una emisión en directo"
-                >
-                  <span class="relative flex h-1.5 w-1.5">
-                    <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 animate-ping" />
-                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white" />
-                  </span>
-                  EN DIRECTO
-                </span>
-              )
-            }
+            <span
+              id="nav-live-badge"
+              class="hidden inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+              title="Hay una emision en directo"
+            >
+              <span class="relative flex h-1.5 w-1.5">
+                <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 animate-ping" />
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white" />
+              </span>
+              EN DIRECTO
+            </span>
           </a>
           <a
             href="/biblioteca"
@@ -199,6 +190,25 @@ const isLive = live !== null;
 <script>
   window.scrollTo(0, 0);
   document.addEventListener("astro:after-swap", () => window.scrollTo(0, 0));
+
+  if (!(window as any).__liveBadgeInit) {
+    (window as any).__liveBadgeInit = true;
+
+    async function checkLiveBadge() {
+      try {
+        const res = await fetch("/api/live-status");
+        const data = await res.json();
+        const badge = document.getElementById("nav-live-badge");
+        if (badge) {
+          badge.classList.toggle("hidden", !data.isLive);
+        }
+      } catch {}
+    }
+
+    checkLiveBadge();
+    setInterval(checkLiveBadge, 60000);
+    document.addEventListener("astro:after-swap", checkLiveBadge);
+  }
 
   if (!(window as any).__scrollTopInit) {
     (window as any).__scrollTopInit = true;
