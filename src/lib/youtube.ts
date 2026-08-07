@@ -36,7 +36,7 @@ export async function getLiveStream(
 
     if (data.error) {
       console.error("YouTube API error:", data.error.code, data.error.message);
-      return _cache?.data ?? null;
+      return null;
     }
 
     if (!data.items?.length) {
@@ -54,7 +54,7 @@ export async function getLiveStream(
     return result;
   } catch (err) {
     console.error("YouTube API error:", err);
-    return _cache?.data ?? null;
+    return null;
   }
 }
 

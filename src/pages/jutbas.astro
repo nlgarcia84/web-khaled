@@ -238,7 +238,7 @@ const videoId = live?.videoId ?? "";
   let abort = false;
   window.addEventListener("astro:before-swap", () => (abort = true), { once: true });
 
-  async function pollLive() {
+  async function pollLiveStreamEnd() {
     if (abort) return;
     try {
       const res = await fetch(`/api/live-status?videoId=${liveVideoId}`);
@@ -250,11 +250,30 @@ const videoId = live?.videoId ?? "";
     } catch {
       /* red temporal: reintentar */
     }
-    setTimeout(pollLive, 30000);
+    setTimeout(pollLiveStreamEnd, 30000);
   }
 
-  if (window.location.pathname === "/jutbas" && liveVideoId) {
-    setTimeout(pollLive, 30000);
+  async function pollLiveStreamStart() {
+    if (abort) return;
+    try {
+      const res = await fetch("/api/live-status");
+      const data = await res.json();
+      if (data.isLive) {
+        window.location.reload();
+        return;
+      }
+    } catch {
+      /* red temporal: reintentar */
+    }
+    setTimeout(pollLiveStreamStart, 300000);
+  }
+
+  if (window.location.pathname === "/jutbas") {
+    if (liveVideoId) {
+      setTimeout(pollLiveStreamEnd, 30000);
+    } else {
+      setTimeout(pollLiveStreamStart, 300000);
+    }
   }
 
   const streamLive = document.querySelector(".stream-live");
