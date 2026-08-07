@@ -75,7 +75,8 @@ const { title } = Astro.props;
             Jutbas
             <span
               id="nav-live-badge"
-              class="hidden inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+              class="inline-flex items-center gap-1 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+              style="display: none"
               title="Hay una emision en directo"
             >
               <span class="relative flex h-1.5 w-1.5">
@@ -200,7 +201,7 @@ const { title } = Astro.props;
         const data = await res.json();
         const badge = document.getElementById("nav-live-badge");
         if (badge) {
-          badge.classList.toggle("hidden", !data.isLive);
+          badge.style.display = data.isLive ? "inline-flex" : "none";
         }
       } catch {}
     }
