@@ -429,7 +429,7 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
                 <div
                   class={
                     "event-card group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-6" +
-                    (i === 0 ? " nearest-event" : " opacity-50 grayscale")
+                    (i === 0 ? " nearest-event" : " grayscale")
                   }
                 >
                   <div class="w-16 h-16 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
@@ -577,10 +577,6 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
       (window as any).__marqueeInit = true;
       document.addEventListener("astro:after-swap", initMarquee);
     }
-
-  document.querySelectorAll(".event-card").forEach((card, i) => {
-    if (i > 0) card.style.opacity = "0.5";
-  });
 
   const nearest = document.querySelector(".nearest-event");
   if (nearest) {
