@@ -203,11 +203,25 @@ const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en 
     }
 
     const scheduleBadge = () => {
-      if ("requestIdleCallback" in window) {
-        (window as any).requestIdleCallback(checkLiveBadge, { timeout: 2000 });
+      const run = () => {
+        if (!(window as any).__liveBadgeRunning) {
+          (window as any).__liveBadgeRunning = true;
+          checkLiveBadge();
+        }
+      };
+
+      if (document.readyState === "complete") {
+        setTimeout(run, 3500);
       } else {
-        setTimeout(checkLiveBadge, 1500);
+        window.addEventListener(
+          "load",
+          () => setTimeout(run, 3500),
+          { once: true },
+        );
       }
+
+      window.addEventListener("scroll", run, { passive: true, once: true });
+      window.addEventListener("pointermove", run, { passive: true, once: true });
     };
 
     scheduleBadge();
