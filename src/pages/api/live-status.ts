@@ -26,7 +26,7 @@ export const GET: APIRoute = async ({ url }) => {
 };
 
 async function isVideoLive(videoId: string): Promise<boolean> {
-  const API_KEY = import.meta.env.YOUTUBE_API_KEY;
+  const API_KEY = process.env.YOUTUBE_API_KEY;
   if (!API_KEY || !videoId) return false;
 
   try {

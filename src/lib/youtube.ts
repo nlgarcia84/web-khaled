@@ -1,5 +1,5 @@
 const YT_API = "https://www.googleapis.com/youtube/v3";
-const API_KEY = import.meta.env.YOUTUBE_API_KEY;
+const API_KEY = process.env.YOUTUBE_API_KEY;
 
 export interface LiveStream {
   videoId: string;
