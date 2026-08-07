@@ -1,5 +1,5 @@
-const YT_API = "https://www.googleapis.com/youtube/v3";
 const API_KEY = process.env.YOUTUBE_API_KEY;
+const YT_API = "https://www.googleapis.com/youtube/v3";
 
 export interface LiveStream {
   videoId: string;
@@ -9,6 +9,11 @@ export interface LiveStream {
 
 let _cache: { data: LiveStream | null; ts: number } | null = null;
 const CACHE_TTL = 120_000;
+
+function parseFirstVideoId(xml: string): string | null {
+  const m = xml.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+  return m ? m[1] : null;
+}
 
 export async function getLiveStream(
   channelId: string,
@@ -20,17 +25,23 @@ export async function getLiveStream(
   }
 
   try {
-    const url = `${YT_API}/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${API_KEY}`;
+    const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    const rssRes = await fetch(rssUrl);
+    const xml = await rssRes.text();
+    const videoId = parseFirstVideoId(xml);
 
-    const res = await fetch(url);
-    const data = (await res.json()) as {
+    if (!videoId) {
+      _cache = { data: null, ts: Date.now() };
+      return null;
+    }
+
+    const apiUrl = `${YT_API}/videos?part=snippet,liveStreamingDetails&id=${videoId}&key=${API_KEY}`;
+    const apiRes = await fetch(apiUrl);
+    const data = (await apiRes.json()) as {
       error?: { code: number; message: string };
       items?: Array<{
-        id: { videoId: string };
-        snippet: {
-          title: string;
-          thumbnails: { medium: { url: string } };
-        };
+        snippet: { title: string; thumbnails: { medium: { url: string } } };
+        liveStreamingDetails?: { actualEndTime?: string };
       }>;
     };
 
@@ -39,16 +50,22 @@ export async function getLiveStream(
       return null;
     }
 
-    if (!data.items?.length) {
+    const video = data.items?.[0];
+    if (!video?.liveStreamingDetails) {
       _cache = { data: null, ts: Date.now() };
       return null;
     }
 
-    const item = data.items[0];
+    const isLive = !video.liveStreamingDetails.actualEndTime;
+    if (!isLive) {
+      _cache = { data: null, ts: Date.now() };
+      return null;
+    }
+
     const result: LiveStream = {
-      videoId: item.id.videoId,
-      title: item.snippet.title,
-      thumbnail: item.snippet.thumbnails.medium.url,
+      videoId,
+      title: video.snippet.title,
+      thumbnail: video.snippet.thumbnails.medium.url,
     };
     _cache = { data: result, ts: Date.now() };
     return result;
@@ -56,11 +73,4 @@ export async function getLiveStream(
     console.error("YouTube API error:", err);
     return null;
   }
-}
-
-export async function getLiveStreamCached(channelId: string): Promise<LiveStream | null> {
-  if (!_cache || Date.now() - _cache.ts >= CACHE_TTL) {
-    return getLiveStream(channelId);
-  }
-  return _cache.data;
 }
