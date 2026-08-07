@@ -9,6 +9,9 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   output: 'server',
   adapter: vercel(),
+  build: {
+    inlineStylesheets: 'always',
+  },
   devToolbar: {
     enabled: false,
   },

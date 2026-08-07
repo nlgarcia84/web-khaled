@@ -60,7 +60,11 @@ const titleClass =
     alt=""
     class={`absolute inset-0 w-full h-full object-cover contrast-110 saturate-105 ${imageClass}`}
     style={imagePosition ? `object-position: ${imagePosition}` : ""}
+    widths={[480, 768, 1024, 1440, 1920]}
+    sizes="100vw"
     fetchpriority="high"
+    loading="eager"
+    decoding="async"
     aria-hidden="true"
   />
   <div class={`absolute inset-0 ${overlayClass}`}></div>
