@@ -1,0 +1,87 @@
+---
+/**
+ * MobileMenu — menú de navegación tipo hamburguesa para móviles (vanilla JS).
+ *
+ * - Botón que alterna entre icono hamburguesa y "X"
+ * - Overlay semitransparente que cierra el menú al hacer clic
+ * - Cierra con la tecla Escape
+ * - Atributos ARIA para accesibilidad
+ */
+const MenuIcon = "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6h16M4 12h16M4 18h16'/></svg>";
+---
+
+<button
+  id="mobile-menu-btn"
+  aria-label="Abrir menú"
+  aria-expanded="false"
+  class="md:hidden relative z-[60] flex h-10 w-10 items-center justify-center text-white"
+>
+  <span class="menu-icon" set:html={MenuIcon} />
+</button>
+
+<div
+  id="mobile-menu-overlay"
+  class="fixed inset-0 z-40 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300"
+/>
+
+<aside
+  id="mobile-menu"
+  class="fixed right-0 top-0 z-50 h-screen w-80 bg-white shadow-xl translate-x-full transition-transform duration-300"
+>
+  <nav class="flex flex-col p-8 gap-6">
+    <a href="/" class="text-chocolate hover:text-oro transition-colors no-underline font-medium">Inicio</a>
+    <a href="/biografia" class="text-chocolate hover:text-oro transition-colors no-underline font-medium">Sobre mí</a>
+    <a href="/blog" class="text-chocolate hover:text-oro transition-colors no-underline font-medium">Blog</a>
+    <a href="/contact" class="text-chocolate hover:text-oro transition-colors no-underline font-medium">Contacto</a>
+    <a href="/jutbas" class="text-chocolate hover:text-oro transition-colors no-underline font-medium">Jutbas</a>
+    <a href="/biblioteca" class="text-chocolate hover:text-oro transition-colors no-underline font-medium">Biblioteca</a>
+    <a href="/donar" class="inline-block bg-oro text-chocolate font-bold px-4 py-2 rounded-lg text-sm no-underline">
+      Donar
+    </a>
+  </nav>
+</aside>
+
+<script>
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  const overlay = document.getElementById("mobile-menu-overlay");
+  const icon = btn?.querySelector(".menu-icon");
+  if (!btn || !menu || !overlay || !icon) {
+
+  } else {
+    const openIcon =
+      "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 18L18 6M6 6l12 12'/></svg>";
+    const menuIcon =
+      "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6h16M4 12h16M4 18h16'/></svg>";
+
+    let openState = false;
+
+    const apply = () => {
+      btn.setAttribute("aria-expanded", String(openState));
+      btn.setAttribute("aria-label", openState ? "Cerrar menú" : "Abrir menú");
+      btn.classList.toggle("text-chocolate", openState);
+      btn.classList.toggle("text-white", !openState);
+      icon.innerHTML = openState ? openIcon : menuIcon;
+      menu.classList.toggle("translate-x-full", !openState);
+      menu.classList.toggle("translate-x-0", openState);
+      overlay.classList.toggle("opacity-100", openState);
+      overlay.classList.toggle("pointer-events-auto", openState);
+      overlay.classList.toggle("opacity-0", !openState);
+    };
+
+    btn.addEventListener("click", () => {
+      openState = !openState;
+      apply();
+    });
+    overlay.addEventListener("click", () => {
+      openState = false;
+      apply();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        openState = false;
+        apply();
+      }
+    });
+  }
+</script>
