@@ -206,7 +206,7 @@ const { title } = Astro.props;
     }
 
     checkLiveBadge();
-    setInterval(checkLiveBadge, 60000);
+    setInterval(checkLiveBadge, 30000);
     document.addEventListener("astro:after-swap", checkLiveBadge);
   }
 

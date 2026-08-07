@@ -8,7 +8,7 @@ export interface LiveStream {
 }
 
 let _cache: { data: LiveStream | null; ts: number } | null = null;
-const CACHE_TTL = 120_000;
+const CACHE_TTL = 30_000;
 
 function parseFirstVideoId(xml: string): string | null {
   const m = xml.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
