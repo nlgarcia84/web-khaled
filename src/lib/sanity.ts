@@ -25,7 +25,7 @@ export const writeClient = createClient({
   dataset,
   useCdn: false,
   apiVersion: "2024-01-01",
-  token: process.env.SANITY_TOKEN,
+  token: import.meta.env.SANITY_TOKEN,
 });
 
 export async function getPosts() {
@@ -37,6 +37,7 @@ export async function getPosts() {
     image,
     publishedAt,
     categories[]->{title},
+    likes,
   }`);
 }
 
@@ -50,6 +51,7 @@ export async function getPost(slug: string) {
     image,
     body,
     publishedAt,
+    likes,
   }`,
     { slug },
   );

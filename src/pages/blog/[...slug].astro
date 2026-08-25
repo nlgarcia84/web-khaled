@@ -5,6 +5,7 @@ import type { Props as PortableTextProps } from "astro-portabletext/types";
 import { createImageUrlBuilder } from "@sanity/image-url";
 import { client, getPost, getPosts } from "../../lib/sanity";
 import Layout from "../../layouts/Layout.astro";
+import { LikeButton } from "../../components/LikeButton";
 
 // Definición de interfaces para tipado estricto en producción
 interface SanityImage {
@@ -18,11 +19,13 @@ interface SanityImage {
 
 interface Post {
   title: string;
+  slug: { current: string };
   publishedAt: string;
   image?: SanityImage;
   author?: string;
   excerpt?: string;
   body: any[];
+  likes?: number;
 }
 
 const builder = createImageUrlBuilder(client);
@@ -64,7 +67,11 @@ const heroImageUrl = post.image
   : null;
 ---
 
-<Layout title={post.title} description={post.excerpt ?? "Artículo y reflexión de Sheij Khaled Huerta sobre la fe, la vida y el camino hacia Allah."}>
+<Layout
+  title={post.title}
+  description={post.excerpt ??
+    "Artículo y reflexión de Sheij Khaled Huerta sobre la fe, la vida y el camino hacia Allah."}
+>
   <article class="py-24">
     <div class="max-w-200 mx-auto px-6">
       <a
@@ -108,6 +115,12 @@ const heroImageUrl = post.image
       </h1>
 
       {post.author && <p class="text-marron text-sm mb-8">Por {post.author}</p>}
+
+      <LikeButton
+        client:load
+        slug={post.slug.current}
+        initialLikes={post.likes ?? 0}
+      />
 
       {
         /* Renderizado estructural nativo sin inyección de strings HTML crudos */
