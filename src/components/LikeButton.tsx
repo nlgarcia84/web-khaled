@@ -28,8 +28,14 @@ export const LikeButton = ({ slug, initialLikes }: LikeButtonProps) => {
     if (liked) return; // ya votó, no hacemos nada
 
     try {
-      // Pide al endpoint que sume 1 en Sanity.
-      const res = await fetch(`/api/likes/${slug}`, { method: "POST" });
+      // Pide al endpoint que sume 1 en Sanity. Content-Type: application/json
+      // es clave: iOS Safari no envía el header `Origin` en fetch same-origin, y
+      // sin él la protección CSRF de Astro bloquea el POST. Con JSON, la petición
+      // no se trata como "form submission" y pasa la protección.
+      const res = await fetch(`/api/likes/${slug}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
       if (!res.ok) return; // si algo falla, salimos sin tocar nada
 
       // El servidor responde { likes: númeroNuevo } → actualizamos el contador.
