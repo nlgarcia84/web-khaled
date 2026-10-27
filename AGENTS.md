@@ -18,24 +18,17 @@ Todas las rutas están en `src/pages/api/` como endpoints API de Astro (SSR en V
 
 | Ruta | Método | Descripción | Variables de entorno clave |
 |---|---|---|---|
-| `/api/create-checkout` | POST | Sesión de Stripe Checkout. Body: `{ amount, campaignSlug? }`. Redirige a Stripe. | `STRIPE_SECRET_KEY` |
 | `/api/create-paypal-order` | POST | Orden de PayPal. Body: `{ amount, campaignSlug? }`. Retorna `{ id }`. | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` |
 | `/api/capture-paypal-order` | POST | Captura orden aprobada de PayPal + actualiza `raised` en Sanity. Body: `{ orderID, campaignSlug? }`. | `SANITY_TOKEN`, `PAYPAL_CLIENT_SECRET` |
-| `/api/stripe/webhook` | POST | Webhook de Stripe. Maneja `checkout.session.completed` (actualiza `raised` en Sanity) y `charge.refunded` (registra en logs). | `STRIPE_WEBHOOK_SECRET`, `SANITY_TOKEN` |
 
 ### Otras
 
 | Ruta | Método | Descripción |
 |---|---|---|
 | `/api/contact` | POST | Formulario de contacto. Envía email vía Resend a `kane.wwe@gmail.com`. Body: FormData `{ nombre, email, mensaje }`. `RESEND_API_KEY` |
+| `/api/likes/[slug]` | POST | Incrementa `likes` de un post en Sanity (con `setIfMissing` + `inc` atómico). Retorna `{ likes }`. | `SANITY_TOKEN` |
 
 ### Flujo de pago
-
-**Stripe:**
-1. Frontend → `POST /api/create-checkout` con `{ amount, campaignSlug }`
-2. Retorna URL de sesión de Stripe → el navegador redirige a Stripe Checkout
-3. El usuario completa el pago → Stripe llama a `POST /api/stripe/webhook`
-4. El webhook verifica la firma (`STRIPE_WEBHOOK_SECRET`) → incrementa `raised` en el documento de campaña de Sanity
 
 **PayPal:**
 1. Frontend carga PayPal SDK con `PUBLIC_PAYPAL_CLIENT_ID`
@@ -55,9 +48,9 @@ Todas las rutas están en `src/pages/api/` como endpoints API de Astro (SSR en V
 
 | Tipo | Archivo | Campos | Usado por |
 |---|---|---|---|
-| `post` | `post.ts` | title, slug, author, excerpt, image, body, publishedAt, categories | Listado `/blog`, detalle `/blog/[slug]` |
+| `post` | `post.ts` | title, slug, author, excerpt, image, body, publishedAt, categories, likes | Listado `/blog`, detalle `/blog/[slug]`, botón de like |
 | `category` | `category.ts` | title, description | Categorías del blog |
-| `campaign` | `campaign.ts` | title, slug, goal, raised, description, active | Barra de progreso en `/donar`, webhooks Stripe/PayPal actualizan `raised` |
+| `campaign` | `campaign.ts` | title, slug, goal, raised, description, active | Barra de progreso en `/donar`, webhook PayPal actualiza `raised` |
 | `stream` | `stream.ts` | title, channelId, chatEnabled | `/jutbas` — channelId consultado vía YouTube Data API para detectar directos |
 | `documento` | `documento.ts` | title, fileId, type (pdf/docx/other), description | `/biblioteca` — embeds de Google Drive + vista previa en modal |
 | `blockContent` | `blockContent.ts` | Bloques Portable Text | Contenido del cuerpo de los posts del blog |
@@ -98,8 +91,6 @@ YouTube Data API:
 
 | Variable | Requerida | Vercel | `.env` local |
 |---|---|---|---|
-| `STRIPE_SECRET_KEY` | Sí | `sk_live_...` | Igual |
-| `STRIPE_WEBHOOK_SECRET` | Sí | `whsec_...` | Igual |
 | `SANITY_TOKEN` | Sí | `sk...` | Igual |
 | `RESEND_API_KEY` | Sí | `re_...` | Igual |
 | `PUBLIC_PAYPAL_CLIENT_ID` | Opcional | Live Client ID | Igual |

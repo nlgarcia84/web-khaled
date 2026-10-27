@@ -33,10 +33,10 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
       <div
         class="bg-gradient-to-br from-green-50 to-green-100/50 border border-green-300 p-6 rounded-xl shadow-sm mb-6 max-w-200 mx-auto"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex flex-col items-center gap-3 text-center">
           <span class="text-2xl shrink-0">🕌</span>
           <div>
-            <div class="flex items-center gap-3 mb-1">
+            <div class="flex items-center justify-center gap-3 mb-1">
               <h3 class="font-serif text-lg font-bold text-chocolate">
                 Alfombra para la Musala
               </h3>
@@ -76,9 +76,8 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
               </h3>
             </div>
             <p class="text-sm text-marron mt-1">
-              Puedes donar directamente con tarjeta, PayPal o transferencia
-              bancaria. Tu contribución se destinará a los gastos generales de
-              la musala.
+              Puedes donar directamente con PayPal o transferencia bancaria. Tu
+              contribución se destinará a los gastos generales de la musala.
             </p>
           </div>
         </div>
@@ -137,13 +136,6 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
               />
             </div>
           </div>
-
-          <button
-            id="gen-stripe-btn"
-            class="w-full bg-chocolate text-white text-center py-3 px-6 rounded-lg font-medium hover:bg-chocolate/90 transition-colors cursor-pointer border-none text-base"
-          >
-            Donar con tarjeta
-          </button>
 
           <div id="gen-paypal-btn" class="w-full"></div>
 
@@ -435,37 +427,6 @@ const percentage = goal > 0 ? Math.round((raised / goal) * 100) : 0;
         b.classList.add("border", "border-gray-200", "font-medium");
       });
       selectedAmount = parseInt(customInput.value);
-    }
-  });
-
-  const stripeBtn = document.getElementById(
-    "gen-stripe-btn",
-  ) as HTMLButtonElement | null;
-  stripeBtn?.addEventListener("click", async () => {
-    const amount = selectedAmount || parseInt(customInput.value);
-    if (!amount || amount < 1) {
-      alert("Selecciona una cantidad");
-      return;
-    }
-    stripeBtn.disabled = true;
-    stripeBtn.textContent = "Procesando...";
-    try {
-      const res = await fetch("/api/create-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Error al procesar el pago. Intenta de nuevo.");
-      }
-    } catch {
-      alert("Error de conexión. Intenta de nuevo.");
-    } finally {
-      stripeBtn.disabled = false;
-      stripeBtn.textContent = "Donar con tarjeta";
     }
   });
 
