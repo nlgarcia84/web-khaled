@@ -36,15 +36,15 @@ const {
 
 const sectionClass =
   size === "full"
-    ? "min-h-[calc(100svh-5rem)] md:min-h-[calc(100vh-5rem)] py-20 md:py-28"
+    ? "min-h-[100svh] md:min-h-[100vh] py-20 md:py-28"
     : "min-h-[60vh] py-28 md:py-36";
 
 const overlayClass =
   overlay === "gradient"
-    ? "bg-gradient-to-b from-chocolate/95 via-chocolate/90 to-chocolate/[0.97]"
+    ? "bg-gradient-to-b from-chocolate/90 via-chocolate/85 to-chocolate/95"
     : overlay === "gradient-dark"
-      ? "bg-gradient-to-b from-chocolate/95 via-chocolate/[0.92] to-chocolate/[0.97]"
-      : "bg-chocolate/[0.97]";
+      ? "bg-gradient-to-b from-chocolate/90 via-chocolate/[0.88] to-chocolate/95"
+      : "bg-chocolate/[0.93]";
 
 const titleClass =
   titleSize === "xl"
@@ -63,7 +63,7 @@ const hasAccent = accentIndex >= 0;
   <Image
     src={image}
     alt=""
-    class={`absolute inset-0 w-full h-full object-cover contrast-110 saturate-105 ${imageClass}`}
+    class={`absolute inset-0 w-full h-full object-cover contrast-125 saturate-105 ${imageClass}`}
     style={imagePosition ? `object-position: ${imagePosition}` : ""}
     widths={[480, 768, 1024, 1440, 1920]}
     sizes="100vw"
@@ -74,11 +74,11 @@ const hasAccent = accentIndex >= 0;
   />
   <div class={`absolute inset-0 ${overlayClass}`}></div>
   <div
-    class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"
+    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"
   >
   </div>
   <div
-    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(0,0,0,0.28)_100%)] pointer-events-none"
+    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(0,0,0,0.45)_100%)] pointer-events-none"
   >
   </div>
 
@@ -102,7 +102,7 @@ const hasAccent = accentIndex >= 0;
     }
 
     <h1
-      class={`hero-title font-serif font-bold tracking-[-0.02em] text-balance leading-[1.08] text-white mb-5 ${titleClass}`}
+      class={`hero-title font-serif font-bold tracking-[-0.02em] text-balance leading-[1.08] text-white mb-5 drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)] ${titleClass}`}
     >
       {
         hasAccent && titleAccent ? (

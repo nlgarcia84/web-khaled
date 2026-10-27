@@ -1,0 +1,123 @@
+---
+import ArrowRight from "lucide-static/dist/esm/icons/arrow-right.mjs";
+
+interface Props {
+  post: any;
+  imageUrl?: string;
+  variant?: "marquee" | "grid";
+}
+
+const { post, imageUrl, variant = "marquee" } = Astro.props;
+
+const isGrid = variant === "grid";
+const href = post.slug?.current ? `/blog/${post.slug.current}` : "/blog";
+const category = post.categories?.[0]?.title;
+const author = post.author || "Sheij Khaled Huerta";
+
+const parsedDate = post.publishedAt ? new Date(post.publishedAt) : null;
+const dateLabel =
+  parsedDate && !Number.isNaN(parsedDate.getTime())
+    ? parsedDate.toLocaleDateString("es", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
+
+const cardClass = [
+  "post-card group relative flex flex-col overflow-hidden rounded-2xl border border-oro/20 bg-white/70 backdrop-blur-xl shadow-sm shadow-black/5 no-underline transition-all duration-300 hover:-translate-y-1 hover:border-oro/50 hover:bg-white/90 hover:shadow-xl hover:shadow-oro/10",
+  isGrid ? "h-full" : "mr-6 w-[280px] shrink-0 sm:w-[320px]",
+];
+---
+
+<a href={href} class:list={cardClass}>
+  <div
+    class="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-oro/70 to-transparent"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-oro/10 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+  >
+  </div>
+
+  {
+    isGrid && (
+      <div class="relative aspect-[16/9] overflow-hidden bg-chocolate/5">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={post.title}
+            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-oro/15 via-crema/20 to-chocolate/10">
+            <span class="font-serif text-4xl text-oro/40">📖</span>
+          </div>
+        )}
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-chocolate/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      </div>
+    )
+  }
+
+  <div class:list={["flex flex-1 flex-col", isGrid ? "p-5" : "p-6"]}>
+    <div class="mb-3 flex items-center justify-between gap-3">
+      <span
+        class="inline-flex items-center rounded-full border border-oro/30 bg-oro/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-marron"
+      >
+        {category || "Artículo"}
+      </span>
+      {dateLabel && <time class="text-[11px] text-marron/70">{dateLabel}</time>}
+    </div>
+
+    <h3 class="font-serif text-lg font-bold leading-snug text-chocolate transition-colors line-clamp-2 group-hover:text-granate">
+      {post.title}
+    </h3>
+
+    {
+      post.excerpt && (
+        <p
+          class:list={[
+            "mt-2 text-sm leading-relaxed text-marron/80",
+            isGrid ? "line-clamp-2" : "line-clamp-3",
+          ]}
+        >
+          {post.excerpt}
+        </p>
+      )
+    }
+
+    <div
+      class:list={[
+        "flex items-center justify-between gap-3",
+        isGrid
+          ? "mt-auto border-t border-oro/10 pt-4"
+          : "mt-5",
+      ]}
+    >
+      {
+        isGrid ? (
+          <div class="flex min-w-0 items-center gap-2">
+            <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-oro/15 text-[10px] font-bold text-marron">
+              {author.charAt(0)}
+            </div>
+            <span class="truncate text-xs text-marron/70">{author}</span>
+          </div>
+        ) : (
+          <span class="text-[11px] uppercase tracking-[0.15em] text-marron/60">
+            Lectura
+          </span>
+        )
+      }
+
+      <span class="inline-flex shrink-0 items-center gap-2 text-xs font-semibold text-marron transition-colors group-hover:text-granate">
+        Leer
+        <span
+          class="flex h-7 w-7 items-center justify-center rounded-full border border-oro/30 bg-white/50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:bg-oro group-hover:text-chocolate"
+        >
+          <span class="h-3.5 w-3.5" set:html={ArrowRight} />
+        </span>
+      </span>
+    </div>
+  </div>
+</a>

@@ -1,5 +1,9 @@
 ---
 import Play from "lucide-static/dist/esm/icons/play.mjs";
+import Camera from "lucide-static/dist/esm/icons/camera.mjs";
+import Music from "lucide-static/dist/esm/icons/music.mjs";
+import Send from "lucide-static/dist/esm/icons/send.mjs";
+import Users from "lucide-static/dist/esm/icons/users.mjs";
 
 const Heart = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
 const ArrowRight = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
@@ -10,11 +14,55 @@ import { events } from "../data/events";
 import { getPosts } from "../lib/sanity";
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
+import PostCard from "../components/PostCard.astro";
 import { Image } from "astro:assets";
 
 const posts = (await getPosts()).slice(0, 3);
 
 const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
+
+const socials = [
+  {
+    href: YT_CHANNEL_URL,
+    icon: Play,
+    name: "YouTube",
+    type: "Canal",
+    handle: "Khaled Huerta",
+    cta: "Ver canal",
+  },
+  {
+    href: "https://www.instagram.com/khaled.huerta/",
+    icon: Camera,
+    name: "Instagram",
+    type: "Perfil",
+    handle: "@khaled.huerta",
+    cta: "Ver perfil",
+  },
+  {
+    href: "https://www.facebook.com/khaled.huerta/",
+    icon: Users,
+    name: "Facebook",
+    type: "Red social",
+    handle: "Khaled Huerta",
+    cta: "Ver página",
+  },
+  {
+    href: "https://t.me/khaled_huerta",
+    icon: Send,
+    name: "Telegram",
+    type: "Canal",
+    handle: "@khaled_huerta",
+    cta: "Abrir canal",
+  },
+  {
+    href: "https://www.tiktok.com/@khaledhuerta",
+    icon: Music,
+    name: "TikTok",
+    type: "Red social",
+    handle: "@khaledhuerta",
+    cta: "Ver perfil",
+  },
+];
 ---
 
 <Layout
@@ -27,7 +75,7 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
     title="Difundiendo el mensaje del Islam en Español con rigor, sabiduría y cercanía"
     titleAccent="Islam"
     description="Un siervo de Allah que recuerda el camino de los justos predecesores."
-    overlay="gradient"
+    overlay="solid"
     maxWidth="800px"
     imageClass="hero-parallax"
   >
@@ -81,78 +129,27 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
       >
         <div class="blog-marquee__track flex w-max will-change-transform">
           <div class="flex shrink-0">
-            {
-              posts.map((post: any) => (
-                <a
-                  href={`/blog/${post.slug.current}`}
-                  class="group bg-white/60 backdrop-blur-xl border border-oro/50 rounded-xl p-6 shadow-lg shadow-black/5 hover:bg-white/80 hover:border-oro hover:-translate-y-0.5 transition-all duration-300 no-underline block shrink-0 w-[280px] sm:w-[320px] mr-6"
-                >
-                  <div class="w-8 h-0.5 bg-oro/60 rounded-full mb-4" />
-                  <time class="text-xs text-marron font-medium tracking-wide">
-                    {new Date(post.publishedAt).toLocaleDateString("es", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors mt-2 leading-snug">
-                    {post.title}
-                  </h3>
-                  {post.excerpt && (
-                    <p class="text-sm text-marron/80 mt-2 leading-relaxed line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                  )}
-                  <span class="inline-flex items-center gap-1 text-sm font-medium text-marron mt-4 group-hover:gap-2 transition-all">
-                    Leer artículo{" "}
-                    <span set:html={ArrowRight} class="w-3.5 h-3.5" />
-                  </span>
-                </a>
-              ))
-            }
+            {posts.map((post: any) => <PostCard post={post} />)}
           </div>
           <div class="flex shrink-0" aria-hidden="true">
-            {
-              posts.map((post: any) => (
-                <a
-                  href={`/blog/${post.slug.current}`}
-                  class="group bg-white/60 backdrop-blur-xl border border-oro/50 rounded-xl p-6 shadow-lg shadow-black/5 hover:bg-white/80 hover:border-oro hover:-translate-y-0.5 transition-all duration-300 no-underline block shrink-0 w-[280px] sm:w-[320px] mr-6"
-                >
-                  <div class="w-8 h-0.5 bg-oro/60 rounded-full mb-4" />
-                  <time class="text-xs text-marron font-medium tracking-wide">
-                    {new Date(post.publishedAt).toLocaleDateString("es", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <h3 class="font-serif text-lg font-bold text-chocolate group-hover:text-granate transition-colors mt-2 leading-snug">
-                    {post.title}
-                  </h3>
-                  {post.excerpt && (
-                    <p class="text-sm text-marron/80 mt-2 leading-relaxed line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                  )}
-                  <span class="inline-flex items-center gap-1 text-sm font-medium text-marron mt-4 group-hover:gap-2 transition-all">
-                    Leer artículo{" "}
-                    <span set:html={ArrowRight} class="w-3.5 h-3.5" />
-                  </span>
-                </a>
-              ))
-            }
+            {posts.map((post: any) => <PostCard post={post} />)}
           </div>
         </div>
       </div>
       <div class="text-center mt-12">
         <a
           href="/blog"
-          class="inline-flex items-center justify-center gap-2 bg-oro text-chocolate font-semibold px-6 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline text-lg"
+          class="group inline-flex h-12 items-center justify-center gap-3 rounded-full border border-oro/40 bg-oro px-7 text-sm font-semibold tracking-wide text-chocolate shadow-lg shadow-oro/25 no-underline transition-all duration-300 hover:-translate-y-0.5 hover:bg-oro/90 hover:shadow-xl hover:shadow-oro/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oro focus-visible:ring-offset-2 focus-visible:ring-offset-gris-claro"
         >
-          Ver todos los artículos <span
-            set:html={ArrowRight}
-            class="w-4 h-4 inline-flex items-center"
-          />
+          Ver todos los artículos
+          <span
+            class="flex h-7 w-7 items-center justify-center rounded-full bg-chocolate/10 text-chocolate transition-all duration-300 group-hover:translate-x-0.5 group-hover:bg-chocolate group-hover:text-oro"
+          >
+            <span
+              class="flex h-4 w-4 items-center justify-center [&>svg]:h-4 [&>svg]:w-4"
+              set:html={ArrowRight}
+            />
+          </span>
         </a>
       </div>
     </div>
@@ -177,218 +174,44 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
       </div>
 
       <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-w-6xl mx-auto"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 max-w-6xl mx-auto"
       >
-        <a
-          href={YT_CHANNEL_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-card group bg-white/60 backdrop-blur-xl border border-white/40 rounded-xl overflow-hidden shadow-lg shadow-black/5 hover:bg-white/80 hover:border-red-400/40 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
-        >
-          <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div
-              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-600 via-red-500 to-rose-400"
+        {
+          socials.map((social) => (
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-card group relative flex flex-col overflow-hidden rounded-2xl border border-oro/20 bg-white/70 backdrop-blur-xl shadow-sm shadow-black/5 no-underline transition-all duration-300 hover:-translate-y-1 hover:border-oro/50 hover:bg-white/90 hover:shadow-xl hover:shadow-oro/10"
             >
-              <div
-                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
-              >
-                <span class="h-6 w-6 text-white" set:html={Play} />
+              <div class="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-oro/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div class="relative flex h-28 items-center justify-center overflow-hidden bg-gradient-to-br from-chocolate via-[#3b2413] to-[#1d0f05]">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_130%,rgba(187,148,87,0.35),transparent_60%)]" />
+                <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-oro/30 bg-white/5 text-oro backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                  <span class="h-6 w-6" set:html={social.icon} />
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <span
-              class="text-[11px] font-semibold tracking-wide text-red-700 bg-red-50 px-2.5 py-0.5 rounded-full self-start"
-              >YouTube</span
-            >
-            <p
-              class="text-[11px] text-marron mt-2 font-medium tracking-wide uppercase"
-            >
-              Canal
-            </p>
-            <h3
-              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
-            >
-              Khaled Huerta
-            </h3>
-            <span
-              class="inline-flex items-center gap-1 text-xs font-medium text-red-700 mt-3 group-hover:gap-2 transition-all"
-            >
-              Ver canal <span set:html={ArrowRight} class="w-3 h-3" />
-            </span>
-          </div>
-        </a>
-
-        <a
-          href="https://www.instagram.com/khaled.huerta/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-card group bg-white/60 backdrop-blur-xl border border-white/40 rounded-xl overflow-hidden shadow-lg shadow-black/5 hover:bg-white/80 hover:border-pink-400/40 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
-        >
-          <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div
-              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-500"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
-              >
-                <span
-                  class="text-white font-bold text-xl"
-                  style="font-family: serif;"
-                >
-                  IG
+              <div class="flex flex-1 flex-col p-5">
+                <span class="inline-flex self-start rounded-full border border-oro/30 bg-oro/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-marron">
+                  {social.name}
+                </span>
+                <p class="mt-2 text-[11px] font-medium uppercase tracking-wide text-marron/70">
+                  {social.type}
+                </p>
+                <h3 class="font-serif text-sm font-bold leading-snug text-chocolate transition-colors line-clamp-2 group-hover:text-granate">
+                  {social.handle}
+                </h3>
+                <span class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-marron transition-colors group-hover:text-granate">
+                  {social.cta}
+                  <span
+                    class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"
+                    set:html={ArrowRight}
+                  />
                 </span>
               </div>
-            </div>
-          </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <span
-              class="text-[11px] font-semibold tracking-wide text-pink-700 bg-pink-50 px-2.5 py-0.5 rounded-full self-start"
-              >Instagram</span
-            >
-            <p
-              class="text-[11px] text-marron mt-2 font-medium tracking-wide uppercase"
-            >
-              Perfil
-            </p>
-            <h3
-              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
-            >
-              @khaled.huerta
-            </h3>
-            <span
-              class="inline-flex items-center gap-1 text-xs font-medium text-pink-700 mt-3 group-hover:gap-2 transition-all"
-            >
-              Ver perfil <span set:html={ArrowRight} class="w-3 h-3" />
-            </span>
-          </div>
-        </a>
-
-        <a
-          href="https://www.facebook.com/khaled.huerta/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-card group bg-white/60 backdrop-blur-xl border border-white/40 rounded-xl overflow-hidden shadow-lg shadow-black/5 hover:bg-white/80 hover:border-blue-400/40 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
-        >
-          <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div
-              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-700 via-blue-500 to-sky-400"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
-              >
-                <span
-                  class="text-white font-bold text-2xl"
-                  style="font-family: serif;">f</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <span
-              class="text-[11px] font-semibold tracking-wide text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full self-start"
-              >Facebook</span
-            >
-            <p
-              class="text-[11px] text-marron mt-2 font-medium tracking-wide uppercase"
-            >
-              Red social
-            </p>
-            <h3
-              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
-            >
-              Khaled Huerta
-            </h3>
-            <span
-              class="inline-flex items-center gap-1 text-xs font-medium text-blue-600 mt-3 group-hover:gap-2 transition-all"
-            >
-              Ver página <span set:html={ArrowRight} class="w-3 h-3" />
-            </span>
-          </div>
-        </a>
-
-        <a
-          href="https://t.me/khaled_huerta"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-card group bg-white/60 backdrop-blur-xl border border-white/40 rounded-xl overflow-hidden shadow-lg shadow-black/5 hover:bg-white/80 hover:border-sky-400/40 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
-        >
-          <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div
-              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-600 via-cyan-500 to-teal-400"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
-              >
-                <span
-                  class="text-white font-bold text-lg"
-                  style="font-family: serif;">TG</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <span
-              class="text-[11px] font-semibold tracking-wide text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full self-start"
-              >Telegram</span
-            >
-            <p
-              class="text-[11px] text-marron mt-2 font-medium tracking-wide uppercase"
-            >
-              Canal
-            </p>
-            <h3
-              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
-            >
-              @khaled_huerta
-            </h3>
-            <span
-              class="inline-flex items-center gap-1 text-xs font-medium text-sky-700 mt-3 group-hover:gap-2 transition-all"
-            >
-              Abrir canal <span set:html={ArrowRight} class="w-3 h-3" />
-            </span>
-          </div>
-        </a>
-
-        <a
-          href="https://www.tiktok.com/@khaledhuerta"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-card group bg-white/60 backdrop-blur-xl border border-white/40 rounded-xl overflow-hidden shadow-lg shadow-black/5 hover:bg-white/80 hover:border-gray-400/40 hover:-translate-y-0.5 transition-all duration-300 no-underline flex flex-col"
-        >
-          <div class="aspect-video bg-chocolate/5 overflow-hidden">
-            <div
-              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center"
-              >
-                <span class="text-white font-bold text-xl">♪</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <span
-              class="text-[11px] font-semibold tracking-wide text-gray-900 bg-gray-100 px-2.5 py-0.5 rounded-full self-start"
-              >TikTok</span
-            >
-            <p
-              class="text-[11px] text-marron mt-2 font-medium tracking-wide uppercase"
-            >
-              Red social
-            </p>
-            <h3
-              class="font-serif text-sm font-bold text-chocolate leading-snug line-clamp-2 group-hover:text-granate transition-colors"
-            >
-              @khaledhuerta
-            </h3>
-            <span
-              class="inline-flex items-center gap-1 text-xs font-medium text-gray-900 mt-3 group-hover:gap-2 transition-all"
-            >
-              Ver perfil <span set:html={ArrowRight} class="w-3 h-3" />
-            </span>
-          </div>
-        </a>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>

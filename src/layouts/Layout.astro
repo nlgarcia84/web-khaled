@@ -7,9 +7,10 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  overlayHeader?: boolean;
 }
 
-const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en directo, artículos, biblioteca y más sobre el Islam en español." } = Astro.props;
+const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en directo, artículos, biblioteca y más sobre el Islam en español.", overlayHeader = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -28,7 +29,16 @@ const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en 
   <body
     class="bg-white text-chocolate font-sans antialiased m-0 p-0 min-h-screen flex flex-col"
   >
-    <header class="bg-chocolate sticky top-0 z-50">
+    <header
+      id="site-header"
+      data-overlay={overlayHeader ? "true" : "false"}
+      class:list={[
+        "top-0 z-50 w-full transition-all duration-300 ease-out",
+        overlayHeader
+          ? "fixed inset-x-0 bg-transparent"
+          : "sticky bg-chocolate",
+      ]}
+    >
       <div
         class="max-w-[1140px] mx-auto px-6 h-20 flex justify-between items-center"
       >
@@ -196,6 +206,40 @@ const { title, description = "Página oficial de Sheij Khaled Huerta: jutbas en 
 <script>
   window.scrollTo(0, 0);
   document.addEventListener("astro:after-swap", () => window.scrollTo(0, 0));
+
+  if (!(window as any).__headerInit) {
+    (window as any).__headerInit = true;
+
+    const updateHeader = () => {
+      const header = document.getElementById("site-header");
+      if (!header || header.dataset.overlay !== "true") return;
+
+      const scrolled = window.scrollY > header.offsetHeight;
+      header.classList.toggle("bg-transparent", !scrolled);
+      header.classList.toggle("bg-chocolate/95", scrolled);
+      header.classList.toggle("backdrop-blur-md", scrolled);
+      header.classList.toggle("shadow-lg", scrolled);
+      header.classList.toggle("shadow-black/20", scrolled);
+    };
+
+    let headerTicking = false;
+    document.addEventListener(
+      "scroll",
+      () => {
+        if (!headerTicking) {
+          requestAnimationFrame(() => {
+            updateHeader();
+            headerTicking = false;
+          });
+          headerTicking = true;
+        }
+      },
+      { passive: true },
+    );
+
+    document.addEventListener("astro:after-swap", updateHeader);
+    updateHeader();
+  }
 
   if (!(window as any).__liveBadgeInit) {
     (window as any).__liveBadgeInit = true;
