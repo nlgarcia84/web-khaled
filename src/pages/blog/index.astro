@@ -19,6 +19,7 @@ const rest = posts.slice(1);
     image={khaledJardin}
     label="Blog"
     title="Artículos y reflexiones"
+    titleAccent="reflexiones"
     description="Textos, notas y reflexiones sobre la fe, la vida y el camino hacia Al-lah."
     titleSize="md"
     maxWidth="1140px"
@@ -88,6 +89,20 @@ const rest = posts.slice(1);
               </div>
             </div>
           </a>
+        )
+      }
+
+      {
+        posts.length === 0 && (
+          <div class="text-center py-20 blog-card">
+            <span class="font-serif text-5xl text-oro/40">📖</span>
+            <p class="mt-4 text-lg text-chocolate font-medium">
+              Todavía no hay artículos publicados
+            </p>
+            <p class="mt-1 text-sm text-marron">
+              Vuelve pronto para leer nuevas reflexiones.
+            </p>
+          </div>
         )
       }
 

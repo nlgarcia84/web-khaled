@@ -3,32 +3,30 @@ import Play from "lucide-static/dist/esm/icons/play.mjs";
 
 const Heart = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
 const ArrowRight = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
-import khaledAlfombra from "../assets/images/khaled_alfombra.jpeg";
+import khaledMaktaba from "../assets/images/khaled_maktaba.jpg";
 import khaledBoligrafo from "../assets/images/khaled_boligrafo.jpg";
 import khaledLibreta from "../assets/images/khaled_libreta.png";
 import { events } from "../data/events";
-import { getPosts, getCampaign } from "../lib/sanity";
+import { getPosts } from "../lib/sanity";
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
 import { Image } from "astro:assets";
 
 const posts = (await getPosts()).slice(0, 3);
-const campaign = await getCampaign("alfombra");
-const campaignPct =
-  campaign?.goal > 0
-    ? Math.round(((campaign?.raised ?? 0) / campaign.goal) * 100)
-    : 0;
 
 const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
 ---
 
-<Layout title="Inicio" description="Difundo el mensaje del Islam en español con rigor, sabiduría y cercanía. Jutbas en directo cada viernes, reflexiones, agenda de eventos y más.">
+<Layout
+  title="Inicio"
+  description="Difundo el mensaje del Islam en español con rigor, sabiduría y cercanía. Jutbas en directo cada viernes, reflexiones y más."
+>
   <HeroSection
-    image={khaledAlfombra}
+    image={khaledMaktaba}
     quote='"Los modales se aprenden antes que el conocimiento"'
     title="Difundiendo el mensaje del Islam en Español con rigor, sabiduría y cercanía"
+    titleAccent="Islam"
     description="Un siervo de Allah que recuerda el camino de los justos predecesores."
-    typing
     overlay="gradient"
     maxWidth="800px"
     imageClass="hero-parallax"
@@ -36,14 +34,14 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a
         href="/donar"
-        class="inline-flex items-center justify-center gap-2 bg-oro text-chocolate font-semibold px-8 py-3 rounded-lg hover:bg-oro/90 transition-colors no-underline"
+        class="inline-flex items-center justify-center gap-2 h-12 bg-oro text-chocolate font-semibold px-8 rounded-lg shadow-lg shadow-oro/20 hover:bg-oro/90 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oro focus-visible:ring-offset-2 focus-visible:ring-offset-chocolate transition-all duration-200 no-underline"
       >
         <span set:html={Heart} class="w-5 h-5" />
         Apoyar la causa
       </a>
       <a
         href="/biografia"
-        class="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-8 py-3 rounded-lg hover:bg-white/10 transition-colors no-underline"
+        class="inline-flex items-center justify-center gap-2 h-12 border border-white/25 text-white font-medium px-8 rounded-lg hover:bg-white/10 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oro focus-visible:ring-offset-2 focus-visible:ring-offset-chocolate transition-all duration-200 no-underline"
       >
         Conocer más
         <span set:html={ArrowRight} class="w-5 h-5" />
@@ -106,7 +104,8 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
                     </p>
                   )}
                   <span class="inline-flex items-center gap-1 text-sm font-medium text-marron mt-4 group-hover:gap-2 transition-all">
-                    Leer artículo <span set:html={ArrowRight} class="w-3.5 h-3.5" />
+                    Leer artículo{" "}
+                    <span set:html={ArrowRight} class="w-3.5 h-3.5" />
                   </span>
                 </a>
               ))
@@ -136,7 +135,8 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
                     </p>
                   )}
                   <span class="inline-flex items-center gap-1 text-sm font-medium text-marron mt-4 group-hover:gap-2 transition-all">
-                    Leer artículo <span set:html={ArrowRight} class="w-3.5 h-3.5" />
+                    Leer artículo{" "}
+                    <span set:html={ArrowRight} class="w-3.5 h-3.5" />
                   </span>
                 </a>
               ))
@@ -189,7 +189,9 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
             <div
               class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-600 via-red-500 to-rose-400"
             >
-              <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+              <div
+                class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
+              >
                 <span class="h-6 w-6 text-white" set:html={Play} />
               </div>
             </div>
@@ -391,93 +393,87 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
     </div>
   </section>
 
-  {events.length > 0 && (
-  <section class="py-24 bg-gris-claro relative">
-    <div class="relative z-10 max-w-[1140px] mx-auto px-6">
-      <div class="relative z-30 text-center mb-40 section-header">
-        <span
-          class="font-sans text-xs font-bold tracking-[0.2em] text-marron uppercase block mb-3 section-label"
-        >
-          Agenda
-        </span>
-        <h2
-          class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title"
-        >
-          Próximos eventos
-        </h2>
-        <p class="text-sm text-marron font-medium">
-          Estos son los siguientes eventos programados
-        </p>
-      </div>
+  {
+    events.length > 0 && (
+      <section class="py-24 bg-gris-claro relative">
+        <div class="relative z-10 max-w-[1140px] mx-auto px-6">
+          <div class="relative z-30 text-center mb-40 section-header">
+            <span class="font-sans text-xs font-bold tracking-[0.2em] text-marron uppercase block mb-3 section-label">
+              Agenda
+            </span>
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-chocolate mb-3 section-title">
+              Próximos eventos
+            </h2>
+            <p class="text-sm text-marron font-medium">
+              Estos son los siguientes eventos programados
+            </p>
+          </div>
 
-      <div class="relative max-w-4xl mx-auto pt-8 pb-16 flex items-center">
-        <div
-          class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list relative z-10"
-        >
-          {
-            events.map((event, i) => {
-              const date = new Date(event.date);
-              const day = date.getDate();
-              const month = date.toLocaleDateString("es", { month: "short" });
-              const flag = event.Lugar.includes("México")
-                ? "🇲🇽"
-                : event.Lugar.includes("Argentina")
-                  ? "🇦🇷"
-                  : event.Lugar.includes("Chile")
-                    ? "🇨🇱"
-                    : "";
-              return (
-                <div
-                  class={
-                    "event-card group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-6" +
-                    (i === 0 ? " nearest-event" : " grayscale")
-                  }
-                >
-                  <div class="w-16 h-16 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
-                    <span class="text-3xl font-bold text-marron leading-none">
-                      {day}
-                    </span>
-                    <span class="text-sm font-semibold text-marron uppercase tracking-wide">
-                      {month}
-                    </span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <h3 class="font-serif text-xl font-bold text-chocolate leading-snug">
-                      {event.title}
-                    </h3>
-                    <div class="flex items-center gap-1.5 mt-1">
-                      <span class="text-base shrink-0">{flag}</span>
-                      <p class="text-base text-marron truncate">
-                        {event.Lugar}
-                      </p>
+          <div class="relative max-w-4xl mx-auto pt-8 pb-16 flex items-center">
+            <div class="w-full lg:w-7/12 mx-auto lg:mx-0 space-y-4 events-list relative z-10">
+              {events.map((event, i) => {
+                const date = new Date(event.date);
+                const day = date.getDate();
+                const month = date.toLocaleDateString("es", { month: "short" });
+                const flag = event.Lugar.includes("México")
+                  ? "🇲🇽"
+                  : event.Lugar.includes("Argentina")
+                    ? "🇦🇷"
+                    : event.Lugar.includes("Chile")
+                      ? "🇨🇱"
+                      : "";
+                return (
+                  <div
+                    class={
+                      "event-card group bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-oro/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-6" +
+                      (i === 0 ? " nearest-event" : " grayscale")
+                    }
+                  >
+                    <div class="w-16 h-16 bg-oro/10 rounded-xl flex flex-col items-center justify-center shrink-0">
+                      <span class="text-3xl font-bold text-marron leading-none">
+                        {day}
+                      </span>
+                      <span class="text-sm font-semibold text-marron uppercase tracking-wide">
+                        {month}
+                      </span>
                     </div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-serif text-xl font-bold text-chocolate leading-snug">
+                        {event.title}
+                      </h3>
+                      <div class="flex items-center gap-1.5 mt-1">
+                        <span class="text-base shrink-0">{flag}</span>
+                        <p class="text-base text-marron truncate">
+                          {event.Lugar}
+                        </p>
+                      </div>
+                    </div>
+                    <span class="text-marron/70 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-xl shrink-0">
+                      &rarr;
+                    </span>
                   </div>
-                  <span class="text-marron/70 group-hover:text-oro group-hover:translate-x-1 transition-all font-bold text-xl shrink-0">
-                    &rarr;
-                  </span>
-                </div>
-              );
-            })
-          }
-        </div>
+                );
+              })}
+            </div>
 
-        <div
-          class="hidden lg:block absolute right-0 w-7/12 z-20"
-          style="top: -50%;"
-        >
-          <Image
-            src={khaledLibreta}
-            alt=""
-            class="w-full h-auto pl-10"
-            aria-hidden="true"
-            widths={[320, 400, 480, 640]}
-            sizes="(min-width: 1024px) 483px, 100vw"
-          />
+            <div
+              class="hidden lg:block absolute right-0 w-7/12 z-20"
+              style="top: -50%;"
+            >
+              <Image
+                src={khaledLibreta}
+                alt=""
+                class="w-full h-auto pl-10"
+                aria-hidden="true"
+                widths={[320, 400, 480, 640]}
+                sizes="(min-width: 1024px) 483px, 100vw"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-  )}
+      </section>
+    )
+  }
 </Layout>
 
 <script>
@@ -491,12 +487,16 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
   revealOnScroll(".event-card", { from: "side", stagger: 0.06 });
 
   let marqueeRaf = 0;
+  let marqueeAbort: AbortController | null = null;
   const initMarquee = () => {
     const marquee = document.querySelector(".blog-marquee");
     const track = marquee?.querySelector(".blog-marquee__track");
     if (!marquee || !track) return;
 
     cancelAnimationFrame(marqueeRaf);
+    marqueeAbort?.abort();
+    const abort = new AbortController();
+    marqueeAbort = abort;
 
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -518,7 +518,7 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
       max = Math.max(0, track.scrollWidth - marquee.clientWidth);
     };
     computeMax();
-    window.addEventListener("resize", computeMax);
+    window.addEventListener("resize", computeMax, { signal: abort.signal });
 
     marquee.querySelectorAll("a").forEach((a) => {
       a.setAttribute("draggable", "false");
@@ -533,19 +533,23 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
       marquee.classList.add("dragging");
     });
 
-    window.addEventListener("pointermove", (e) => {
-      if (!isDown) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) dragged = true;
-      if (dragged) setX(Math.min(Math.max(startXPos - dx, 0), max));
-    });
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        if (!isDown) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) dragged = true;
+        if (dragged) setX(Math.min(Math.max(startXPos - dx, 0), max));
+      },
+      { signal: abort.signal },
+    );
 
     const endDrag = () => {
       isDown = false;
       marquee.classList.remove("dragging");
     };
-    window.addEventListener("pointerup", endDrag);
-    window.addEventListener("pointercancel", endDrag);
+    window.addEventListener("pointerup", endDrag, { signal: abort.signal });
+    window.addEventListener("pointercancel", endDrag, { signal: abort.signal });
 
     marquee.addEventListener(
       "click",
@@ -574,11 +578,11 @@ const YT_CHANNEL_URL = "https://www.youtube.com/@khaledhuerta";
     marqueeRaf = requestAnimationFrame(tick);
   };
 
-    initMarquee();
-    if (!(window as any).__marqueeInit) {
-      (window as any).__marqueeInit = true;
-      document.addEventListener("astro:after-swap", initMarquee);
-    }
+  initMarquee();
+  if (!(window as any).__marqueeInit) {
+    (window as any).__marqueeInit = true;
+    document.addEventListener("astro:after-swap", initMarquee);
+  }
 
   const nearest = document.querySelector(".nearest-event");
   if (nearest) {
